@@ -5,7 +5,7 @@ using TurnBasedGame.CardManagement;
 
 namespace TurnBasedGame.Deck
 {
-    public class Deck : MonoBehaviour
+    public class DiscardPile : MonoBehaviour
     {
 
     }
