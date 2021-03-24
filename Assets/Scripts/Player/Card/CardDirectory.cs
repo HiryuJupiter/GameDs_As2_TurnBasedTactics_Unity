@@ -21,8 +21,7 @@ namespace TurnBasedGame.CardManagement
 
         public Card DrawCard(CardTypes cardType, Vector3 pos, Quaternion rotation)
         {
-            Debug.Log("hi");
-            Debug.DrawLine(Vector3.zero, pos, Color.red, 10f);
+            //Debug.DrawLine(Vector3.zero, pos, Color.red, 10f);
             Card card = Instantiate(lookup[cardType], pos, rotation) as Card;
             card.Initialize();
             return card;

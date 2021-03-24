@@ -28,6 +28,7 @@ namespace TurnBasedGame.HandManagement
         Vector3 centerPos;
         Quaternion centerRot;
         float leftExtent; //Distance from middle to the left edge
+        float rightExtent;
         Transform cameraTrans;
 
         #region Mono
@@ -38,7 +39,8 @@ namespace TurnBasedGame.HandManagement
 
             //Cache calculations
             centerPos = center.position;
-            leftExtent = center.position.x - leftLimit.position.x;
+            leftExtent = -Mathf.Abs(center.position.x - leftLimit.position.x);
+            rightExtent = -leftExtent;
         }
 
         private void Update()
@@ -84,25 +86,48 @@ namespace TurnBasedGame.HandManagement
                 return;
 
             //Calculations
-            float cardWidth = 0;
+            float spacing = baseSpacing;
+            float normlSpacingCardsWidth = 0;
             for (int i = 0; i < cards.Count - 1; i++)
             {
-                cardWidth += baseSpacing;
+                normlSpacingCardsWidth += spacing;
             }
-            float startingPos = - cardWidth / 2f;
+            float left = -normlSpacingCardsWidth / 2f;
 
-            // To do: Recalculate if there are too many cards
+            // Recalculate pacing if there are too many cards
             //If (startingPos < extent; ...
+            //Debug.Log("startingPos " + startingPos);
 
             //Set card positions
-            for (int i = 0; i < cards.Count; i++)
+            //If there is not too many cards, then place the cards ...
+            //...starting at the left and apply regular spacing per card
+            if (left >= leftExtent)
             {
-                Vector3 p = centerPos;
-                p.x = startingPos + baseSpacing * i;
-                cards[i].SetTargetPositional(p, true);
+                for (int i = 0; i < cards.Count; i++)
+                {
+                    Vector3 p = centerPos;
+                    p.x = left + spacing * i;
+                    cards[i].SetTargetPositional(p, true);
 
-                Vector3 dirToCamera = cameraTrans.position - p;
-                cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
+                    Vector3 dirToCamera = cameraTrans.position - p;
+                    cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
+                }
+            }
+            //If there are too many cards, then place the cards starting...
+            //... at the left pos and apply the reduced spacing per card.
+            else
+            {
+                spacing = (Mathf.Abs(leftExtent)* 2) / cards.Count;
+
+                for (int i = 0; i < cards.Count; i++)
+                {
+                    Vector3 p = centerPos;
+                    p.x = leftExtent + spacing * i;
+                    cards[i].SetTargetPositional(p, true);
+
+                    Vector3 dirToCamera = cameraTrans.position - p;
+                    cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
+                }
             }
         }
 
