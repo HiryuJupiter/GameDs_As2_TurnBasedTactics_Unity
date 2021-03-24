@@ -2,33 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TurnBasedGame.CardManagement;
+using TurnBasedGame.PlayerManagement;
 
-namespace TurnBasedGame.Hand
+namespace TurnBasedGame.HandManagement
 {
-
     public class Hand : MonoBehaviour
     {
-        const int HandSize = 5;
+        private const int HandSize = 5;
+
+        [SerializeField] private Transform centralCardPos;
 
         private CardDirectory cardDir;
         private Card[] cards;
+        private Player player;
 
-
-        private void Awake()
+        #region Public
+        public void Initialize(Player player)
         {
+            //Initialize
             cards = new Card[HandSize];
-        }
 
-
-        void Start()
-        {
+            //Reference
             cardDir = CardDirectory.Instance;
+            this.player = player;
         }
-
-        void Update()
-        {
-
-        }
+        #endregion
 
         /// <summary>
         /// Organize the cards array so that all empty indexes are near the end of the array, after the indexes of cards.

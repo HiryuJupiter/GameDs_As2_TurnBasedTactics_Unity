@@ -1,18 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TurnBasedGame.DeckManagement;
+using TurnBasedGame.HandManagement;
+using TurnBasedGame.CardManagement;
 
-public class Player : MonoBehaviour
+namespace TurnBasedGame.PlayerManagement
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Player : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private bool isMainPlayer;
+        [SerializeField] private Hand hand;
+        [SerializeField] private Deck deck;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private void Awake()
+        {
+
+        }
+        private void Start()
+        {
+            hand.Initialize(this);
+        }
+
+        private void Update()
+        {
+
+        }
     }
 }

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using TurnBasedGame.CardManagement;
 
-namespace TurnBasedGame.Deck
+namespace TurnBasedGame.DeckManagement
 {
     public class DiscardPile : MonoBehaviour
     {
+        [SerializeField] private Transform placementLocation;
 
     }
 }

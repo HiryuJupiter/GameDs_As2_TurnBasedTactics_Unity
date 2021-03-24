@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2378f25d8f489a0438c76e70e24d3961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  centralCardPos: {fileID: 3302350488193051097}
 --- !u!1001 &3302350487470917353
 PrefabInstance:
   m_ObjectHideFlags: 0
