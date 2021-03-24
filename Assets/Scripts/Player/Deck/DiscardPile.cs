@@ -7,7 +7,7 @@ namespace TurnBasedGame.DeckManagement
 {
     public class DiscardPile : MonoBehaviour
     {
-        [SerializeField] private Transform placementLocation;
-
+        [SerializeField] private Transform discardLocation;
+        public Transform DiscardLocation => discardLocation;
     }
 }

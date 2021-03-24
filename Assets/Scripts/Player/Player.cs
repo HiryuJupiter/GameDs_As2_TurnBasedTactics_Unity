@@ -13,6 +13,10 @@ namespace TurnBasedGame.PlayerManagement
         [SerializeField] private Hand hand;
         [SerializeField] private Deck deck;
 
+        public bool IsMainPlayer => isMainPlayer;
+        public Hand Hand => hand;
+        public Deck Deck => deck;
+
         private void Awake()
         {
 
@@ -20,6 +24,8 @@ namespace TurnBasedGame.PlayerManagement
         private void Start()
         {
             hand.Initialize(this);
+            deck.Initialize(this);
+            hand.DrawHand();
         }
 
         private void Update()
