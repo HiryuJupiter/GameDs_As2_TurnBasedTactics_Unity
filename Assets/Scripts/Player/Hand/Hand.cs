@@ -17,6 +17,8 @@ namespace TurnBasedGame.HandManagement
         private Player player;
         private Deck deck;
 
+        public List<Card> Cards => cards;
+
         #region Public - Initialize
         public void Initialize(Player player)
         {
@@ -66,10 +68,18 @@ namespace TurnBasedGame.HandManagement
         #endregion
 
         #region Public - Remove card
+        public void AddCard(Transform spawn)
+        {
+            Card c = deck.DrawCard(CardTypes.Dummy);
+            cards.Add(c);
+        }
+
         public bool TryRemoveCard(Card card)
         {
             if (cards.Contains(card))
             {
+                //Destroy(cards[cards.Count - 1].gameObject);
+                //cards.RemoveAt(cards.Count - 1);
                 cards[cards.IndexOf(card)] = null;
                 UpdateCardDisplay();
                 return true;
@@ -125,21 +135,6 @@ namespace TurnBasedGame.HandManagement
             }
         }
 
-        private bool HasEmptySlotInHand()
-        {
-            for (int i = 0; i < HandSize; i++)
-            {
-                if (cards[i] == null)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        #endregion
-
-        #region Debug tests
         private void PrintAllCards()
         {
             string s = "";
@@ -152,6 +147,19 @@ namespace TurnBasedGame.HandManagement
             }
             Debug.Log(s);
         }
+
+        private bool HasEmptySlotInHand()
+        {
+            for (int i = 0; i < HandSize; i++)
+            {
+                if (cards[i] == null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         #endregion
     }
 }

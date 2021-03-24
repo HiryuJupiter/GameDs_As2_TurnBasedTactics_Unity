@@ -7,8 +7,6 @@ namespace TurnBasedGame.HandManagement
 {
     public class HandCardScroller : MonoBehaviour
     {
-        [SerializeField] private bool allowDebugInput = false;
-
         [Header("Positional references")]
         [SerializeField] Transform center;
         [SerializeField] Transform spawnPos;
@@ -20,75 +18,44 @@ namespace TurnBasedGame.HandManagement
         [Tooltip("The speed that the cards move in reaction to mouse movement")]
         [SerializeField] float mouseMoveSpeed = 1f;
 
-
-        CardDirectory cardDirectory;
-        List<Card> cards = new List<Card>();
+        Hand hand;
 
         //Cache
         Vector3 centerPos;
         Quaternion centerRot;
         float leftExtent; //Distance from middle to the left edge
-        float rightExtent;
         Transform cameraTrans;
 
         #region Mono
-        private void Start()
+        public void Initialize (Hand hand)
         {
-            cardDirectory = CardDirectory.Instance;
-            cameraTrans = Camera.main.transform;
+            //Reference
+            this.hand = hand;
 
-            //Cache calculations
+            //Cache
+            cameraTrans = Camera.main.transform;
             centerPos = center.position;
-            leftExtent = -Mathf.Abs(center.position.x - leftLimit.position.x);
-            rightExtent = -leftExtent;
+            leftExtent = center.position.x - leftLimit.position.x ;
+            Debug.Log("left extent: " + leftExtent);
         }
 
-        private void Update()
+        public void TickUpdate ()
         {
-            if (allowDebugInput)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha1))
-                {
-                    AddCard(spawnPos);
-                }
-                if (Input.GetKeyDown(KeyCode.Alpha2))
-                {
-                    RemoveCard();
-                }
-            }
-
             UpdateCardPositions();
         }
-        #endregion
-
-        #region Card addition/removal
-        void AddCard(Transform spawn)
-        {
-            Card c = cardDirectory.DrawCard(CardTypes.Dummy, spawn.position, spawn.rotation);
-            c.SetTargetRotation(center.rotation);
-            cards.Add(c);
-        }
-
-        void RemoveCard()
-        {
-            if (cards.Count > 0)
-            {
-                Destroy(cards[cards.Count - 1].gameObject);
-                cards.RemoveAt(cards.Count - 1);
-            }
-        }
+       
         #endregion
 
         #region Positional update
         void UpdateCardPositions()
         {
-            if (cards.Count <= 0)
+            if (hand.Cards.Count <= 0)
                 return;
 
             //Calculations
             float spacing = baseSpacing;
             float normlSpacingCardsWidth = 0;
-            for (int i = 0; i < cards.Count - 1; i++)
+            for (int i = 0; i < hand.Cards.Count - 1; i++)
             {
                 normlSpacingCardsWidth += spacing;
             }
@@ -103,30 +70,30 @@ namespace TurnBasedGame.HandManagement
             //...starting at the left and apply regular spacing per card
             if (left >= leftExtent)
             {
-                for (int i = 0; i < cards.Count; i++)
+                for (int i = 0; i < hand.Cards.Count; i++)
                 {
                     Vector3 p = centerPos;
                     p.x = left + spacing * i;
-                    cards[i].SetTargetPositional(p, true);
+                    hand.Cards[i].SetTargetPositional(p, true);
 
                     Vector3 dirToCamera = cameraTrans.position - p;
-                    cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
+                    hand.Cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
                 }
             }
             //If there are too many cards, then place the cards starting...
             //... at the left pos and apply the reduced spacing per card.
             else
             {
-                spacing = (Mathf.Abs(leftExtent)* 2) / cards.Count;
+                spacing = (Mathf.Abs(leftExtent)* 2) / hand.Cards.Count;
 
-                for (int i = 0; i < cards.Count; i++)
+                for (int i = 0; i < hand.Cards.Count; i++)
                 {
                     Vector3 p = centerPos;
                     p.x = leftExtent + spacing * i;
-                    cards[i].SetTargetPositional(p, true);
+                    hand.Cards[i].SetTargetPositional(p, true);
 
                     Vector3 dirToCamera = cameraTrans.position - p;
-                    cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
+                    hand.Cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
                 }
             }
         }
