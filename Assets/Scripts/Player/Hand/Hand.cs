@@ -7,11 +7,10 @@ using TurnBasedGame.PlayerManagement;
 
 namespace TurnBasedGame.HandManagement
 {
+    [RequireComponent(typeof(HandCardScroller))]
     public class Hand : MonoBehaviour
     {
         private const int HandSize = 5;
-
-        [SerializeField] private Transform centralCardPos;
 
         private List<Card> hand;
         private Player player;
@@ -33,6 +32,8 @@ namespace TurnBasedGame.HandManagement
             //Reference
             this.player = player;
             deck = player.Deck;
+            scroller = GetComponent<HandCardScroller>();
+            scroller.Initilize(player);
         }
         #endregion
 

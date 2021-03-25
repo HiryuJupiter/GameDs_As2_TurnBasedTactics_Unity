@@ -13,14 +13,12 @@ namespace TurnBasedGame
 
         //Private variable
         [SerializeField] private Player player1;
+        [SerializeField] private Player player2;
         private Dictionary<GamePhases, Action> StateMethod;
 
         //Properties
         public static GamePhases State { get; private set; } = GamePhases.GameStartStandby;
         public static int Turn{ get; private set; } = 0;
-
-        #region Public
-        #endregion
 
         #region Mono
         private IEnumerator Start()
@@ -62,6 +60,7 @@ namespace TurnBasedGame
         IEnumerator WaitForCardsToBeDrawn ()
         {
             yield return player1.WaitForCardsToBeDrawn();
+            yield return player2.WaitForCardsToBeDrawn();
             GoToPhase(GamePhases.PlayingHand);
         }
 

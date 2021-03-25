@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TurnBasedGame.CardManagement;
+using TurnBasedGame.PlayerManagement;
 
 namespace TurnBasedGame.HandManagement
 {
-    [RequireComponent(typeof(Hand))]
     public class HandCardScroller : MonoBehaviour
     {
         [Header("Positional references")]
@@ -19,7 +19,12 @@ namespace TurnBasedGame.HandManagement
         [Tooltip("The speed that the cards move in reaction to mouse movement")]
         [SerializeField] float mouseMoveSpeed = 1f;
 
+        Player player;
         Hand hand;
+
+        //Status
+        bool initialized;
+        bool isRealPlayer;
 
         //Cache
         Vector3 centerPos;
@@ -28,12 +33,16 @@ namespace TurnBasedGame.HandManagement
         Transform cameraTrans;
 
         #region Mono
-        private void Awake()
+        public void Initilize(Player player)
         {
+            initialized = true;
+
             //Reference
-            hand = GetComponent<Hand>();
+            this.player = player;
+            hand = player.Hand;
 
             //Cache
+            isRealPlayer = player.IsMainPlayer;
             cameraTrans = Camera.main.transform;
             centerPos = center.position;
             leftExtent = -(center.position.x - leftLimit.position.x);
@@ -49,7 +58,7 @@ namespace TurnBasedGame.HandManagement
         #region Positional update
         void UpdateCardPositions()
         {
-            if (hand.Cards.Count <= 0)
+            if (!initialized || hand.Cards.Count <= 0)
                 return;
 
             //Calculations
@@ -65,10 +74,9 @@ namespace TurnBasedGame.HandManagement
                     {
                         Vector3 p = centerPos;
                         p.x = startingPos + baseSpacing * i;
-                        hand.Cards[i].SetTargetPositional(p, true);
 
-                        Vector3 dirToCamera = cameraTrans.position - p;
-                        hand.Cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
+                        hand.Cards[i].SetTargetPositional(p, true);
+                        SetCardToFaceCamera(hand.Cards[i], p);
                     }
                 }
             }
@@ -84,16 +92,28 @@ namespace TurnBasedGame.HandManagement
                     {
                         Vector3 p = centerPos;
                         p.x = leftExtent + spacing * i;
-                        hand.Cards[i].SetTargetPositional(p, true);
 
-                        Vector3 dirToCamera = cameraTrans.position - p;
-                        hand.Cards[i].SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
+                        hand.Cards[i].SetTargetPositional(p, true);
+                        SetCardToFaceCamera(hand.Cards[i], p);
                     }
                 }
             }
         }
 
-        float HandTotalWidth ()
+        #endregion
+
+        #region Minor methods
+
+        void SetCardToFaceCamera (Card c, Vector3 cardPos)
+        {
+            if (isRealPlayer)
+            {
+                Vector3 dirToCamera = cameraTrans.position - cardPos;
+                c.SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
+            }
+        }
+
+        float HandTotalWidth()
         {
             float spacing = baseSpacing;
             float normlSpacingCardsWidth = 0;
@@ -109,6 +129,8 @@ namespace TurnBasedGame.HandManagement
         {
             return 0f;
         }
+
+
         #endregion
     }
 }

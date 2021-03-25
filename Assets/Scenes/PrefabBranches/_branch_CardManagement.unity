@@ -204,11 +204,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerB
       objectReference: {fileID: 0}
-    - target: {fileID: 1036097440268198207, guid: 65d6df2c8ff3f8f498225f7455a6342e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4839633294788424576, guid: 65d6df2c8ff3f8f498225f7455a6342e,
         type: 3}
       propertyPath: m_RootOrder
@@ -264,6 +259,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4911676700176074305, guid: 65d6df2c8ff3f8f498225f7455a6342e,
+        type: 3}
+      propertyPath: isMainPlayer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7637411907071167180, guid: 65d6df2c8ff3f8f498225f7455a6342e,
+        type: 3}
+      propertyPath: centralCardPos
+      value: 
+      objectReference: {fileID: 1917169512}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 65d6df2c8ff3f8f498225f7455a6342e, type: 3}
 --- !u!1001 &561730119
@@ -650,6 +655,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player1: {fileID: 1963271687}
+  player2: {fileID: 1584797862}
+--- !u!114 &1584797862 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4911676700176074305, guid: 65d6df2c8ff3f8f498225f7455a6342e,
+    type: 3}
+  m_PrefabInstance: {fileID: 349194931}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 137b249d6f40ffc4089bac3a31540658, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1917169512 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 649662524, guid: 65d6df2c8ff3f8f498225f7455a6342e,
+    type: 3}
+  m_PrefabInstance: {fileID: 349194931}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1963271687 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4911676700176074305, guid: 65d6df2c8ff3f8f498225f7455a6342e,
@@ -669,14 +693,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 649662523, guid: 65d6df2c8ff3f8f498225f7455a6342e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1836876509, guid: 65d6df2c8ff3f8f498225f7455a6342e, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1036097440268198207, guid: 65d6df2c8ff3f8f498225f7455a6342e,
         type: 3}
       propertyPath: m_Name
