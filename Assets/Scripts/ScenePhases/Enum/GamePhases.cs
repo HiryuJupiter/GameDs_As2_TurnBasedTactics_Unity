@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace TurnBasedGame
 {
-    public enum ScenePhases
+    public enum GamePhases
     {
         GameStartStandby,
         DrawCard, //Drawing cards from deck

@@ -25,12 +25,11 @@ namespace TurnBasedGame.PlayerManagement
         {
             hand.Initialize(this);
             deck.Initialize(this);
-            hand.DrawHand();
         }
 
-        private void Update()
+        public IEnumerator WaitForCardsToBeDrawn ()
         {
-
+            yield return hand.DrawCard();
         }
     }
 }

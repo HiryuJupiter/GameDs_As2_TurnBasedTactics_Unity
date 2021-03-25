@@ -13,22 +13,22 @@ namespace TurnBasedGame.HandManagement
 
         [SerializeField] private Transform centralCardPos;
 
-        private List<Card> cards;
+        private List<Card> hand;
         private Player player;
         private Deck deck;
+        private HandCardScroller scroller;
 
-        public List<Card> Cards => cards;
+        public List<Card> Cards => hand;
 
         #region Public - Initialize
         public void Initialize(Player player)
         {
             //Initialize
-            cards = new List<Card>();
+            hand = new List<Card>();
             for (int i = 0; i < HandSize; i++)
             {
-                cards.Add(null);
+                hand.Add(null);
             }
-            PrintAllCards();
 
             //Reference
             this.player = player;
@@ -36,101 +36,66 @@ namespace TurnBasedGame.HandManagement
         }
         #endregion
 
-        #region Public - Add Card
-        public void DrawHand ()
+        #region Public
+        public IEnumerator DrawCard()
         {
-            //if (player.IsMainPlayer)
-            //    TestDraw();
-        }
-
-        private void TestDraw()
-        {
-            for (int i = 0; i < 1; i++)
-            {
-                TryAddCard(CardTypes.Dummy);
-            }
-        }
-
-        public bool TryAddCard(CardTypes cardType)
-        {
+            //Find all empty slots in the hand and put a card in each slot
             for (int i = 0; i < HandSize; i++)
             {
-                if (cards[i] == null)
+                if (hand[i] == null)
                 {
                     Card card = deck.DrawCard(CardTypes.Dummy);
-                    cards[i] = card;
-                    UpdateCardDisplay();
-                    return true;
+                    hand[i] = card;
+
+                    //Have a small delay between drawing each card.
+                    yield return new WaitForSeconds(0.1f);
                 }
             }
-            return false;
-        }
-        #endregion
-
-        #region Public - Remove card
-        public void AddCard(Transform spawn)
-        {
-            Card c = deck.DrawCard(CardTypes.Dummy);
-            cards.Add(c);
         }
 
         public bool TryRemoveCard(Card card)
         {
-            if (cards.Contains(card))
+            if (hand.Contains(card))
             {
                 //Destroy(cards[cards.Count - 1].gameObject);
                 //cards.RemoveAt(cards.Count - 1);
-                cards[cards.IndexOf(card)] = null;
-                UpdateCardDisplay();
+                hand[hand.IndexOf(card)] = null;
+                PushUpCardsIndex();
                 return true;
             }
             return false;
         }
-        #endregion
 
-        #region Display cards in hand
-        private void UpdateCardDisplay()
+        // Organize the cards array so that all empty indexes are near the end of the array, after the indexes of cards.
+        private void PushUpCardsIndex()
         {
-            //Debug.Log("---Upadate Card Display---");
-            //PrintAllCards();
-            //PushUpCardsIndex();
-            //PrintAllCards();
-            //Debug.Log("---Begin arranging cards---");
-
-        }
-
-        private void CalculateCardPositions()
-        {
-            List<Card> validCards = new List<Card>();
-            for (int i = 0; i < cards.Count; i++)
+            for (int i = 0; i < hand.Count; i++)
             {
-                if (cards[i]!= null)
+                if (hand[i] == null)
                 {
-
+                    for (int j = i + 1; j < hand.Count; j++)
+                    {
+                        if (hand[j] != null)
+                        {
+                            hand[i] = hand[j];
+                            hand[j] = null;
+                            break;
+                        }
+                    }
                 }
             }
         }
         #endregion
 
         #region Minor classes
-        /// <summary>
-        /// Organize the cards array so that all empty indexes are near the end of the array, after the indexes of cards.
-        /// </summary>
-        private void PushUpCardsIndex()
+        private void OnGUI()
         {
-            for (int i = 0; i < cards.Count; i++)
+            for (int i = 0; i < hand.Count; i++)
             {
-                if (cards[i] == null)
+                if (hand[i] == null)
                 {
-                    for (int j = i + 1; j < cards.Count; j++)
-                    {
-                        if (cards[j] != null)
-                        {
-                            cards[i] = cards[j];
-                            cards[j] = null;
-                            break;
-                        }
-                    }
+                    GUI.Label(new Rect(20f + (player.IsMainPlayer ? 0f : 300f), 200f + 20f * i, 200f, 20f),
+                        i + ": " + hand[i]);
                 }
             }
         }
@@ -138,28 +103,15 @@ namespace TurnBasedGame.HandManagement
         private void PrintAllCards()
         {
             string s = "";
-            for (int i = 0; i < cards.Count; i++)
+            for (int i = 0; i < hand.Count; i++)
             {
-                if (cards[i] != null)
-                    s += cards[i].ToString() + ", ";
+                if (hand[i] != null)
+                    s += hand[i].ToString() + ", ";
                 else
                     s += "null, ";
             }
             Debug.Log(s);
         }
-
-        private bool HasEmptySlotInHand()
-        {
-            for (int i = 0; i < HandSize; i++)
-            {
-                if (cards[i] == null)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         #endregion
     }
 }

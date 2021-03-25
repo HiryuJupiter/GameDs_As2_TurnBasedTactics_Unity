@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TurnBasedGame.PlayerManagement;
 
 namespace TurnBasedGame.CardManagement
 {
@@ -9,19 +10,22 @@ namespace TurnBasedGame.CardManagement
         private const float fastMoveSpeed = 10f;
         private const float slowMoveSpeed = 5f;
 
+        //Reference
+        private Player player;
+
+        //Status
         private CardTypes cardType;
         private Vector3 targetPos;
         private Quaternion targetRot;
         private float lerpT_move;
         private float lerpT_rot;
-
-        //Status
         private float moveSpeedMod;
 
         public CardTypes CardType => cardType;
 
-        public void Initialize()
+        public void Initialize(Player player)
         {
+            this.player = player;
         }
 
         public void SetTargetPositional(Vector3 targetPos, bool isFastMove)

@@ -23,7 +23,6 @@ namespace TurnBasedGame.CardManagement
         {
             //Debug.DrawLine(Vector3.zero, pos, Color.red, 10f);
             Card card = Instantiate(lookup[cardType], pos, rotation) as Card;
-            card.Initialize();
             return card;
         }
 

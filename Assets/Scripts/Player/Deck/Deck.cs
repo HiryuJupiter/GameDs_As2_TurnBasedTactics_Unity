@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TurnBasedGame.CardManagement;
 using TurnBasedGame.PlayerManagement;
+using TurnBasedGame.HandManagement;
 
 namespace TurnBasedGame.DeckManagement
 {
@@ -15,6 +16,7 @@ namespace TurnBasedGame.DeckManagement
 
         private List<Card> cards;
         private Player player;
+        private Hand hand;
 
         private List<Transform> cardPositions;
 
@@ -29,13 +31,16 @@ namespace TurnBasedGame.DeckManagement
             //Reference
             cardDir = CardDirectory.Instance;
             this.player = player;
+            hand = player.Hand;
         }
 
-        public Card DrawCard (CardTypes cardType)
+        public Card DrawCard(CardTypes cardType)
         {
-            return cardDir.DrawCard(cardType, 
-                drawCardLocation.position + new Vector3(0f, Random.Range(-0.1f, 0.1f), 0f), 
+            Card c = cardDir.DrawCard(cardType,
+                drawCardLocation.position + new Vector3(0f, Random.Range(-0.1f, 0.1f), 0f),
                 drawCardLocation.rotation);
+            c.Initialize(player);
+            return c;
         }
         #endregion
     }

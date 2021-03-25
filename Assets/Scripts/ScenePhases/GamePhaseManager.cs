@@ -6,17 +6,17 @@ using TurnBasedGame.PlayerManagement;
 
 namespace TurnBasedGame
 {
-    public class ScenePhaseManager : MonoBehaviour
+    public class GamePhaseManager : MonoBehaviour
     {
         //Const
         private const float TimeBeforeGameStart = 0.2f;
 
         //Private variable
         [SerializeField] private Player player1;
-        private Dictionary<ScenePhases, Action> StateMethod;
+        private Dictionary<GamePhases, Action> StateMethod;
 
         //Properties
-        public static ScenePhases State { get; private set; } = ScenePhases.GameStartStandby;
+        public static GamePhases State { get; private set; } = GamePhases.GameStartStandby;
         public static int Turn{ get; private set; } = 0;
 
         #region Public
@@ -28,29 +28,23 @@ namespace TurnBasedGame
             //Initialization
             //Note: I'm just experimenting with a weird form of state machine, just replace this if
             //you have a different idea.
-            StateMethod = new Dictionary<ScenePhases, Action>()
+            StateMethod = new Dictionary<GamePhases, Action>()
             {
-                {ScenePhases.DrawCard,              () => Phase1Start_DrawCards()},
-                {ScenePhases.PlayingHand,           () => Phase2Start_PlayingHand()},
-                {ScenePhases.UnitMoving,            () => Phase3Start_UnitMoving()},
-                {ScenePhases.UnitFighting,          () => Phase4Start_UnitFighting()},
-                {ScenePhases.TurnCompleteEvaluation,() => Phase5Start_TurnComplete()},
-
-                {ScenePhases.DrawCard,              () => Phase1Start_DrawCards()},
-                {ScenePhases.PlayingHand,           () => Phase2Start_PlayingHand()},
-                {ScenePhases.UnitMoving,            () => Phase3Start_UnitMoving()},
-                {ScenePhases.UnitFighting,          () => Phase4Start_UnitFighting()},
-                {ScenePhases.TurnCompleteEvaluation,() => Phase5Start_TurnComplete()},
+                {GamePhases.DrawCard,              () => Phase1Start_DrawCards()},
+                {GamePhases.PlayingHand,           () => Phase2Start_PlayingHand()},
+                {GamePhases.UnitMoving,            () => Phase3Start_UnitMoving()},
+                {GamePhases.UnitFighting,          () => Phase4Start_UnitFighting()},
+                {GamePhases.TurnCompleteEvaluation,() => Phase5Start_TurnComplete()},
             };
 
             //Delay before start game
             yield return new WaitForSeconds(TimeBeforeGameStart);
-            GoToState(ScenePhases.DrawCard);
+            GoToPhase(GamePhases.DrawCard);
         }
         #endregion
 
         #region States
-        private void GoToState(ScenePhases newState)
+        private void GoToPhase(GamePhases newState)
         {
             if (State != newState)
             {
@@ -62,7 +56,13 @@ namespace TurnBasedGame
 
         private void Phase1Start_DrawCards()
         {
-            //StartCoroutine(player.dodraw
+            StartCoroutine(WaitForCardsToBeDrawn());
+        }
+
+        IEnumerator WaitForCardsToBeDrawn ()
+        {
+            yield return player1.WaitForCardsToBeDrawn();
+            GoToPhase(GamePhases.PlayingHand);
         }
 
         private void Phase2Start_PlayingHand()
@@ -106,7 +106,3 @@ namespace TurnBasedGame
         }
     }
 }
-
-/*
-  
- */
