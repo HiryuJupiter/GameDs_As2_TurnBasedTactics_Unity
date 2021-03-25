@@ -36,12 +36,7 @@ namespace TurnBasedGame.HandManagement
         #endregion
 
         #region Public - Draw card
-        public void DrawCards()
-        {
-            StartCoroutine(DoDrawCards());
-        }
-
-        IEnumerator DoDrawCards()
+        public IEnumerator DoDrawCards()
         {
             //Draw cards with a small delay between drawing each card
             for (int i = 0; i < HandSize; i++)
