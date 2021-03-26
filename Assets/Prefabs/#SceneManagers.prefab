@@ -44,15 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 359473b8c73cb2c498861c4cb5a25368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Dummy: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
-  King: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
-  Queen: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
-  Jack: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
-  Knight: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
-  Swordsman: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  Dummy: {fileID: 8240042715907026617, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
+  King: {fileID: 8240042715907026617, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
+  Queen: {fileID: 8240042715907026617, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
+  Jack: {fileID: 8240042715907026617, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
+  Knight: {fileID: 8240042715907026617, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
+  Swordsman: {fileID: 8240042715907026617, guid: 2f1c3dc430fb8584daab89fa5f13be95,
     type: 3}
-  Archer: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
-  Spearman: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  Archer: {fileID: 8240042715907026617, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
+  Spearman: {fileID: 8240042715907026617, guid: 2f1c3dc430fb8584daab89fa5f13be95,
     type: 3}
 --- !u!114 &1576770855
 MonoBehaviour:

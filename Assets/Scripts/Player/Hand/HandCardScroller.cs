@@ -39,62 +39,56 @@ namespace TurnBasedGame.HandManagement
         Vector3 centerPos;
         Quaternion centerRot;
         float leftExtent; //Distance from middle to the left edge
+        Quaternion cardTilt_RealPlayer;
+        Quaternion cardTilt_Enemy;
 
-        #region Mono
+        #region Public
         public void Initilize(Player player)
         {
             initialized = true;
 
             //Reference
             this.player = player;
-            hand = player.Hand;
+            hand = player.PlayerHand;
 
             //Cache
             isRealPlayer = player.IsMainPlayer;
             centerPos = centuralCardPosition.position;
+            centerRot = centuralCardPosition.rotation;
             leftExtent = -(centuralCardPosition.position.x - leftLimit.position.x);
             baseSpacing = Mathf.Sign(leftExtent) * -BaseSpacingRaw;
-            Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " left extent: " + leftExtent + ", baseSpacing: " + baseSpacing);
+            cardTilt_RealPlayer = Quaternion.Euler(0f, -15f, 0f);
+            cardTilt_Enemy = Quaternion.Euler(0f, 0f, 0f);
+            //Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " left extent: " + leftExtent + ", baseSpacing: " + baseSpacing);
         }
 
-        private void Update()
-        {
-            UpdateCardPositions();
-        }
-        #endregion
-
-        #region Positional update
-        void UpdateCardPositions()
+        public void UpdateCardPositions()
         {
             if (!initialized || hand.Cards.Count <= 0)
                 return;
 
             //Calculations
             GetLayoutStartingXAndSpacing(out float startingX, out float spacing);
-            Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " startingPos: " + startingX +
-                " spacing: " + spacing);
+            //Debug.Log("- Player " + (player.IsMainPlayer ? "1" : "2") + " startingPos: " + startingX +
+                //" spacing: " + spacing  +  "-");
 
             for (int i = 0; i < hand.Cards.Count; i++)
             {
-                if (hand.Cards[i] != null)
-                {
-                    Vector3 p = centerPos;
-                    p.x = startingX + spacing * i;
+                Vector3 p = centerPos;
+                p.x = startingX + spacing * i;
 
-                    hand.Cards[i].SetTargetPositional(p, true);
-                    SetCardToFaceCamera(hand.Cards[i], p);
-                }
+                hand.Cards[i].SetTargetPositional(p);
+                //Debug.Log("- Player " + (player.IsMainPlayer ? "1" : "2") + "[" + i + "]" + " p" + p);
+
+                //Rotation
+                Vector3 dirToCamera = cardFacingTarget.position - p;
+                Quaternion rot = Quaternion.LookRotation(dirToCamera , Vector3.up) * ((isRealPlayer) ? cardTilt_RealPlayer : cardTilt_Enemy);
+                hand.Cards[i].SetTargetRotation(rot);
             }
         }
         #endregion
 
         #region Minor methods
-        void SetCardToFaceCamera(Card c, Vector3 cardPos)
-        {
-            Vector3 dirToCamera = cardFacingTarget.position - cardPos;
-            c.SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
-        }
-
         void GetLayoutStartingXAndSpacing(out float startingX, out float spacing)
         {
             startingX = -TotalLayoutWidthOfCardss() / 2f;
@@ -103,12 +97,12 @@ namespace TurnBasedGame.HandManagement
 
             if (!tooManyCard)
             {
-                Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " NOT too many cards ");
+                //Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " NOT too many cards ");
                 spacing = baseSpacing;
             }
             else
             {
-                Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " too many cards ");
+                //Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " too many cards ");
                 startingX = leftExtent;
                 spacing = (-leftExtent * 2) / hand.Cards.Count;
             }

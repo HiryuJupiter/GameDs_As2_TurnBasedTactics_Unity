@@ -6,7 +6,7 @@ namespace TurnBasedGame
 {
     public enum GamePhases
     {
-        GameStartStandby,
+        GameStartFillDeck,
         DrawCard, //Drawing cards from deck
         PlayingHand, //Playing cards from hand
         UnitMoving, //Moving pieces

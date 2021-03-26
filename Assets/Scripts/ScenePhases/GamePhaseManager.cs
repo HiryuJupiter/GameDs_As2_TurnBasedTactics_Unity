@@ -9,19 +9,32 @@ namespace TurnBasedGame
     public class GamePhaseManager : MonoBehaviour
     {
         //Const
-        private const float TimeBeforeGameStart = 0.2f;
+        private const float TimeBeforeGameStart = 0.5f;
 
-        //Private variable
+        //Variables
+        public static GamePhaseManager Instance { get; private set; }
+
         [SerializeField] private Player player1;
         [SerializeField] private Player player2;
         private Dictionary<GamePhases, Action> StateMethod;
 
+        //Status
+        private bool p1DeckFilled;
+        private bool p2DeckFilled;
+        private bool p1Drawn;
+        private bool p2Drawn;
+
         //Properties
-        public static GamePhases State { get; private set; } = GamePhases.GameStartStandby;
-        public static int Turn{ get; private set; } = 0;
+        public static GamePhases Phase { get; private set; } = GamePhases.GameStartFillDeck;
+        public static int Turn { get; private set; } = 0;
 
         #region Mono
-        private IEnumerator Start()
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        private void Start()
         {
             //Initialization
             //Note: I'm just experimenting with a weird form of state machine, just replace this if
@@ -36,42 +49,89 @@ namespace TurnBasedGame
             };
 
             //Delay before start game
-            yield return new WaitForSeconds(TimeBeforeGameStart);
-            GoToPhase(GamePhases.DrawCard);
+            StartCoroutine(Phase0Start_FillDeck());
         }
         #endregion
-
-        #region States
+       
         private void GoToPhase(GamePhases newState)
         {
-            if (State != newState)
+            if (Phase != newState)
             {
-                State = newState;
+                Debug.Log("--- Switched from [" + Phase + "] to [" + newState + "] ---");
+                Phase = newState;
                 StateMethod[newState].Invoke();
-                Debug.Log("--- Switched from [" + State + "] to [" + newState + "] ---");
             }
         }
 
-        private void Phase1Start_DrawCards()
+        #region Phase 0 - Game Start Fill Deck
+        private IEnumerator Phase0Start_FillDeck()
         {
-            StartCoroutine(WaitForCardsToBeDrawn());
+            yield return new WaitForSeconds(TimeBeforeGameStart);
+            StartCoroutine(WaitForP1ToFillDeck());
+            yield return new WaitForSeconds(0.01f);
+            StartCoroutine(WaitForP2ToFillDeck());
+
+            while (!p1DeckFilled|| !p2DeckFilled)
+                yield return null;
+
+            GoToPhase(GamePhases.DrawCard);
         }
 
-        IEnumerator WaitForCardsToBeDrawn ()
+        private IEnumerator WaitForP1ToFillDeck()
         {
-            yield return player1.WaitForCardsToBeDrawn();
-            yield return player2.WaitForCardsToBeDrawn();
+            p1DeckFilled = false;
+            yield return player1.PlayerDeck.FillDeck();
+            p1DeckFilled = true;
+        }
+
+        private IEnumerator WaitForP2ToFillDeck()
+        {
+            p2DeckFilled = false;
+            yield return player2.PlayerDeck.FillDeck();
+            p2DeckFilled = true;
+        }
+        #endregion
+
+        #region Phase 1 - Draw cards
+        private void Phase1Start_DrawCards() => StartCoroutine(WaitForCardsToBeDrawn());
+
+        private IEnumerator WaitForCardsToBeDrawn()
+        {
+            StartCoroutine(WaitForP1ToDraw());
+            yield return new WaitForSeconds(0.05f);
+            StartCoroutine(WaitForP2ToDraw());
+
+            while (!p1Drawn || !p2Drawn)
+                yield return null;
+
             GoToPhase(GamePhases.PlayingHand);
         }
 
+        private IEnumerator WaitForP1ToDraw()
+        {
+            p1Drawn = false;
+            yield return player1.PlayerHand.WaitForHandToBeDrawn();
+            p1Drawn = true;
+        }
+
+        private IEnumerator WaitForP2ToDraw()
+        {
+            p2Drawn = false;
+            yield return player2.PlayerHand.WaitForHandToBeDrawn();
+            p2Drawn = true;
+        }
+        #endregion
+
+        #region Phase 2 - Playing hand
         private void Phase2Start_PlayingHand()
         {
 
         }
+        #endregion
 
         private void Phase3Start_UnitMoving()
         {
-
+            //Disable highlight mode
         }
 
         private void Phase4Start_UnitFighting()
@@ -97,11 +157,12 @@ namespace TurnBasedGame
          * PHASE 5 - TurnCompleteEvaluation
          * 
          */
+        #region States
         #endregion
 
         private void OnGUI()
         {
-            GUI.Label(new Rect(Screen.width - 200, 20, 200, 20), "State: " + State);
+            GUI.Label(new Rect(Screen.width - 200, 20, 200, 20), "State: " + Phase);
         }
     }
 }

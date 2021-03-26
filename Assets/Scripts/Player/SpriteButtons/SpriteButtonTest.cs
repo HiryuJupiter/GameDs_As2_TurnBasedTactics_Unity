@@ -17,6 +17,5 @@ public class SpriteButtonTest : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("hi");
     }
 }

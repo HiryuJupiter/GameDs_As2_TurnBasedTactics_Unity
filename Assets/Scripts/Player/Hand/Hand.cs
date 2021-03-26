@@ -10,64 +10,79 @@ namespace TurnBasedGame.HandManagement
     [RequireComponent(typeof(HandCardScroller))]
     public class Hand : MonoBehaviour
     {
-        private const int HandSize = 9;
+        private const int HandSize = 5;
 
-        private List<Card> hand;
         private Player player;
         private Deck deck;
         private HandCardScroller scroller;
 
-        public List<Card> Cards => hand;
+        public List<Card> Cards { get; private set; }
 
         #region Public - Initialize
         public void Initialize(Player player)
         {
             //Initialize
-            hand = new List<Card>();
-            for (int i = 0; i < HandSize; i++)
-            {
-                hand.Add(null);
-            }
+            Cards = new List<Card>();
 
             //Reference
             this.player = player;
-            deck = player.Deck;
+            deck = player.PlayerDeck;
             scroller = GetComponent<HandCardScroller>();
             scroller.Initilize(player);
         }
         #endregion
 
         #region Public
-        public IEnumerator DrawCard()
+        public IEnumerator WaitForHandToBeDrawn()
         {
             //Find all empty slots in the hand and put a card in each slot
-            for (int i = 0; i < HandSize; i++)
+
+            while (Cards.Count < HandSize)
             {
-                if (hand[i] == null)
+                if (deck.TryDrawCard(out Card card))
                 {
-                    Card card = deck.DrawCard(CardTypes.Dummy);
-                    hand[i] = card;
+                    Cards.Add(card);
+                    scroller.UpdateCardPositions();
 
                     //Have a small delay between drawing each card.
                     yield return new WaitForSeconds(0.1f);
                 }
+                else
+                    yield break;
             }
         }
 
         public bool TryRemoveCard(Card card)
         {
-            if (hand.Contains(card))
+            if (Cards.Contains(card))
             {
-                //Destroy(cards[cards.Count - 1].gameObject);
-                //cards.RemoveAt(cards.Count - 1);
-                hand[hand.IndexOf(card)] = null;
-                PushUpCardsIndex();
+                Cards.Remove(card);
+                deck.AddToDiscardPile(card);
+                scroller.UpdateCardPositions();
                 return true;
             }
             return false;
         }
+        #endregion
 
-        // Organize the cards array so that all empty indexes are near the end of the array, after the indexes of cards.
+        #region Minor classes
+
+
+        private void PrintAllCards()
+        {
+            string s = "";
+            for (int i = 0; i < Cards.Count; i++)
+            {
+                s += Cards[i].ToString() + ", ";
+            }
+            Debug.Log(s);
+        }
+        #endregion
+    }
+}
+
+/*
+         // Organize the cards array so that all empty indexes are near the end of the array, after the indexes of cards.
         private void PushUpCardsIndex()
         {
             for (int i = 0; i < hand.Count; i++)
@@ -86,33 +101,4 @@ namespace TurnBasedGame.HandManagement
                 }
             }
         }
-        #endregion
-
-        #region Minor classes
-        private void OnGUI()
-        {
-            for (int i = 0; i < hand.Count; i++)
-            {
-                if (hand[i] == null)
-                {
-                    GUI.Label(new Rect(20f + (player.IsMainPlayer ? 0f : 300f), 200f + 20f * i, 200f, 20f),
-                        i + ": " + hand[i]);
-                }
-            }
-        }
-
-        private void PrintAllCards()
-        {
-            string s = "";
-            for (int i = 0; i < hand.Count; i++)
-            {
-                if (hand[i] != null)
-                    s += hand[i].ToString() + ", ";
-                else
-                    s += "null, ";
-            }
-            Debug.Log(s);
-        }
-        #endregion
-    }
-}
+ */

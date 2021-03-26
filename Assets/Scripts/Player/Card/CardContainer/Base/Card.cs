@@ -7,11 +7,11 @@ namespace TurnBasedGame.CardManagement
 {
     public class Card : MonoBehaviour
     {
-        private const float fastMoveSpeed = 10f;
-        private const float slowMoveSpeed = 5f;
+        private const float slowMoveSpeed = 1f;
 
         //Reference
-        private Player player;
+        protected Player player;
+        protected GamePhaseManager phaseManager;
 
         //Status
         private CardTypes cardType;
@@ -19,39 +19,37 @@ namespace TurnBasedGame.CardManagement
         private Quaternion targetRot;
         private float lerpT_move;
         private float lerpT_rot;
-        private float moveSpeedMod;
 
         public CardTypes CardType => cardType;
 
         public void Initialize(Player player)
         {
             this.player = player;
+            phaseManager = GamePhaseManager.Instance;
         }
 
-        public void SetTargetPositional(Vector3 targetPos, bool isFastMove)
+        public void SetTargetPositional(Vector3 targetPos)
         {
             this.targetPos = targetPos;
-            moveSpeedMod = isFastMove ? fastMoveSpeed : slowMoveSpeed;
+            lerpT_move = 0f;
 
             if (!InMovingAnimation)
             {
                 StartCoroutine(LerpPosition());
             }
-            else
-            {
-                lerpT_move = 0f;
-            }
         }
 
         private IEnumerator LerpPosition()
         {
-            lerpT_move = 0f;
+            InMovingAnimation = true;
             while (lerpT_move < 1f)
             {
-                lerpT_move += Time.deltaTime * moveSpeedMod;
+                lerpT_move += Time.deltaTime * slowMoveSpeed;
+                if (lerpT_move > 1f) lerpT_move = 1f;
                 transform.position = Vector3.Lerp(transform.position, targetPos, lerpT_move);
                 yield return null;
             }
+            InMovingAnimation = false;
             transform.position = targetPos;
         }
 
@@ -72,18 +70,20 @@ namespace TurnBasedGame.CardManagement
         private IEnumerator LerpRotation()
         {
             lerpT_rot = 0f;
+            InRotationAnimation = true;
             while (lerpT_rot < 1f)
             {
-                lerpT_rot += Time.deltaTime * moveSpeedMod;
+                lerpT_rot += Time.deltaTime * slowMoveSpeed;
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpT_rot);
                 yield return null;
             }
+            InRotationAnimation = false;
             transform.rotation = targetRot;
         }
 
         #region Minor methods 
-        private bool InMovingAnimation => lerpT_move > 0f;
-        private bool InRotationAnimation => lerpT_rot > 0f;
+        private bool InMovingAnimation;
+        private bool InRotationAnimation;
 
         public override string ToString()
         {

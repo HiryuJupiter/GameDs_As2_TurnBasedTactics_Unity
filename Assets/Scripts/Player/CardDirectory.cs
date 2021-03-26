@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TurnBasedGame.CardManagement
@@ -26,6 +27,12 @@ namespace TurnBasedGame.CardManagement
             return card;
         }
 
+        public Card DrawRandomCard (Vector3 pos, Quaternion rotation)
+        {
+            Card card = Instantiate(RandomCard(), pos, rotation) as Card;
+            return card;
+        }
+
         private void Awake()
         {
             Instance = this;
@@ -40,6 +47,12 @@ namespace TurnBasedGame.CardManagement
                 {CardTypes.Archer,      Archer },
                 {CardTypes.Spearman,    Spearman },
             };
+        }
+
+        Card RandomCard ()
+        {
+            int index = Random.Range(0, lookup.Count);
+            return lookup.ElementAt(index).Value;
         }
     }
 }
