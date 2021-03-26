@@ -13,6 +13,8 @@ namespace TurnBasedGame.PlayerManagement
         [SerializeField] private Hand hand;
         [SerializeField] private Deck deck;
 
+        private GamePhaseManager gamePhase;
+
         public bool IsMainPlayer => isMainPlayer;
         public Hand PlayerHand => hand;
         public Deck PlayerDeck => deck;
@@ -24,9 +26,12 @@ namespace TurnBasedGame.PlayerManagement
 
         private void Start()
         {
+            gamePhase = GamePhaseManager.Instance;
+
             hand.Initialize(this);
             deck.Initialize(this);
         }
+
         private void OnGUI()
         {
             if (!IsMainPlayer)

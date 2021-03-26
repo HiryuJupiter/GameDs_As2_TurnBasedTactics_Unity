@@ -18,10 +18,21 @@ namespace TurnBasedGame
         [SerializeField] private float startingRotation = 15f;
         [SerializeField] private float rotationOffset = 2f;
         [SerializeField] private float verticalOffset = 0.04f;
+        [SerializeField] private float mousePanSensitivity = -0.1f;
         public float spacing => cardSpacing;
         public float StartingRotation => startingRotation;
         public float RotationOffset => rotationOffset;
         public float VerticalOffset => verticalOffset;
+        public float MousePanSensitivity => mousePanSensitivity;
+
+        [Header("Card highlight")]
+        [SerializeField] private float highlightOffsetX = 0.1f;
+        [SerializeField] private float highlightOffsetY = 1.5f;
+        [SerializeField] private float highlightScale = 0.1f;
+        public float HighlightOffsetX => highlightOffsetX;
+        public float HighlightOffsetY => highlightOffsetY;
+        public Vector3 HighlightScale => new Vector3(highlightScale, highlightScale, highlightScale);
+
 
         private void Awake()
         {

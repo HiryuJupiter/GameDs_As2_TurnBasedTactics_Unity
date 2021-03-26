@@ -13,7 +13,7 @@ namespace TurnBasedGame.HandManagement
     ZRotation: negative number is clockwise, positive number is anticlockwise
      */
 
-    public class HandSpreader_Ver3
+    public class HandSpreader_Ver4
     {
         //Status
         int cardCount;
@@ -39,7 +39,7 @@ namespace TurnBasedGame.HandManagement
         float TotalLayoutWidth => spacing * (cardCount - 1);
 
         #region Public
-        public HandSpreader_Ver3(Player player, Transform centuralCardReference, Transform leftLimit, Vector3 facingPos)
+        public HandSpreader_Ver4(Player player, Transform centuralCardReference, Transform leftLimit, Vector3 facingPos)
         {
             //Reference
             this.player = player;
@@ -74,6 +74,14 @@ namespace TurnBasedGame.HandManagement
                 UpdatePlayerCardPosition();
             else
                 UpdateAICardPosition();
+        }
+
+        public void HighlightCard (Card card)
+        {
+            if (hand.Cards.Contains(card))
+            {
+
+            }
         }
 
         private void UpdatePlayerCardPosition ()

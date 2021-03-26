@@ -36,7 +36,7 @@ namespace TurnBasedGame.DeckManagement
             this.player = player;
             hand = player.PlayerHand;
 
-            //Cahe
+            //Cache
             deckSize = CardSettings.Instance.DeckSize;
         }
 
@@ -48,7 +48,8 @@ namespace TurnBasedGame.DeckManagement
             {
                 Card c = cardDir.DrawRandomCard(
                     spawnLocation.position,
-                    spawnLocation.rotation);
+                    spawnLocation.rotation,
+                    transform);
                 c.SetTargetPosition(stationaryLocation.position + new Vector3(0f, i * 0.01f, 0f));
                 c.SetTargetRotation(stationaryLocation.rotation);
                 c.Initialize(player);
@@ -64,6 +65,7 @@ namespace TurnBasedGame.DeckManagement
             {
                 card = DeckPile[DeckPile.Count - 1];
                 DeckPile.RemoveAt(DeckPile.Count - 1);
+                card.transform.parent = hand.transform;
                 return true;
             }
             return false;
@@ -80,6 +82,7 @@ namespace TurnBasedGame.DeckManagement
             DiscardPile.Add(card);
             card.SetTargetPosition(discardLocation.position + new Vector3(0f, DiscardPile.Count * 0.01f));
             card.SetTargetRotation(discardLocation.rotation);
+            card.transform.parent = transform;
         }
         #endregion
 

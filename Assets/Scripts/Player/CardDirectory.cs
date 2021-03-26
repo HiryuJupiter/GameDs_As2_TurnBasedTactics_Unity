@@ -27,9 +27,9 @@ namespace TurnBasedGame.CardManagement
             return card;
         }
 
-        public Card DrawRandomCard (Vector3 pos, Quaternion rotation)
+        public Card DrawRandomCard (Vector3 pos, Quaternion rotation, Transform parent)
         {
-            Card card = Instantiate(RandomCard(), pos, rotation) as Card;
+            Card card = Instantiate(RandomCard(), pos, rotation, parent) as Card;
             return card;
         }
 
