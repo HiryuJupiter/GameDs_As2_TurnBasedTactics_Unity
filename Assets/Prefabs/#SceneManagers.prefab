@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1786045769800991367}
   - component: {fileID: 137927064}
+  - component: {fileID: 1576770855}
   m_Layer: 0
   m_Name: '#SceneManagers'
   m_TagString: Untagged
@@ -53,3 +54,17 @@ MonoBehaviour:
   Archer: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95, type: 3}
   Spearman: {fileID: -2686162758174088343, guid: 2f1c3dc430fb8584daab89fa5f13be95,
     type: 3}
+--- !u!114 &1576770855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786045769800991364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c32e6c1a2437604691dc7e1ae38a90f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player1: {fileID: 0}
+  player2: {fileID: 0}

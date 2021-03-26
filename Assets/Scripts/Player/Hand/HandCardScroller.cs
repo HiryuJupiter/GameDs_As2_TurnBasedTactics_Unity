@@ -6,16 +6,24 @@ using TurnBasedGame.PlayerManagement;
 
 namespace TurnBasedGame.HandManagement
 {
+    /*
+     Things to keep in mind: player 1 have their card running from left to right    
+     the opponent, Player 2, needs to have their card running from right to left
+     */
+
+
+
     public class HandCardScroller : MonoBehaviour
     {
+        //The standard spacing between cards (before they become too crowded, before Mathf.Sign is calculated
+        const float BaseSpacingRaw = 1f;
+
         [Header("Positional references")]
         [SerializeField] Transform center;
         [SerializeField] Transform spawnPos;
         [SerializeField] Transform leftLimit;
 
         [Header("Settings")]
-        [Tooltip("The standard spacing between cards (before they become too crowded)")]
-        const float baseSpacing = 1f;
         [Tooltip("The speed that the cards move in reaction to mouse movement")]
         [SerializeField] float mouseMoveSpeed = 1f;
 
@@ -27,6 +35,7 @@ namespace TurnBasedGame.HandManagement
         bool isRealPlayer;
 
         //Cache
+        float baseSpacing;
         Vector3 centerPos;
         Quaternion centerRot;
         float leftExtent; //Distance from middle to the left edge
@@ -46,7 +55,8 @@ namespace TurnBasedGame.HandManagement
             cameraTrans = Camera.main.transform;
             centerPos = center.position;
             leftExtent = -(center.position.x - leftLimit.position.x);
-            Debug.Log("left extent: " + leftExtent);
+            baseSpacing = Mathf.Sign(leftExtent) * -BaseSpacingRaw;
+            Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " left extent: " + leftExtent + ", baseSpacing: " + baseSpacing);
         }
 
         private void Update()
@@ -62,49 +72,26 @@ namespace TurnBasedGame.HandManagement
                 return;
 
             //Calculations
-            float startingPos = -HandTotalWidth() / 2f;
-            
-            //If there is not too many cards, then place the cards ...
-            //...starting at the left and apply regular spacing per card
-            if (startingPos >= leftExtent)
+            GetLayoutStartingXAndSpacing(out float startingX, out float spacing);
+            Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " startingPos: " + startingX +
+                " spacing: " + spacing);
+
+            for (int i = 0; i < hand.Cards.Count; i++)
             {
-                for (int i = 0; i < hand.Cards.Count; i++)
+                if (hand.Cards[i] != null)
                 {
-                    if (hand.Cards[i] != null)
-                    {
-                        Vector3 p = centerPos;
-                        p.x = startingPos + baseSpacing * i;
+                    Vector3 p = centerPos;
+                    p.x = startingX + spacing * i;
 
-                        hand.Cards[i].SetTargetPositional(p, true);
-                        SetCardToFaceCamera(hand.Cards[i], p);
-                    }
-                }
-            }
-            //If there are too many cards, then place the cards starting...
-            //... at the left pos and apply the reduced spacing per card.
-            else
-            {
-                float spacing = (Mathf.Abs(leftExtent) * 2) / hand.Cards.Count;
-
-                for (int i = 0; i < hand.Cards.Count; i++)
-                {
-                    if (hand.Cards[i] != null)
-                    {
-                        Vector3 p = centerPos;
-                        p.x = leftExtent + spacing * i;
-
-                        hand.Cards[i].SetTargetPositional(p, true);
-                        SetCardToFaceCamera(hand.Cards[i], p);
-                    }
+                    hand.Cards[i].SetTargetPositional(p, true);
+                    SetCardToFaceCamera(hand.Cards[i], p);
                 }
             }
         }
-
         #endregion
 
         #region Minor methods
-
-        void SetCardToFaceCamera (Card c, Vector3 cardPos)
+        void SetCardToFaceCamera(Card c, Vector3 cardPos)
         {
             if (isRealPlayer)
             {
@@ -113,15 +100,32 @@ namespace TurnBasedGame.HandManagement
             }
         }
 
-        float HandTotalWidth()
+        void GetLayoutStartingXAndSpacing(out float startingX, out float spacing)
         {
-            float spacing = baseSpacing;
+            startingX = -TotalLayoutWidthOfCardss() / 2f;
+            //If there are so many cards that the starting position is beyond the outer limit, then recalculate
+            bool tooManyCard = (player.IsMainPlayer) ? startingX < leftExtent : startingX > leftExtent;
+
+            if (!tooManyCard)
+            {
+                Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " NOT too many cards ");
+                spacing = baseSpacing;
+            }
+            else
+            {
+                Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " too many cards ");
+                startingX = leftExtent;
+                spacing = (-leftExtent * 2) / hand.Cards.Count;
+            }
+        }
+
+        float TotalLayoutWidthOfCardss()
+        {
             float normlSpacingCardsWidth = 0;
             for (int i = 0; i < hand.Cards.Count - 1; i++)
             {
-                normlSpacingCardsWidth += spacing;
+                normlSpacingCardsWidth += baseSpacing;
             }
-            Debug.Log("Hand total width = " + normlSpacingCardsWidth);
             return normlSpacingCardsWidth;
         }
 
@@ -129,8 +133,6 @@ namespace TurnBasedGame.HandManagement
         {
             return 0f;
         }
-
-
         #endregion
     }
 }
