@@ -11,7 +11,7 @@ namespace TurnBasedGame.HandManagement
      the opponent, Player 2, needs to have their card running from right to left
      */
 
-    public class HandSpreaderB : MonoBehaviour, IHandSpreader
+    public class HandSpreader_Ver2 : MonoBehaviour, IHandSpreader
     {
         //The standard spacing between cards (before they become too crowded, before Mathf.Sign is calculated
         const float BaseSpacingRaw = 1f;
@@ -88,7 +88,7 @@ namespace TurnBasedGame.HandManagement
                 //... we'll use OneMinus value of the squared value of distToCenter.
                 if (edgeXSquared == 0)
                 {
-                    hand.Cards[i].SetTargetPositional(p);
+                    hand.Cards[i].SetTargetPosition(p);
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace TurnBasedGame.HandManagement
                     float perc = 1 - (distToCenterSquared / edgeXSquared);
 
                     //hand.Cards[i].SetTargetPositional(p + rot * new Vector3(0f, VerticalOffset * perc, 0f));
-                    hand.Cards[i].SetTargetPositional(p + rot.normalized * new Vector3(0f, totalVerticalOffset * perc, 0f));
+                    hand.Cards[i].SetTargetPosition(p + rot.normalized * new Vector3(0f, totalVerticalOffset * perc, 0f));
                 }
             }
         }

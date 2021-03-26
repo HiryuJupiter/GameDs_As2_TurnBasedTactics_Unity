@@ -13,7 +13,7 @@ namespace TurnBasedGame.HandManagement
 
 
 
-    public class HandSpreader : MonoBehaviour, IHandSpreader
+    public class HandSpreader_Ver1 : MonoBehaviour, IHandSpreader
     {
         //The standard spacing between cards (before they become too crowded, before Mathf.Sign is calculated
         const float BaseSpacingRaw = 1f;
@@ -75,7 +75,7 @@ namespace TurnBasedGame.HandManagement
                 Vector3 p = centerPos;
                 p.x = startingX + spacing * i;
 
-                hand.Cards[i].SetTargetPositional(p);
+                hand.Cards[i].SetTargetPosition(p);
 
                 //Rotation
                 Vector3 dirToCamera = cardFacingTarget.position - p;

@@ -7,14 +7,25 @@ using TurnBasedGame.PlayerManagement;
 
 namespace TurnBasedGame.HandManagement
 {
-    [RequireComponent(typeof(IHandSpreader))]
     public class Hand : MonoBehaviour
     {
-        private const int HandSize = 20;
+        
+
+        [Header("Positional references")]
+        [SerializeField] private Transform centuralCardPosition;
+        [SerializeField] private Transform leftLimit;
+        [SerializeField] private Transform facingTarget; //The target that the cards are facing
+
+        [Header("Settings")]
+        [Tooltip("The speed that the cards move in reaction to mouse movement")]
+        [SerializeField] float mouseMoveSpeed = 1f;
 
         private Player player;
         private Deck deck;
-        private IHandSpreader spreader;
+        private HandSpreader_Ver3 spreader;
+
+        //Cache
+        private int handSize;
 
         public List<Card> Cards { get; private set; }
 
@@ -27,8 +38,10 @@ namespace TurnBasedGame.HandManagement
             //Reference
             this.player = player;
             deck = player.PlayerDeck;
-            spreader = GetComponent<IHandSpreader>();
-            spreader.Initilize(player);
+            spreader = new HandSpreader_Ver3(player, centuralCardPosition, leftLimit, facingTarget.position);
+
+            //Cache
+            handSize = CardSettings.Instance.HandSize;
         }
         #endregion
 
@@ -37,7 +50,7 @@ namespace TurnBasedGame.HandManagement
         {
             //Find all empty slots in the hand and put a card in each slot
 
-            while (Cards.Count < HandSize)
+            while (Cards.Count < handSize)
             {
                 if (deck.TryDrawCard(out Card card))
                 {

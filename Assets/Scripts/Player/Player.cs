@@ -58,7 +58,6 @@ namespace TurnBasedGame.PlayerManagement
         {
             if (hand.TryRemoveCard(card))
             {
-                Debug.Log("Remove");
             }    
         }
     }

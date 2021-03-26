@@ -52,7 +52,7 @@ namespace TurnBasedGame
             StartCoroutine(Phase0Start_FillDeck());
         }
         #endregion
-       
+
         private void GoToPhase(GamePhases newState)
         {
             if (Phase != newState)
@@ -72,7 +72,7 @@ namespace TurnBasedGame
             //StartCoroutine(WaitForP2ToFillDeck());
 
             while (!p1DeckFilled)
-            //while (!p1DeckFilled || !p2DeckFilled)
+                //while (!p1DeckFilled || !p2DeckFilled)
                 yield return null;
 
             yield return new WaitForSeconds(0.2f);
@@ -104,7 +104,7 @@ namespace TurnBasedGame
             //StartCoroutine(WaitForP2ToDraw());
 
             while (!p1Drawn)
-            //while (!p1Drawn || !p2Drawn)
+                //while (!p1Drawn || !p2Drawn)
                 yield return null;
 
             yield return new WaitForSeconds(0.2f);

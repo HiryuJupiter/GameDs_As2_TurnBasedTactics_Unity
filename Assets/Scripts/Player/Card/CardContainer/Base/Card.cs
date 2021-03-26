@@ -28,7 +28,7 @@ namespace TurnBasedGame.CardManagement
             phaseManager = GamePhaseManager.Instance;
         }
 
-        public void SetTargetPositional(Vector3 targetPos)
+        public void SetTargetPosition(Vector3 targetPos)
         {
             this.targetPos = targetPos;
             lerpT_move = 0f;

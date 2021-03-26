@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1786045769800991367}
   - component: {fileID: 137927064}
   - component: {fileID: 1576770855}
+  - component: {fileID: 5482636849642664356}
   m_Layer: 0
   m_Name: '#SceneManagers'
   m_TagString: Untagged
@@ -68,3 +69,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1: {fileID: 0}
   player2: {fileID: 0}
+--- !u!114 &5482636849642664356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786045769800991364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d494c5ea6559dcb47a477c8669c6c422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handSize: 5
+  deckSize: 30
+  cardSpacing: 1
+  startingRotation: 15
+  rotationOffset: 2
+  verticalOffset: 0.04

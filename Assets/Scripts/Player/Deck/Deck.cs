@@ -9,7 +9,6 @@ namespace TurnBasedGame.DeckManagement
 {
     public class Deck : MonoBehaviour
     {
-        private const int DeckSize = 30;
 
         [SerializeField] private Transform spawnLocation;
         [SerializeField] private Transform stationaryLocation;
@@ -17,10 +16,10 @@ namespace TurnBasedGame.DeckManagement
 
         private Player player;
         private Hand hand;
+        private CardDirectory cardDir;
 
         private List<Transform> cardPositions;
-
-        private CardDirectory cardDir;
+        private int deckSize;
 
         public List<Card> DeckPile { get; private set; }
         public List<Card> DiscardPile { get; private set; }
@@ -36,18 +35,21 @@ namespace TurnBasedGame.DeckManagement
             cardDir = CardDirectory.Instance;
             this.player = player;
             hand = player.PlayerHand;
+
+            //Cahe
+            deckSize = CardSettings.Instance.DeckSize;
         }
 
         public IEnumerator FillDeck ()
         {
             InitializeDeckList();
 
-            for (int i = 0; i < DeckSize; i++)
+            for (int i = 0; i < deckSize; i++)
             {
                 Card c = cardDir.DrawRandomCard(
                     spawnLocation.position,
                     spawnLocation.rotation);
-                c.SetTargetPositional(stationaryLocation.position + new Vector3(0f, i * 0.01f, 0f));
+                c.SetTargetPosition(stationaryLocation.position + new Vector3(0f, i * 0.01f, 0f));
                 c.SetTargetRotation(stationaryLocation.rotation);
                 c.Initialize(player);
                 DeckPile.Add(c);
@@ -76,7 +78,7 @@ namespace TurnBasedGame.DeckManagement
         public void AddToDiscardPile (Card card)
         {
             DiscardPile.Add(card);
-            card.SetTargetPositional(discardLocation.position + new Vector3(0f, DiscardPile.Count * 0.01f));
+            card.SetTargetPosition(discardLocation.position + new Vector3(0f, DiscardPile.Count * 0.01f));
             card.SetTargetRotation(discardLocation.rotation);
         }
         #endregion
