@@ -51,7 +51,7 @@ namespace TurnBasedGame.DeckManagement
                 c.SetTargetRotation(stationaryLocation.rotation);
                 c.Initialize(player);
                 DeckPile.Add(c);
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.01f);
             }
         }
 

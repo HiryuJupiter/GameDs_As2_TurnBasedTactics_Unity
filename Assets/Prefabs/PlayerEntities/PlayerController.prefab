@@ -2128,7 +2128,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7637411907071167181}
   - component: {fileID: 7637411907071167180}
-  - component: {fileID: 1331348999}
+  - component: {fileID: 5970245842482504340}
   m_Layer: 0
   m_Name: Player_Hand
   m_TagString: Untagged
@@ -2170,7 +2170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2378f25d8f489a0438c76e70e24d3961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1331348999
+--- !u!114 &5970245842482504340
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2179,7 +2179,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7637411907071167182}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 574cbde1137e5274bb942d3027e86c6e, type: 3}
+  m_Script: {fileID: 11500000, guid: 7fa88a0794d27e141a626272c2fb04dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   centuralCardPosition: {fileID: 649662524}

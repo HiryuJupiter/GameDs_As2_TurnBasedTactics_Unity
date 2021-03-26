@@ -7,14 +7,14 @@ using TurnBasedGame.PlayerManagement;
 
 namespace TurnBasedGame.HandManagement
 {
-    [RequireComponent(typeof(HandCardScroller))]
+    [RequireComponent(typeof(IHandSpreader))]
     public class Hand : MonoBehaviour
     {
-        private const int HandSize = 5;
+        private const int HandSize = 20;
 
         private Player player;
         private Deck deck;
-        private HandCardScroller scroller;
+        private IHandSpreader spreader;
 
         public List<Card> Cards { get; private set; }
 
@@ -27,8 +27,8 @@ namespace TurnBasedGame.HandManagement
             //Reference
             this.player = player;
             deck = player.PlayerDeck;
-            scroller = GetComponent<HandCardScroller>();
-            scroller.Initilize(player);
+            spreader = GetComponent<IHandSpreader>();
+            spreader.Initilize(player);
         }
         #endregion
 
@@ -42,7 +42,7 @@ namespace TurnBasedGame.HandManagement
                 if (deck.TryDrawCard(out Card card))
                 {
                     Cards.Add(card);
-                    scroller.UpdateCardPositions();
+                    spreader.UpdateCardPositions();
 
                     //Have a small delay between drawing each card.
                     yield return new WaitForSeconds(0.1f);
@@ -58,7 +58,7 @@ namespace TurnBasedGame.HandManagement
             {
                 Cards.Remove(card);
                 deck.AddToDiscardPile(card);
-                scroller.UpdateCardPositions();
+                spreader.UpdateCardPositions();
                 return true;
             }
             return false;

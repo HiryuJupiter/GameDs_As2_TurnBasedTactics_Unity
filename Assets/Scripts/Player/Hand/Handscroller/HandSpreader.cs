@@ -13,7 +13,7 @@ namespace TurnBasedGame.HandManagement
 
 
 
-    public class HandCardScroller : MonoBehaviour
+    public class HandSpreader : MonoBehaviour, IHandSpreader
     {
         //The standard spacing between cards (before they become too crowded, before Mathf.Sign is calculated
         const float BaseSpacingRaw = 1f;
@@ -69,8 +69,6 @@ namespace TurnBasedGame.HandManagement
 
             //Calculations
             GetLayoutStartingXAndSpacing(out float startingX, out float spacing);
-            //Debug.Log("- Player " + (player.IsMainPlayer ? "1" : "2") + " startingPos: " + startingX +
-                //" spacing: " + spacing  +  "-");
 
             for (int i = 0; i < hand.Cards.Count; i++)
             {
@@ -78,7 +76,6 @@ namespace TurnBasedGame.HandManagement
                 p.x = startingX + spacing * i;
 
                 hand.Cards[i].SetTargetPositional(p);
-                //Debug.Log("- Player " + (player.IsMainPlayer ? "1" : "2") + "[" + i + "]" + " p" + p);
 
                 //Rotation
                 Vector3 dirToCamera = cardFacingTarget.position - p;
