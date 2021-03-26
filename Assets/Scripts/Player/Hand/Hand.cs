@@ -10,7 +10,7 @@ namespace TurnBasedGame.HandManagement
     [RequireComponent(typeof(HandCardScroller))]
     public class Hand : MonoBehaviour
     {
-        private const int HandSize = 3;
+        private const int HandSize = 9;
 
         private List<Card> hand;
         private Player player;

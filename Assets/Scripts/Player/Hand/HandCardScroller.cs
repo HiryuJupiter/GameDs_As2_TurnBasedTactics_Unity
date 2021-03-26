@@ -19,9 +19,9 @@ namespace TurnBasedGame.HandManagement
         const float BaseSpacingRaw = 1f;
 
         [Header("Positional references")]
-        [SerializeField] Transform center;
-        [SerializeField] Transform spawnPos;
+        [SerializeField] Transform centuralCardPosition;
         [SerializeField] Transform leftLimit;
+        [SerializeField] Transform cardFacingTarget;
 
         [Header("Settings")]
         [Tooltip("The speed that the cards move in reaction to mouse movement")]
@@ -39,7 +39,6 @@ namespace TurnBasedGame.HandManagement
         Vector3 centerPos;
         Quaternion centerRot;
         float leftExtent; //Distance from middle to the left edge
-        Transform cameraTrans;
 
         #region Mono
         public void Initilize(Player player)
@@ -52,9 +51,8 @@ namespace TurnBasedGame.HandManagement
 
             //Cache
             isRealPlayer = player.IsMainPlayer;
-            cameraTrans = Camera.main.transform;
-            centerPos = center.position;
-            leftExtent = -(center.position.x - leftLimit.position.x);
+            centerPos = centuralCardPosition.position;
+            leftExtent = -(centuralCardPosition.position.x - leftLimit.position.x);
             baseSpacing = Mathf.Sign(leftExtent) * -BaseSpacingRaw;
             Debug.Log("Player " + (player.IsMainPlayer ? "1" : "2") + " left extent: " + leftExtent + ", baseSpacing: " + baseSpacing);
         }
@@ -93,11 +91,8 @@ namespace TurnBasedGame.HandManagement
         #region Minor methods
         void SetCardToFaceCamera(Card c, Vector3 cardPos)
         {
-            if (isRealPlayer)
-            {
-                Vector3 dirToCamera = cameraTrans.position - cardPos;
-                c.SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
-            }
+            Vector3 dirToCamera = cardFacingTarget.position - cardPos;
+            c.SetTargetRotation(Quaternion.LookRotation(dirToCamera, Vector3.up));
         }
 
         void GetLayoutStartingXAndSpacing(out float startingX, out float spacing)
