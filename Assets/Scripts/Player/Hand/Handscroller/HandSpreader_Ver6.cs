@@ -16,37 +16,32 @@ namespace TurnBasedGame.HandManagement
     public class HandSpreader_Ver6
     {
         //Status
-        int cardCount;
-        float startXPos;
-        float zRotationStart;
-        float zRotationOffset;
-        float yRotationStart;
-        float yRotationOffset;
-        float spacing;
-        float startXPos_Squared;
-        float maxVerticalOffset;
+        private int cardCount;
+        private float startXPos;
+        private float zRotationStart;
+        private float zRotationOffset;
+        private float spacing;
+        private float startXPos_Squared;
+        private float maxVerticalOffset;
 
         //Cache
-        readonly Player player;
-        readonly Hand hand;
-        readonly bool isRealPlayer;
-
-        readonly float leftExtent; //Distance from middle to the left edge
-        readonly float sign;
-        readonly float baseSpacing; //X position spacing
-        readonly Vector3 centerPos;
-        readonly Vector3 facingPos;
-
-        //readonly Quaternion baseFacingRot;
-        readonly float baseZRotationStart;
-        readonly float baseZRotationOffset;
-        readonly Quaternion baseYRot;
-        readonly float baseVerticalOffset; //Y position offset
-
-        //Quaternion yRot; //Y axis tilt to make cards not intersect into each other
+        private readonly Player player;
+        private readonly Hand hand;
+        private readonly bool isRealPlayer;
+         
+        private readonly float leftExtent; //Distance from middle to the left edge
+        private readonly float sign;
+        private readonly float baseSpacing; //X position spacing
+        private readonly Vector3 centerPos;
+        private readonly Vector3 facingPos;
+         
+        private readonly float baseZRotationStart;
+        private readonly float baseZRotationOffset;
+        private readonly Quaternion baseYRot;
+        private readonly float baseVerticalOffset; //Y position offset
 
         //Properties
-        float TotalLayoutWidth => baseSpacing * (cardCount - 1);
+        private float TotalLayoutWidth => baseSpacing * (cardCount - 1);
 
         #region Constructor
         public HandSpreader_Ver6(Player player, Transform centuralCardReference, Transform leftLimit, Vector3 facingPos)
@@ -65,14 +60,10 @@ namespace TurnBasedGame.HandManagement
             centerPos = centuralCardReference.position;
             this.facingPos = facingPos;
 
-            //baseFacingRot = Quaternion.LookRotation((facingPos - centerPos), Vector3.up);
             baseZRotationStart = sign * setting.ZRotationStart;
             baseZRotationOffset = -sign * setting.ZRotationOffset;
-            //baseYRotationStart = setting.YRotationStart;
-            //baseYRotationOffset = setting.YRotationOffset;
-            baseVerticalOffset = setting.VerticalOffset;
-
             baseYRot = Quaternion.Euler(0f, isRealPlayer ? -15f : -5f, 0f);
+            baseVerticalOffset = setting.VerticalOffset;
         }
         #endregion
 
@@ -98,6 +89,27 @@ namespace TurnBasedGame.HandManagement
             UpdateCardPosition(index);
         }
 
+        private void CalculateLayoutParameters()
+        {
+            startXPos = -TotalLayoutWidth / 2f;
+            startXPos_Squared = startXPos * startXPos;
+            maxVerticalOffset = baseVerticalOffset * cardCount;
+
+            if (!LayoutBeyondExtent(startXPos))
+            {
+                zRotationStart = -baseZRotationOffset * (cardCount - 1) / 2f;
+                zRotationOffset = baseZRotationOffset;
+                spacing = baseSpacing;
+            }
+            else
+            {
+                startXPos = leftExtent;
+                zRotationStart = baseZRotationStart;
+                zRotationOffset = -baseZRotationStart * 2f / cardCount;
+                spacing = (-leftExtent * 2f) / cardCount;
+            }
+        }
+
         private void UpdateCardPosition (int index)
         {
             Card card = hand.Cards[index];
@@ -107,13 +119,11 @@ namespace TurnBasedGame.HandManagement
             pos.x = startXPos + spacing * index;
 
             //Rotation
-            //Quaternion rot = RotationTowardsCamera(pos) * yRot;
-            //Quaternion yRot = Quaternion.Euler(0f, yRotationStart + yRotationOffset * index, 0f);
             Quaternion rot = RotationTowardsCamera(pos)  * baseYRot * zRot(index);
             card.SetTargetRotation(rot);
 
             //Vertical positional offset based on rotation
-            float distToCenterSquared = pos.x * pos.x;
+            float distToCenterSquared = pos.x * pos.x; //The central x-position is 0, so pos.x is naturally the distance.
             float perc = (startXPos == 0) ? 1 : 1 - (distToCenterSquared / startXPos_Squared);
             pos = pos + rot.normalized * new Vector3(0f, maxVerticalOffset * perc, 0f);
 
@@ -125,40 +135,8 @@ namespace TurnBasedGame.HandManagement
         Quaternion zRot(int index) => Quaternion.Euler(0f, 0f, zRotationStart + (index * zRotationOffset)); //Z-axis rotation of card
         Quaternion RotationTowardsCamera(Vector3 pos) => Quaternion.LookRotation((facingPos - pos), Vector3.up); //Rotation towards the facing object.
 
-        void CalculateLayoutParameters()
-        {
-            startXPos = -TotalLayoutWidth / 2f;
-
-            if (!LayoutBeyondExtent(startXPos))
-            {
-                //yRotationStart = -baseYRotationOffset * (cardCount - 1) / 1.5f;
-                //yRotationOffset = baseYRotationOffset;
-
-                zRotationStart = -baseZRotationOffset * (cardCount - 1) / 2f;
-                zRotationOffset = baseZRotationOffset;
-                spacing = baseSpacing;
-            }
-            else
-            {
-                startXPos = leftExtent;
-                //yRotationStart = baseYRotationStart;
-                //yRotationOffset = -baseYRotationStart * 2f / cardCount;
-                zRotationStart = baseZRotationStart;
-                zRotationOffset = -baseZRotationStart * 2f / cardCount;
-                spacing = (-leftExtent * 2f) / cardCount;
-            }
-            
-            Debug.Log("yRotationStart: " + yRotationStart);
-            startXPos_Squared = startXPos * startXPos;
-            maxVerticalOffset = baseVerticalOffset * cardCount;
-        }
 
         bool LayoutBeyondExtent (float startXPos)  => isRealPlayer ? (startXPos < leftExtent) : (startXPos > leftExtent);
-
-        float MouseOffset()
-        {
-            return 0f;
-        }
         #endregion
     }
 }

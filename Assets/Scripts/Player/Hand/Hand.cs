@@ -36,13 +36,6 @@ namespace TurnBasedGame.HandManagement
                 PanningUpdate();
             }
         }
-
-        //private void OnGUI()
-        //{
-        //    GUI.Label(new Rect(200, 200, 200, 20), "mouseXOffset: " + mouseXOffset);
-        //    GUI.Label(new Rect(200, 220, 200, 20), "Input.mousePosition: " + Input.mousePosition);
-        //    GUI.Label(new Rect(200, 240, 200, 20), "world.mousePosition: " + Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        //}
         #endregion
 
         #region Public
@@ -133,44 +126,7 @@ namespace TurnBasedGame.HandManagement
             mouseOffset = Camera.main.ScreenToWorldPoint(rawMouse);
             transform.position = startingPos +
                 new Vector3(mouseOffset.x * setting.MousePanSensitivity, 0f, 0f);
-            //transform.position = startingPos +
-            //    new Vector3(mouseOffset.x * setting.MousePanSensitivity,
-            //    mouseOffset.y * setting.MousePanSensitivity, 0f);
-        }
-        #endregion
-
-        #region Minor classes
-        private void PrintAllCards()
-        {
-            string s = "";
-            for (int i = 0; i < Cards.Count; i++)
-            {
-                s += Cards[i].ToString() + ", ";
-            }
-            Debug.Log(s);
         }
         #endregion
     }
 }
-
-/*
-         // Organize the cards array so that all empty indexes are near the end of the array, after the indexes of cards.
-        private void PushUpCardsIndex()
-        {
-            for (int i = 0; i < hand.Count; i++)
-            {
-                if (hand[i] == null)
-                {
-                    for (int j = i + 1; j < hand.Count; j++)
-                    {
-                        if (hand[j] != null)
-                        {
-                            hand[i] = hand[j];
-                            hand[j] = null;
-                            break;
-                        }
-                    }
-                }
-            }
-        }
- */
