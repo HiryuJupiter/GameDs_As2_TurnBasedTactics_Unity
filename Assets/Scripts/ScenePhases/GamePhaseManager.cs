@@ -69,13 +69,13 @@ namespace TurnBasedGame
             yield return new WaitForSeconds(TimeBeforeGameStart);
             StartCoroutine(WaitForP1ToFillDeck());
             yield return new WaitForSeconds(0.01f);
-            //StartCoroutine(WaitForP2ToFillDeck());
+            StartCoroutine(WaitForP2ToFillDeck());
 
-            while (!p1DeckFilled)
-                //while (!p1DeckFilled || !p2DeckFilled)
-                yield return null;
+            //while (!p1DeckFilled)
+            while (!p1DeckFilled || !p2DeckFilled)
+                    yield return null;
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             GoToPhase(GamePhases.DrawCard);
         }
 
@@ -101,11 +101,11 @@ namespace TurnBasedGame
         {
             StartCoroutine(WaitForP1ToDraw());
             yield return new WaitForSeconds(0.05f);
-            //StartCoroutine(WaitForP2ToDraw());
+            StartCoroutine(WaitForP2ToDraw());
 
-            while (!p1Drawn)
-                //while (!p1Drawn || !p2Drawn)
-                yield return null;
+            //while (!p1Drawn)
+            while (!p1Drawn || !p2Drawn)
+                    yield return null;
 
             yield return new WaitForSeconds(0.2f);
 

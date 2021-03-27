@@ -9,7 +9,6 @@ namespace TurnBasedGame.DeckManagement
 {
     public class Deck : MonoBehaviour
     {
-
         [SerializeField] private Transform spawnLocation;
         [SerializeField] private Transform stationaryLocation;
         [SerializeField] private Transform discardLocation;
@@ -42,6 +41,10 @@ namespace TurnBasedGame.DeckManagement
 
         public IEnumerator FillDeck ()
         {
+            Debug.Log("is " + player.name + " main? " + player.IsMainPlayer);
+            Debug.DrawLine(discardLocation.position, spawnLocation.position, Color.red, 10f);
+            Debug.DrawLine(spawnLocation.position, stationaryLocation.position, Color.yellow, 10f);
+
             InitializeDeckList();
 
             for (int i = 0; i < deckSize; i++)
@@ -50,15 +53,15 @@ namespace TurnBasedGame.DeckManagement
                     spawnLocation.position,
                     spawnLocation.rotation,
                     transform);
+                c.Initialize(player);
                 c.SetTargetPosition(stationaryLocation.position + new Vector3(0f, i * 0.01f, 0f));
                 c.SetTargetRotation(stationaryLocation.rotation);
-                c.Initialize(player);
                 DeckPile.Add(c);
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.02f);
             }
         }
 
-        public bool TryDrawCard(out Card card)
+        public bool TryDrawCardFromDeck(out Card card)
         {
             card = null;
             if (DeckPile.Count > 0f)

@@ -83,7 +83,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handSize: 5
   deckSize: 30
+  moveLerpSpeed: 1
+  rotLerpSpeed: 0.2
+  scaleLerpSpeed: 2
   cardSpacing: 1
   startingRotation: 15
   rotationOffset: 2
   verticalOffset: 0.04
+  mousePanSensitivity: -0.01
+  highlightOffsetX: 0.1
+  highlightOffsetY: 1.5
+  highlightScale: 0.1

@@ -61,7 +61,7 @@ namespace TurnBasedGame.PlayerManagement
 
         public void RemoveCard (Card card)
         {
-            if (hand.TryRemoveCard(card))
+            if (hand.TryRemoveCardFromHand(card))
             {
             }    
         }

@@ -16,7 +16,7 @@ namespace TurnBasedGame.HandManagement
 
         private Player player;
         private Deck deck;
-        private HandSpreader_Ver4 spreader;
+        private HandSpreader_Ver6 spreader;
 
         //Status
         private Vector3 mouseOffset;
@@ -55,7 +55,7 @@ namespace TurnBasedGame.HandManagement
             this.player = player;
             setting = CardSettings.Instance;
             deck = player.PlayerDeck;
-            spreader = new HandSpreader_Ver4(player, centuralCardPosition, leftLimit, facingTarget.position);
+            spreader = new HandSpreader_Ver6(player, centuralCardPosition, leftLimit, facingTarget.position);
 
             //Cache
             handSize = CardSettings.Instance.HandSize;
@@ -64,30 +64,30 @@ namespace TurnBasedGame.HandManagement
 
         public IEnumerator WaitForHandToBeDrawn()
         {
-            //Find all empty slots in the hand and put a card in each slot
-
             while (Cards.Count < handSize)
             {
-                if (deck.TryDrawCard(out Card card))
+                if (deck.TryDrawCardFromDeck(out Card card))
                 {
                     Cards.Add(card);
-                    spreader.UpdateCardPositions();
-
-                    //Have a small delay between drawing each card.
-                    yield return new WaitForSeconds(0.1f);
                 }
                 else
-                    yield break;
+                    yield break; //No more cards in deck
+            }
+
+            for (int i = 0; i < Cards.Count; i++)
+            {
+                spreader.UpdateSingleCardPosition(i);
+                yield return new WaitForSeconds(0.02f);
             }
         }
 
-        public bool TryRemoveCard(Card card)
+        public bool TryRemoveCardFromHand(Card card) //A verbose name but makes it distinct from Deck's DrawCard method
         {
             if (Cards.Contains(card))
             {
                 Cards.Remove(card);
                 deck.AddToDiscardPile(card);
-                spreader.UpdateCardPositions();
+                spreader.UpdateAllCardsPositions();
                 return true;
             }
             return false;
@@ -102,7 +102,7 @@ namespace TurnBasedGame.HandManagement
                 {
                     if (i < index)
                     {
-                        Cards[i].HighlightPartWay(true);
+                        Cards[i].HighlightOffsetMove(true);
 
                     }
                     else if (i == index)
@@ -111,12 +111,11 @@ namespace TurnBasedGame.HandManagement
                     }
                     else
                     {
-                        Cards[i].HighlightPartWay(false);
+                        Cards[i].HighlightOffsetMove(false);
                     }
                 }
             }
         }
-
         public void ExitHighlight ()
         {
             foreach (var c in Cards)
@@ -137,7 +136,6 @@ namespace TurnBasedGame.HandManagement
             //transform.position = startingPos +
             //    new Vector3(mouseOffset.x * setting.MousePanSensitivity,
             //    mouseOffset.y * setting.MousePanSensitivity, 0f);
-
         }
         #endregion
 

@@ -7,15 +7,10 @@ namespace TurnBasedGame.CardManagement
 {
     public class Card : MonoBehaviour
     {
-        private const float lerpSpeed = 1f;
-
         //Reference
         protected Player player;
         protected GamePhaseManager phaseManager;
         protected CardSettings settings;
-
-        //Cache
-        private CardTypes cardType;
 
         //Status
         private bool InMovingAnimation;
@@ -24,41 +19,56 @@ namespace TurnBasedGame.CardManagement
         private Vector3 targetPos;
         private Quaternion targetRot;
         private Vector3 targetScale;
+        private float currentLerpMoveSpeed;
         private float lerpT_move;
         private float lerpT_rot;
         private float lerpT_scale;
 
-        private float highlightOffset_X;
-        private float highlightOffset_Y;
-        private float highlightOffset_Z;
+        Vector3 highlightOffset;
         private Vector3 highlightScaleOffset;
 
         //Cache
+        private CardTypes cardType;
+        private float slowMoveLerpSpeed;
+        private float fastMoveLerpSpeed;
+        private float rotLerpSpeed;
+        private float scaleLerpSpeed;
         private Vector3 startingScale;
-
 
         public CardTypes CardType => cardType;
         bool CanHighlight => player.IsMainPlayer && GamePhaseManager.Phase == GamePhases.PlayingHand;
 
+        #region Movement
         public void Initialize(Player player)
         {
             this.player = player;
             phaseManager = GamePhaseManager.Instance;
             settings = CardSettings.Instance;
 
+            //Cache
+            slowMoveLerpSpeed = settings.MoveLerpSpeed;
+            fastMoveLerpSpeed = slowMoveLerpSpeed * 5f;
+            rotLerpSpeed = settings.RotLerpSpeed;
+            scaleLerpSpeed = settings.ScaleLerpSpeed;
             startingScale = transform.localScale;
         }
 
-        #region Movement
         public void SetTargetPosition(Vector3 targetPos)
         {
             this.targetPos = targetPos;
             UpdatePosition();
         }
 
-        private void UpdatePosition()
+        public void SetTargetRotation(Quaternion targetRot)
+        {
+            this.targetRot = targetRot;
+            UpdateRotation();
+        }
+
+        private void UpdatePosition(bool slowMove = true)
         {
             lerpT_move = 0f;
+            currentLerpMoveSpeed = slowMove ? slowMoveLerpSpeed : fastMoveLerpSpeed;
 
             if (!InMovingAnimation)
             {
@@ -71,22 +81,15 @@ namespace TurnBasedGame.CardManagement
             InMovingAnimation = true;
             while (lerpT_move < 1f)
             {
-                lerpT_move += Time.deltaTime * lerpSpeed;
+                lerpT_move += Time.deltaTime * currentLerpMoveSpeed;
                 if (lerpT_move > 1f)
                     lerpT_move = 1f;
 
-                Vector3 highlightOffset = new Vector3(highlightOffset_X, highlightOffset_Y, highlightOffset_Z);
-                transform.localPosition = Vector3.Lerp(transform.localPosition, targetPos + highlightOffset, lerpT_move);
+                transform.position = Vector3.Lerp(transform.position, targetPos + highlightOffset, lerpT_move);
                 yield return null;
             }
             InMovingAnimation = false;
-            transform.localPosition = targetPos;
-        }
-
-        public void SetTargetRotation(Quaternion targetRot)
-        {
-            this.targetRot = targetRot;
-            UpdateRotation();
+            transform.position = targetPos;
         }
 
         private void UpdateRotation()
@@ -107,7 +110,7 @@ namespace TurnBasedGame.CardManagement
             InRotationAnimation = true;
             while (lerpT_rot < 1f)
             {
-                lerpT_rot += Time.deltaTime * lerpSpeed;
+                lerpT_rot += Time.deltaTime * rotLerpSpeed;
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpT_rot);
                 yield return null;
             }
@@ -134,7 +137,7 @@ namespace TurnBasedGame.CardManagement
             InScalingAnimation = true;
             while (lerpT_scale < 1f)
             {
-                lerpT_scale += Time.deltaTime * lerpSpeed;
+                lerpT_scale += Time.deltaTime * scaleLerpSpeed;
                 transform.localScale = Vector3.Lerp(transform.localScale, targetScale, lerpT_scale);
                 yield return null;
             }
@@ -143,8 +146,35 @@ namespace TurnBasedGame.CardManagement
         }
         #endregion
 
-        #region MonoBehaviour
+        #region Highlight
         private static Card HighlightedCard;
+
+        public void HighlightOffsetMove(bool moveLeft)
+        {
+            highlightOffset = new Vector3(moveLeft ? -settings.HighlightOffsetX : settings.HighlightOffsetX, 0f, 0f);
+            highlightScaleOffset = Vector3.zero;
+            UpdatePosition(false);
+            UpdateRotation();
+            SetScale(startingScale);
+        }
+
+        public void EnterHighlight()
+        {
+            highlightOffset = new Vector3(0f, settings.HighlightOffsetY, -1f);
+            highlightScaleOffset = settings.HighlightScale;
+            UpdatePosition(false);
+            UpdateRotation();
+            SetScale(startingScale + highlightScaleOffset);
+        }
+
+        public void ExitHighlight()
+        {
+            highlightOffset = new Vector3(0f, 0f, 0f);
+            highlightScaleOffset = Vector3.zero;
+            UpdatePosition(false);
+            UpdateRotation();
+            SetScale(startingScale);
+        }
 
         private void OnMouseEnter()
         {
@@ -165,7 +195,6 @@ namespace TurnBasedGame.CardManagement
             {
                 HighlightedCard = null;
                 player.PlayerHand.ExitHighlight();
-                //Disable highlight mode
             }
         }
 
@@ -176,41 +205,6 @@ namespace TurnBasedGame.CardManagement
             player.PlayerHand.ExitHighlight();
             Debug.Log("clicked on card " + name);
             player.RemoveCard(this);
-        }
-        #endregion
-
-        #region Highlighting
-        public void HighlightPartWay(bool isPartLeft)
-        {
-            highlightOffset_Y = 0f;
-            highlightOffset_X = isPartLeft ? -settings.HighlightOffsetX : settings.HighlightOffsetX;
-            highlightOffset_Z = 0f;
-            highlightScaleOffset = Vector3.zero;
-            UpdatePosition();
-            UpdateRotation();
-            SetScale(startingScale);
-        }
-
-        public void EnterHighlight()
-        {
-            highlightOffset_Y = settings.HighlightOffsetY;
-            highlightOffset_X = 0f;
-            highlightOffset_Z = -1f;
-            highlightScaleOffset = settings.HighlightScale;
-            UpdatePosition();
-            UpdateRotation();
-            SetScale(startingScale + highlightScaleOffset);
-        }
-
-        public void ExitHighlight()
-        {
-            highlightOffset_Y = 0f;
-            highlightOffset_X = 0f;
-            highlightOffset_Z = 0f;
-            highlightScaleOffset = Vector3.zero;
-            UpdatePosition();
-            UpdateRotation();
-            SetScale(startingScale);
         }
         #endregion
 
