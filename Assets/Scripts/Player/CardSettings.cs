@@ -34,7 +34,7 @@ namespace TurnBasedGame
         public float MousePanSensitivity => mousePanSensitivity;
 
         [Header("Card highlight")]
-        [SerializeField] private float highlightOffsetX = 0.2f;
+        [SerializeField] private float highlightOffsetX = 0.1f;
         [SerializeField] private float highlightOffsetY = 1.2f;
         [SerializeField] private float highlightScale = 0.1f;
         public float HighlightOffsetX => highlightOffsetX;

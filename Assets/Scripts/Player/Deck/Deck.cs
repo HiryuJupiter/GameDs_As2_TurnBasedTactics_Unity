@@ -41,10 +41,6 @@ namespace TurnBasedGame.DeckManagement
 
         public IEnumerator FillDeck ()
         {
-            Debug.Log("is " + player.name + " main? " + player.IsMainPlayer);
-            Debug.DrawLine(discardLocation.position, spawnLocation.position, Color.red, 10f);
-            Debug.DrawLine(spawnLocation.position, stationaryLocation.position, Color.yellow, 10f);
-
             InitializeDeckList();
 
             for (int i = 0; i < deckSize; i++)

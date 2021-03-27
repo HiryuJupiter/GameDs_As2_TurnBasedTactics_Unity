@@ -81,16 +81,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d494c5ea6559dcb47a477c8669c6c422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handSize: 5
+  handSize: 15
   deckSize: 30
-  moveLerpSpeed: 1
-  rotLerpSpeed: 0.2
-  scaleLerpSpeed: 2
+  moveLerpSpeed: 0.2
+  rotLerpSpeed: 0.5
+  scaleLerpSpeed: 2.5
   cardSpacing: 1
-  startingRotation: 15
-  rotationOffset: 2
-  verticalOffset: 0.04
+  zRotationStart: 15
+  zRotationOffset: 2
+  verticalOffset: 0.05
   mousePanSensitivity: -0.01
   highlightOffsetX: 0.1
-  highlightOffsetY: 1.5
+  highlightOffsetY: 1.2
   highlightScale: 0.1

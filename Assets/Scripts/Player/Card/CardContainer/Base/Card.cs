@@ -144,7 +144,6 @@ namespace TurnBasedGame.CardManagement
         private void SetScale(Vector3 targetScale)
         {
             this.targetScale = targetScale;
-            Debug.Log("Setscale " + targetScale);
             if (!InScalingAnimation)
             {
                 StartCoroutine(LerpScale());
