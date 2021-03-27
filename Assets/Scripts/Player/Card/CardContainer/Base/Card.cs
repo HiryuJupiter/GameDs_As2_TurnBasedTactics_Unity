@@ -7,6 +7,8 @@ namespace TurnBasedGame.CardManagement
 {
     public class Card : MonoBehaviour
     {
+        private static Card HighlightedCard;
+
         //Reference
         protected Player player;
         protected GamePhaseManager phaseManager;
@@ -37,6 +39,24 @@ namespace TurnBasedGame.CardManagement
 
         public CardTypes CardType => cardType;
         bool CanHighlight => player.IsMainPlayer && GamePhaseManager.Phase == GamePhases.PlayingHand;
+
+        private void OnGUI()
+        {
+            //GUI.Label(new Rect(20, 20, 200, 20), "HighlightedCard " + HighlightedCard.player.PlayerDeck);
+            if (this == HighlightedCard)
+            {
+                GUI.Label(new Rect(20, 20, 200, 20), "HighlightedCard " + player.PlayerHand.Cards.IndexOf(HighlightedCard));
+                GUI.Label(new Rect(20, 40, 200, 20), "InMovingAnimation " + InMovingAnimation);
+                GUI.Label(new Rect(20, 60, 200, 20), "InScalingAnimation " + InScalingAnimation);
+
+                GUI.Label(new Rect(20, 90, 200, 20), "lerpT_move " + lerpT_move);
+                GUI.Label(new Rect(20, 110, 200, 20), "lerpT_scale " + lerpT_scale);
+                GUI.Label(new Rect(20, 130, 200, 20), "lerpT_rot " + lerpT_rot);
+
+                GUI.Label(new Rect(20, 160, 200, 20), "targetScale " + targetScale);
+                GUI.Label(new Rect(20, 180, 200, 20), "highlightScaleOffset " + highlightScaleOffset);
+            }
+        }
 
         #region Movement
         public void Initialize(Player player)
@@ -79,6 +99,7 @@ namespace TurnBasedGame.CardManagement
         private IEnumerator LerpPosition()
         {
             InMovingAnimation = true;
+            //while (true)
             while (lerpT_move < 1f)
             {
                 lerpT_move += Time.deltaTime * currentLerpMoveSpeed;
@@ -88,8 +109,10 @@ namespace TurnBasedGame.CardManagement
                 transform.position = Vector3.Lerp(transform.position, targetPos + highlightOffset, lerpT_move);
                 yield return null;
             }
+            yield return null;
+
             InMovingAnimation = false;
-            transform.position = targetPos;
+            transform.position = targetPos + highlightOffset;
         }
 
         private void UpdateRotation()
@@ -121,6 +144,7 @@ namespace TurnBasedGame.CardManagement
         private void SetScale(Vector3 targetScale)
         {
             this.targetScale = targetScale;
+            Debug.Log("Setscale " + targetScale);
             if (!InScalingAnimation)
             {
                 StartCoroutine(LerpScale());
@@ -147,8 +171,6 @@ namespace TurnBasedGame.CardManagement
         #endregion
 
         #region Highlight
-        private static Card HighlightedCard;
-
         public void HighlightOffsetMove(bool moveLeft)
         {
             highlightOffset = new Vector3(moveLeft ? -settings.HighlightOffsetX : settings.HighlightOffsetX, 0f, 0f);
@@ -160,7 +182,7 @@ namespace TurnBasedGame.CardManagement
 
         public void EnterHighlight()
         {
-            highlightOffset = new Vector3(0f, settings.HighlightOffsetY, -1f);
+            highlightOffset = new Vector3(0f, settings.HighlightOffsetY, -0.5f);
             highlightScaleOffset = settings.HighlightScale;
             UpdatePosition(false);
             UpdateRotation();

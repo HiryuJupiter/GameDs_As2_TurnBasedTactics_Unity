@@ -32,32 +32,32 @@ namespace TurnBasedGame.PlayerManagement
             deck.Initialize(this);
         }
 
-        private void OnGUI()
-        {
-            if (!IsMainPlayer)
-                return;
+        //private void OnGUI()
+        //{
+        //    if (!IsMainPlayer)
+        //        return;
 
-            GUI.Label(new Rect(100f, 0f, 200f, 20f), "=== Deck pile === ");
-            for (int i = 0; i < PlayerDeck.DeckPile.Count; i++)
-            {
-                GUI.Label(new Rect(100f, 20 + 20f * i, 200f, 20f),
-                        i + ": " + PlayerDeck.DeckPile[i]);
-            }
+        //    GUI.Label(new Rect(100f, 0f, 200f, 20f), "=== Deck pile === ");
+        //    for (int i = 0; i < PlayerDeck.DeckPile.Count; i++)
+        //    {
+        //        GUI.Label(new Rect(100f, 20 + 20f * i, 200f, 20f),
+        //                i + ": " + PlayerDeck.DeckPile[i]);
+        //    }
 
-            GUI.Label(new Rect(250f, 0f, 200f, 20f), "=== Hand cards === ");
-            for (int i = 0; i < hand.Cards.Count; i++)
-            {
-                GUI.Label(new Rect(250f, 20 + 20f * i, 200f, 20f),
-                        i + ": " + hand.Cards[i]);
-            }
+        //    GUI.Label(new Rect(250f, 0f, 200f, 20f), "=== Hand cards === ");
+        //    for (int i = 0; i < hand.Cards.Count; i++)
+        //    {
+        //        GUI.Label(new Rect(250f, 20 + 20f * i, 200f, 20f),
+        //                i + ": " + hand.Cards[i]);
+        //    }
 
-            GUI.Label(new Rect(400f, 0f, 200f, 20f), "=== Discard pile === ");
-            for (int i = 0; i < PlayerDeck.DiscardPile.Count; i++)
-            {
-                GUI.Label(new Rect(400f, 20 + 20f * i, 200f, 20f),
-                        i + ": " + PlayerDeck.DiscardPile[i]);
-            }
-        }
+        //    GUI.Label(new Rect(400f, 0f, 200f, 20f), "=== Discard pile === ");
+        //    for (int i = 0; i < PlayerDeck.DiscardPile.Count; i++)
+        //    {
+        //        GUI.Label(new Rect(400f, 20 + 20f * i, 200f, 20f),
+        //                i + ": " + PlayerDeck.DiscardPile[i]);
+        //    }
+        //}
 
         public void RemoveCard (Card card)
         {
