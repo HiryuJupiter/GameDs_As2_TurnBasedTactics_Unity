@@ -47,7 +47,7 @@ namespace TurnBasedGame.CardManagement
 
             //Cache
             slowMoveLerpSpeed = settings.MoveLerpSpeed;
-            fastMoveLerpSpeed = slowMoveLerpSpeed * 5f;
+            fastMoveLerpSpeed = slowMoveLerpSpeed * 10f;
             rotLerpSpeed = settings.RotLerpSpeed;
             scaleLerpSpeed = settings.ScaleLerpSpeed;
             startingScale = transform.localScale;

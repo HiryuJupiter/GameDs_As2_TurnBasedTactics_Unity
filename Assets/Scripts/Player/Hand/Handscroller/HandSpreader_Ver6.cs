@@ -92,8 +92,6 @@ namespace TurnBasedGame.HandManagement
         private void CalculateLayoutParameters()
         {
             startXPos = -TotalLayoutWidth / 2f;
-            startXPos_Squared = startXPos * startXPos;
-            maxVerticalOffset = baseVerticalOffset * cardCount;
 
             if (!LayoutBeyondExtent(startXPos))
             {
@@ -108,6 +106,9 @@ namespace TurnBasedGame.HandManagement
                 zRotationOffset = -baseZRotationStart * 2f / cardCount;
                 spacing = (-leftExtent * 2f) / cardCount;
             }
+
+            startXPos_Squared = startXPos * startXPos;
+            maxVerticalOffset = baseVerticalOffset * cardCount / 2f;
         }
 
         private void UpdateCardPosition (int index)
