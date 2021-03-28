@@ -2172,7 +2172,6 @@ MonoBehaviour:
   centuralCardPosition: {fileID: 649662524}
   leftLimit: {fileID: 1836876510}
   facingTarget: {fileID: 5278602877955461434}
-  mouseMoveSpeed: 1
 --- !u!1 &7637411907160969760
 GameObject:
   m_ObjectHideFlags: 0
@@ -2385,7 +2384,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9177505737238659109}
   m_LocalRotation: {x: 0.00000035454036, y: 0.70710576, z: -0.7071079, w: 0.00000036507845}
-  m_LocalPosition: {x: 6.5, y: 8.48, z: -5.23}
+  m_LocalPosition: {x: 6.5, y: 3.06, z: -5.23}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 504424293564587290}

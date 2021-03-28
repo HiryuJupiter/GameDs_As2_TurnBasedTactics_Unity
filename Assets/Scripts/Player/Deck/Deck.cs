@@ -43,6 +43,19 @@ namespace TurnBasedGame.DeckManagement
         {
             InitializeDeckList();
 
+            //for (int i = 0; i < deckSize; i++)
+            //{
+            //    Card c = cardDir.DrawRandomCard(
+            //        stationaryLocation.position + new Vector3(0f, i * 0.01f, 0f),
+            //        spawnLocation.rotation,
+            //        transform);
+            //    c.Initialize(player);
+            //    //c.SetTargetPosition();
+            //    c.SetTargetRotation(stationaryLocation.rotation);
+            //    DeckPile.Add(c);
+            //    yield return new WaitForSeconds(0.025f);
+            //}
+
             for (int i = 0; i < deckSize; i++)
             {
                 Card c = cardDir.DrawRandomCard(
