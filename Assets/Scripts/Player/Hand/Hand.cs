@@ -19,7 +19,9 @@ namespace TurnBasedGame.HandManagement
         private HandSpreader_Ver6 spreader;
 
         //Status
-        private Vector3 mouseOffset;
+        private Vector3 mousePanOffset;
+        private float xPos;
+        private float yPos;
 
         //Cache
         private CardSettings setting;
@@ -34,7 +36,10 @@ namespace TurnBasedGame.HandManagement
             if (player.IsMainPlayer)
             {
                 PanningUpdate();
+                HandRaiseUpdate();
             }
+
+            transform.position = Vector3.Lerp(transform.position, startingPos + new Vector3(xPos, yPos, 0f), 10f * Time.deltaTime);
         }
         #endregion
 
@@ -118,14 +123,23 @@ namespace TurnBasedGame.HandManagement
         }
         #endregion
 
-        #region Panning
+        #region Offset position
         private void PanningUpdate()
         {
             var rawMouse = Input.mousePosition;
             rawMouse.z = 10f;
-            mouseOffset = Camera.main.ScreenToWorldPoint(rawMouse);
-            transform.position = startingPos +
-                new Vector3(mouseOffset.x * setting.MousePanSensitivity, 0f, 0f);
+            mousePanOffset = Camera.main.ScreenToWorldPoint(rawMouse);
+            xPos = mousePanOffset.x * setting.MousePanSensitivity;
+        }
+
+        bool handRaised;
+        private void HandRaiseUpdate ()
+        {
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    handRaised = !handRaised;
+            //    yPos = handRaised ? 0f : -3f;
+            //}
         }
         #endregion
     }

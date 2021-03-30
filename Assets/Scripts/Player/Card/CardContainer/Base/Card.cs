@@ -92,11 +92,11 @@ namespace TurnBasedGame.CardManagement
 
             if (!InMovingAnimation)
             {
-                StartCoroutine(LerpPosition());
+                StartCoroutine(DoLerpPosition());
             }
         }
 
-        private IEnumerator LerpPosition()
+        private IEnumerator DoLerpPosition()
         {
             InMovingAnimation = true;
             //while (true)
@@ -119,7 +119,7 @@ namespace TurnBasedGame.CardManagement
         {
             if (!InRotationAnimation)
             {
-                StartCoroutine(LerpRotation());
+                StartCoroutine(DoLerpRotation());
             }
             else
             {
@@ -127,7 +127,7 @@ namespace TurnBasedGame.CardManagement
             }
         }
 
-        private IEnumerator LerpRotation()
+        private IEnumerator DoLerpRotation()
         {
             lerpT_rot = 0f;
             InRotationAnimation = true;
