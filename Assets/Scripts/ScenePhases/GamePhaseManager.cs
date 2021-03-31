@@ -76,7 +76,10 @@ namespace TurnBasedGame
             while (!p1DeckFilled || !p2DeckFilled)
                     yield return null;
 
-            yield return new WaitForSeconds(0.5f);
+            while (!player2.PlayerDeck.AreAllDeckCardsStill())
+                yield return null;
+
+            //yield return new WaitForSeconds(0.5f);
             GoToPhase(GamePhases.DrawCard);
         }
 
@@ -108,7 +111,10 @@ namespace TurnBasedGame
             while (!p1Drawn || !p2Drawn)
                     yield return null;
 
-            yield return new WaitForSeconds(0.3f);
+            while (!player2.PlayerDeck.AreAllHandCardsStill())
+                yield return null;
+
+            //yield return new WaitForSeconds(0.5f);
 
             GoToPhase(GamePhases.PlayingHand);
         }

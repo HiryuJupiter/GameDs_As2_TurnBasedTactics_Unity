@@ -18,10 +18,12 @@ namespace TurnBasedGame.CardManagement
         private bool inMovingAnimation;
         private bool inRotationAnimation;
         private bool inScalingAnimation;
+        private Vector3 startPos;
         private Vector3 targetPos;
+        private Quaternion startRot;
         private Quaternion targetRot;
         private Vector3 targetScale;
-        private float currentLerpMoveSpeed;
+        private float moveLerpSpeed;
         private float lerpT_move;
         private float lerpT_rot;
         private float lerpT_scale;
@@ -31,12 +33,13 @@ namespace TurnBasedGame.CardManagement
 
         //Cache
         private CardTypes cardType;
-        private float slowMoveLerpSpeed;
-        private float fastMoveLerpSpeed;
         private float rotLerpSpeed;
         private float scaleLerpSpeed;
         private Vector3 startingScale;
 
+        public bool InMovingAnimation => inMovingAnimation;
+        public bool InRotationAnimation => inRotationAnimation;
+        public bool InScalingAnimation => inScalingAnimation;
         public CardTypes CardType => cardType;
         bool CanHighlight => player.IsMainPlayer && GamePhaseManager.Phase == GamePhases.PlayingHand;
 
@@ -66,9 +69,6 @@ namespace TurnBasedGame.CardManagement
             settings = CardSettings.Instance;
 
             //Cache
-            slowMoveLerpSpeed = settings.MoveLerpSpeed;
-            fastMoveLerpSpeed = slowMoveLerpSpeed * 10f;
-            rotLerpSpeed = settings.RotLerpSpeed;
             scaleLerpSpeed = settings.ScaleLerpSpeed;
             startingScale = transform.localScale;
         }
@@ -79,16 +79,18 @@ namespace TurnBasedGame.CardManagement
             UpdatePosition();
         }
 
-        public void SetTargetRotation(Quaternion targetRot)
+        public void SetTargetRotation(Quaternion targetRot, bool slowMove)
         {
+
             this.targetRot = targetRot;
-            UpdateRotation();
+            UpdateRotation(slowMove);
         }
 
         private void UpdatePosition(bool slowMove = true)
         {
             lerpT_move = 0f;
-            currentLerpMoveSpeed = slowMove ? slowMoveLerpSpeed : fastMoveLerpSpeed;
+            startPos = transform.position;
+            moveLerpSpeed = slowMove ? settings.MoveLerpSpeed : settings.MoveLerpSpeed * 10f;
 
             if (!inMovingAnimation)
             {
@@ -102,11 +104,16 @@ namespace TurnBasedGame.CardManagement
             //while (true)
             while (lerpT_move < 1f)
             {
-                lerpT_move += Time.deltaTime * currentLerpMoveSpeed;
+                lerpT_move += Time.deltaTime * moveLerpSpeed;
                 if (lerpT_move > 1f)
                     lerpT_move = 1f;
 
-                transform.position = Vector3.Lerp(transform.position, targetPos + highlightOffset, lerpT_move);
+                //Smooth lerp
+                float t = lerpT_move;
+                //t = t * t * (3f * 2f * t);
+                t = Mathf.Sin(t * Mathf.PI * 0.5f);
+
+                transform.position = Vector3.Lerp(startPos, targetPos + highlightOffset, t);
                 yield return null;
             }
             yield return null;
@@ -115,15 +122,15 @@ namespace TurnBasedGame.CardManagement
             transform.position = targetPos + highlightOffset;
         }
 
-        private void UpdateRotation()
+        private void UpdateRotation(bool slowMove = true)
         {
+            rotLerpSpeed = slowMove ? settings.RotLerpSpeed : settings.RotLerpSpeed * 5f;
+            startRot = transform.rotation;
+            lerpT_rot = 0f;
+
             if (!inRotationAnimation)
             {
                 StartCoroutine(DoLerpRotation());
-            }
-            else
-            {
-                lerpT_rot = 0f;
             }
         }
 
@@ -131,10 +138,16 @@ namespace TurnBasedGame.CardManagement
         {
             lerpT_rot = 0f;
             inRotationAnimation = true;
+
             while (lerpT_rot < 1f)
             {
                 lerpT_rot += Time.deltaTime * rotLerpSpeed;
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, lerpT_rot);
+
+                float t = lerpT_rot;
+                //t = t * t * (3f * 2f * t);
+                t = Mathf.Sin(t * Mathf.PI * 0.5f);
+
+                transform.rotation = Quaternion.Lerp(startRot, targetRot, t);
                 yield return null;
             }
             inRotationAnimation = false;
@@ -175,7 +188,7 @@ namespace TurnBasedGame.CardManagement
             highlightOffset = new Vector3(moveLeft ? -settings.HighlightOffsetX : settings.HighlightOffsetX, 0f, 0f);
             highlightScaleOffset = Vector3.zero;
             UpdatePosition(false);
-            UpdateRotation();
+            UpdateRotation(false);
             SetScale(startingScale);
         }
 
@@ -184,7 +197,7 @@ namespace TurnBasedGame.CardManagement
             highlightOffset = new Vector3(0f, settings.HighlightOffsetY, -0.5f);
             highlightScaleOffset = settings.HighlightScale;
             UpdatePosition(false);
-            UpdateRotation();
+            UpdateRotation(false);
             SetScale(startingScale + highlightScaleOffset);
         }
 
@@ -193,7 +206,7 @@ namespace TurnBasedGame.CardManagement
             highlightOffset = new Vector3(0f, 0f, 0f);
             highlightScaleOffset = Vector3.zero;
             UpdatePosition(false);
-            UpdateRotation();
+            UpdateRotation(false);
             SetScale(startingScale);
         }
 

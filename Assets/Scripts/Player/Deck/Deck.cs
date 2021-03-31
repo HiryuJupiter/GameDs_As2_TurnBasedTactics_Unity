@@ -69,7 +69,7 @@ namespace TurnBasedGame.DeckManagement
                     transform);
                 c.Initialize(player);
                 c.SetTargetPosition(stationaryLocation.position + new Vector3(0f, i * 0.01f, 0f));
-                c.SetTargetRotation(stationaryLocation.rotation);
+                c.SetTargetRotation(stationaryLocation.rotation, true);
                 DeckPile.Add(c);
                 yield return new WaitForSeconds(deckSpawnInterval);
             }
@@ -98,12 +98,30 @@ namespace TurnBasedGame.DeckManagement
         {
             DiscardPile.Add(card);
             card.SetTargetPosition(discardLocation.position + new Vector3(0f, DiscardPile.Count * 0.01f));
-            card.SetTargetRotation(discardLocation.rotation);
+            card.SetTargetRotation(discardLocation.rotation, false);
             card.transform.parent = transform;
         }
+
+
+
+        public bool AreAllDeckCardsStill() => AreCardsStill(DeckPile);
+        public bool AreAllHandCardsStill() => AreCardsStill(hand.Cards);
         #endregion
 
         #region MinorMethods
+        private bool AreCardsStill(List<Card> cards)
+        {
+            foreach (var card in cards)
+            {
+                if (card.InMovingAnimation)
+                {
+                    //Debug.Log("still moving: " + card.name);
+                    return false;
+                }
+            }
+            return true;
+        }
+
         void InitializeDeckList ()
         {
             if (DeckPile == null || DeckPile.Count > 0)

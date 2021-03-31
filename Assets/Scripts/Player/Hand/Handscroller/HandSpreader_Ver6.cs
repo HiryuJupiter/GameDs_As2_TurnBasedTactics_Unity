@@ -121,7 +121,7 @@ namespace TurnBasedGame.HandManagement
 
             //Rotation
             Quaternion rot = RotationTowardsCamera(pos)  * baseYRot * zRot(index);
-            card.SetTargetRotation(rot);
+            card.SetTargetRotation(rot, true);
 
             //Vertical positional offset based on rotation
             float distToCenterSquared = pos.x * pos.x; //The central x-position is 0, so pos.x is naturally the distance.

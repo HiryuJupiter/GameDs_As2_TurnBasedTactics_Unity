@@ -83,7 +83,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   handSize: 15
   deckSize: 30
-  moveLerpSpeed: 0.2
+  deckSpawnInterval: 0.02
+  cardDrawInterval: 0.08
+  moveLerpSpeed: 0.1
   rotLerpSpeed: 0.5
   scaleLerpSpeed: 2.5
   cardSpacing: 1
