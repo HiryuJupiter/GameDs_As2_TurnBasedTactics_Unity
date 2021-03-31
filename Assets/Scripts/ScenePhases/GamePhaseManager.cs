@@ -10,6 +10,7 @@ namespace TurnBasedGame
     {
         //Const
         private const float TimeBeforeGameStart = 0.5f;
+        private const float P1P2PhaseDelay = 0.01f;
 
         //Variables
         public static GamePhaseManager Instance { get; private set; }
@@ -68,7 +69,7 @@ namespace TurnBasedGame
         {
             yield return new WaitForSeconds(TimeBeforeGameStart);
             StartCoroutine(WaitForP1ToFillDeck());
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(P1P2PhaseDelay);
             StartCoroutine(WaitForP2ToFillDeck());
 
             //while (!p1DeckFilled)
@@ -100,14 +101,14 @@ namespace TurnBasedGame
         private IEnumerator WaitForCardsToBeDrawn()
         {
             StartCoroutine(WaitForP1ToDraw());
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(P1P2PhaseDelay);
             StartCoroutine(WaitForP2ToDraw());
 
             //while (!p1Drawn)
             while (!p1Drawn || !p2Drawn)
                     yield return null;
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.3f);
 
             GoToPhase(GamePhases.PlayingHand);
         }

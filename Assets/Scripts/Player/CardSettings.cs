@@ -7,11 +7,15 @@ namespace TurnBasedGame
     {
         public static CardSettings Instance { get; private set; }
 
-        [Header("Card counts")]
+        [Header("Card spawning")]
         [SerializeField] private int handSize = 5;
         [SerializeField] private int deckSize = 30;
+        [SerializeField] private float deckSpawnInterval = 0.02f;
+        [SerializeField] private float cardDrawInterval = 0.02f;
         public int HandSize => handSize;
         public int DeckSize => deckSize;
+        public float DeckSpawnInterval => deckSpawnInterval;
+        public float CardDrawInterval => cardDrawInterval;
 
         [Header("Move speed")]
         [SerializeField] private float moveLerpSpeed = 0.2f;

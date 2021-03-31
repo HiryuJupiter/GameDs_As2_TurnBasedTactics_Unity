@@ -515,8 +515,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
         type: 3}
+      propertyPath: moveLerpSpeed
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
+        type: 3}
       propertyPath: verticalOffset
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
+        type: 3}
+      propertyPath: cardDrawInterval
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
+        type: 3}
+      propertyPath: deckSpawnInterval
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fa29adaaf086174f869fb27b714f303, type: 3}

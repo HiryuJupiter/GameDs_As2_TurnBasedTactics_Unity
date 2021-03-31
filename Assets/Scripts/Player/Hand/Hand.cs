@@ -27,6 +27,7 @@ namespace TurnBasedGame.HandManagement
         private CardSettings setting;
         private int handSize;
         private Vector3 startingPos;
+        private float cardDrawInterval;
 
         public List<Card> Cards { get; private set; }
 
@@ -58,6 +59,7 @@ namespace TurnBasedGame.HandManagement
             //Cache
             handSize = CardSettings.Instance.HandSize;
             startingPos = transform.position;
+            cardDrawInterval = CardSettings.Instance.CardDrawInterval;
         }
 
         public IEnumerator WaitForHandToBeDrawn()
@@ -75,7 +77,7 @@ namespace TurnBasedGame.HandManagement
             for (int i = 0; i < Cards.Count; i++)
             {
                 spreader.UpdateSingleCardPosition(i);
-                yield return new WaitForSeconds(0.02f);
+                yield return new WaitForSeconds(cardDrawInterval);
             }
         }
 

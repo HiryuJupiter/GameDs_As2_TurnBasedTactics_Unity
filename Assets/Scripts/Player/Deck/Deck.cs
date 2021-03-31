@@ -20,6 +20,10 @@ namespace TurnBasedGame.DeckManagement
         private List<Transform> cardPositions;
         private int deckSize;
 
+        //Cache
+        private float deckSpawnInterval;
+
+
         public List<Card> DeckPile { get; private set; }
         public List<Card> DiscardPile { get; private set; }
 
@@ -37,6 +41,7 @@ namespace TurnBasedGame.DeckManagement
 
             //Cache
             deckSize = CardSettings.Instance.DeckSize;
+            deckSpawnInterval = CardSettings.Instance.DeckSpawnInterval;
         }
 
         public IEnumerator FillDeck ()
@@ -66,7 +71,7 @@ namespace TurnBasedGame.DeckManagement
                 c.SetTargetPosition(stationaryLocation.position + new Vector3(0f, i * 0.01f, 0f));
                 c.SetTargetRotation(stationaryLocation.rotation);
                 DeckPile.Add(c);
-                yield return new WaitForSeconds(0.02f);
+                yield return new WaitForSeconds(deckSpawnInterval);
             }
         }
 
