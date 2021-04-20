@@ -7,6 +7,7 @@ namespace TurnBasedGame.CardManagement
 {
     public class Card : MonoBehaviour
     {
+        #region Fields
         private static Card HighlightedCard;
 
         //Reference
@@ -28,7 +29,7 @@ namespace TurnBasedGame.CardManagement
         private float lerpT_rot;
         private float lerpT_scale;
 
-        Vector3 highlightOffset;
+        Vector3 highlightPosOffset;
         private Vector3 highlightScaleOffset;
 
         //Cache
@@ -60,8 +61,9 @@ namespace TurnBasedGame.CardManagement
         //        GUI.Label(new Rect(20, 180, 200, 20), "highlightScaleOffset " + highlightScaleOffset);
         //    }
         //}
+        #endregion
 
-        #region Movement
+        #region Initialize
         public void Initialize(Player player)
         {
             this.player = player;
@@ -72,11 +74,13 @@ namespace TurnBasedGame.CardManagement
             scaleLerpSpeed = settings.ScaleLerpSpeed;
             startingScale = transform.localScale;
         }
+        #endregion
 
+        #region Movement
         public void SetTargetPosition(Vector3 targetPos)
         {
             this.targetPos = targetPos;
-            UpdatePosition();
+            UpdatePosition(true);
         }
 
         public void SetTargetRotation(Quaternion targetRot, bool slowMove)
@@ -85,17 +89,17 @@ namespace TurnBasedGame.CardManagement
             this.targetRot = targetRot;
             UpdateRotation(slowMove);
         }
+        #endregion
 
-        private void UpdatePosition(bool slowMove = true)
+        #region Private - transform manipulation
+        private void UpdatePosition(bool slowMove)
         {
             lerpT_move = 0f;
             startPos = transform.position;
             moveLerpSpeed = slowMove ? settings.MoveLerpSpeed : settings.MoveLerpSpeed * 10f;
 
             if (!inMovingAnimation)
-            {
                 StartCoroutine(DoLerpPosition());
-            }
         }
 
         private IEnumerator DoLerpPosition()
@@ -113,25 +117,23 @@ namespace TurnBasedGame.CardManagement
                 //t = t * t * (3f * 2f * t);
                 t = Mathf.Sin(t * Mathf.PI * 0.5f);
 
-                transform.position = Vector3.Lerp(startPos, targetPos + highlightOffset, t);
+                transform.position = Vector3.Lerp(startPos, targetPos + highlightPosOffset, t);
                 yield return null;
             }
             yield return null;
 
             inMovingAnimation = false;
-            transform.position = targetPos + highlightOffset;
+            transform.position = targetPos + highlightPosOffset;
         }
 
-        private void UpdateRotation(bool slowMove = true)
+        private void UpdateRotation(bool slowMove)
         {
             rotLerpSpeed = slowMove ? settings.RotLerpSpeed : settings.RotLerpSpeed * 5f;
             startRot = transform.rotation;
             lerpT_rot = 0f;
 
             if (!inRotationAnimation)
-            {
                 StartCoroutine(DoLerpRotation());
-            }
         }
 
         private IEnumerator DoLerpRotation()
@@ -158,13 +160,9 @@ namespace TurnBasedGame.CardManagement
         {
             this.targetScale = targetScale;
             if (!inScalingAnimation)
-            {
                 StartCoroutine(LerpScale());
-            }
             else
-            {
                 lerpT_scale = 0f;
-            }
         }
 
         private IEnumerator LerpScale()
@@ -182,10 +180,10 @@ namespace TurnBasedGame.CardManagement
         }
         #endregion
 
-        #region Highlight
+        #region Public - Highlight
         public void HighlightOffsetMove(bool moveLeft)
         {
-            highlightOffset = new Vector3(moveLeft ? -settings.HighlightOffsetX : settings.HighlightOffsetX, 0f, 0f);
+            highlightPosOffset = new Vector3(moveLeft ? -settings.HighlightOffsetX : settings.HighlightOffsetX, 0f, 0f);
             highlightScaleOffset = Vector3.zero;
             UpdatePosition(false);
             UpdateRotation(false);
@@ -194,7 +192,7 @@ namespace TurnBasedGame.CardManagement
 
         public void EnterHighlight()
         {
-            highlightOffset = new Vector3(0f, settings.HighlightOffsetY, -0.5f);
+            highlightPosOffset = new Vector3(0f, settings.HighlightOffsetY, -0.5f);
             highlightScaleOffset = settings.HighlightScale;
             UpdatePosition(false);
             UpdateRotation(false);
@@ -203,13 +201,15 @@ namespace TurnBasedGame.CardManagement
 
         public void ExitHighlight()
         {
-            highlightOffset = new Vector3(0f, 0f, 0f);
+            highlightPosOffset = new Vector3(0f, 0f, 0f);
             highlightScaleOffset = Vector3.zero;
             UpdatePosition(false);
             UpdateRotation(false);
             SetScale(startingScale);
         }
+        #endregion
 
+        #region Detect mouse enter and exit
         private void OnMouseEnter()
         {
             if (!CanHighlight) return;

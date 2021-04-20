@@ -13,7 +13,7 @@ namespace TurnBasedGame.HandManagement
     ZRotation: negative number is clockwise, positive number is anticlockwise
      */
 
-    public class HandSpreader_Ver6
+    public class HandSpreader
     {
         //Status
         private int cardCount;
@@ -25,11 +25,10 @@ namespace TurnBasedGame.HandManagement
         private float maxVerticalOffset;
 
         //Cache
-        private readonly Player player;
         private readonly Hand hand;
         private readonly bool isRealPlayer;
          
-        private readonly float leftExtent; //Distance from middle to the left edge
+        private readonly float leftExtent; //Distance from the middle to the left edge
         private readonly float sign;
         private readonly float baseSpacing; //X position spacing
         private readonly Vector3 centerPos;
@@ -44,10 +43,9 @@ namespace TurnBasedGame.HandManagement
         private float TotalLayoutWidth => baseSpacing * (cardCount - 1);
 
         #region Constructor
-        public HandSpreader_Ver6(Player player, Transform centuralCardReference, Transform leftLimit, Vector3 facingPos)
+        public HandSpreader(Player player, Transform centuralCardReference, Transform leftLimit, Vector3 facingPos)
         {
             //Reference
-            this.player = player;
             hand = player.PlayerHand;
             CardSettings setting = CardSettings.Instance;
 
@@ -67,16 +65,14 @@ namespace TurnBasedGame.HandManagement
         }
         #endregion
 
-        #region Public
-        public void UpdateAllCardsPositions()
+        #region Public hooks - update card positions
+        public void UpdateAllCardPositions()
         {
-            cardCount = hand.Cards.Count; //Cache
-
-            if (cardCount <= 0) //Guard
+            if (!HasCardsInHand) //Guard
                 return;
 
             CalculateLayoutParameters();
-            for (int i = 0; i < cardCount; i++)
+            for (int i = 0; i < hand.Cards.Count; i++)
             {
                 UpdateCardPosition(i);
             }
@@ -88,7 +84,9 @@ namespace TurnBasedGame.HandManagement
             CalculateLayoutParameters();
             UpdateCardPosition(index);
         }
+        #endregion
 
+        #region Private 
         private void CalculateLayoutParameters()
         {
             startXPos = -TotalLayoutWidth / 2f;
@@ -111,16 +109,16 @@ namespace TurnBasedGame.HandManagement
             maxVerticalOffset = baseVerticalOffset * cardCount / 2f;
         }
 
-        private void UpdateCardPosition (int index)
+        private void UpdateCardPosition(int index)
         {
             Card card = hand.Cards[index];
 
-            //Position based on index
+            //Get preliminary starting position based on index
             Vector3 pos = centerPos;
             pos.x = startXPos + spacing * index;
 
-            //Rotation
-            Quaternion rot = RotationTowardsCamera(pos)  * baseYRot * zRot(index);
+            //Set rotation
+            Quaternion rot = RotationTowardsCamera(pos) * baseYRot * zRot(index);
             card.SetTargetRotation(rot, true);
 
             //Vertical positional offset based on rotation
@@ -136,6 +134,7 @@ namespace TurnBasedGame.HandManagement
         Quaternion zRot(int index) => Quaternion.Euler(0f, 0f, zRotationStart + (index * zRotationOffset)); //Z-axis rotation of card
         Quaternion RotationTowardsCamera(Vector3 pos) => Quaternion.LookRotation((facingPos - pos), Vector3.up); //Rotation towards the facing object.
 
+        bool HasCardsInHand => hand.Cards.Count > 0;
 
         bool LayoutBeyondExtent (float startXPos)  => isRealPlayer ? (startXPos < leftExtent) : (startXPos > leftExtent);
         #endregion

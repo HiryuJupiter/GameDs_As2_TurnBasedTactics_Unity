@@ -9,6 +9,7 @@ namespace TurnBasedGame.DeckManagement
 {
     public class Deck : MonoBehaviour
     {
+        #region Fields
         [SerializeField] private Transform spawnLocation;
         [SerializeField] private Transform stationaryLocation;
         [SerializeField] private Transform discardLocation;
@@ -26,8 +27,11 @@ namespace TurnBasedGame.DeckManagement
 
         public List<Card> DeckPile { get; private set; }
         public List<Card> DiscardPile { get; private set; }
+        public bool AreAllDeckCardsStill() => AreCardsStill(DeckPile);
+        public bool AreAllHandCardsStill() => AreCardsStill(hand.Cards);
+        #endregion
 
-        #region Public
+        #region Public - Initialize
         public void Initialize(Player player)
         {
             //Initialize
@@ -43,7 +47,9 @@ namespace TurnBasedGame.DeckManagement
             deckSize = CardSettings.Instance.DeckSize;
             deckSpawnInterval = CardSettings.Instance.DeckSpawnInterval;
         }
+        #endregion
 
+        #region Public - Fill deck, Draw card from deck, discard pile
         public IEnumerator FillDeck ()
         {
             InitializeDeckList();
@@ -101,11 +107,6 @@ namespace TurnBasedGame.DeckManagement
             card.SetTargetRotation(discardLocation.rotation, false);
             card.transform.parent = transform;
         }
-
-
-
-        public bool AreAllDeckCardsStill() => AreCardsStill(DeckPile);
-        public bool AreAllHandCardsStill() => AreCardsStill(hand.Cards);
         #endregion
 
         #region MinorMethods

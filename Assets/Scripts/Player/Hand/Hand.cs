@@ -9,14 +9,14 @@ namespace TurnBasedGame.HandManagement
 {
     public class Hand : MonoBehaviour
     {
+        #region Fields
         [Header("Positional references")]
         [SerializeField] private Transform centuralCardPosition;
         [SerializeField] private Transform leftLimit;
         [SerializeField] private Transform facingTarget; //The target that the cards are facing
 
         private Player player;
-        private Deck deck;
-        private HandSpreader_Ver6 spreader;
+        private HandSpreader spreader;
 
         //Status
         private Vector3 mousePanOffset;
@@ -30,6 +30,26 @@ namespace TurnBasedGame.HandManagement
         private float cardDrawInterval;
 
         public List<Card> Cards { get; private set; }
+        private Deck deck => player.PlayerDeck;
+        #endregion
+
+        #region Public - Initialization
+        public void Initialize(Player player)
+        {
+            //Initialize
+            Cards = new List<Card>();
+
+            //Reference
+            this.player = player;
+            setting = CardSettings.Instance;
+            spreader = new HandSpreader(player, centuralCardPosition, leftLimit, facingTarget.position);
+
+            //Cache
+            handSize = CardSettings.Instance.HandSize;
+            startingPos = transform.position;
+            cardDrawInterval = CardSettings.Instance.CardDrawInterval;
+        }
+        #endregion
 
         #region Mono
         private void Update()
@@ -44,24 +64,27 @@ namespace TurnBasedGame.HandManagement
         }
         #endregion
 
-        #region Public
-        public void Initialize(Player player)
+        #region Card position modification
+        private void PanningUpdate()
         {
-            //Initialize
-            Cards = new List<Card>();
-
-            //Reference
-            this.player = player;
-            setting = CardSettings.Instance;
-            deck = player.PlayerDeck;
-            spreader = new HandSpreader_Ver6(player, centuralCardPosition, leftLimit, facingTarget.position);
-
-            //Cache
-            handSize = CardSettings.Instance.HandSize;
-            startingPos = transform.position;
-            cardDrawInterval = CardSettings.Instance.CardDrawInterval;
+            var rawMouse = Input.mousePosition;
+            rawMouse.z = 10f;
+            mousePanOffset = Camera.main.ScreenToWorldPoint(rawMouse);
+            xPos = mousePanOffset.x * setting.MousePanSensitivity;
         }
 
+        bool handRaised;
+        private void HandRaiseUpdate()
+        {
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    handRaised = !handRaised;
+            //    yPos = handRaised ? 0f : -3f;
+            //}
+        }
+        #endregion
+
+        #region Public - Drawing and removing cards
         public IEnumerator WaitForHandToBeDrawn()
         {
             while (Cards.Count < handSize)
@@ -87,13 +110,15 @@ namespace TurnBasedGame.HandManagement
             {
                 Cards.Remove(card);
                 deck.AddToDiscardPile(card);
-                spreader.UpdateAllCardsPositions();
+                spreader.UpdateAllCardPositions();
                 return true;
             }
             return false;
         }
+        #endregion
 
-        public void SetHighlightCard (Card card)
+        #region Public - card highlight
+        public void SetHighlightCard(Card card)
         {
             if (Cards.Contains(card))
             {
@@ -116,32 +141,12 @@ namespace TurnBasedGame.HandManagement
                 }
             }
         }
-        public void ExitHighlight ()
+        public void ExitHighlight()
         {
             foreach (var c in Cards)
             {
                 c.ExitHighlight();
             }
-        }
-        #endregion
-
-        #region Offset position
-        private void PanningUpdate()
-        {
-            var rawMouse = Input.mousePosition;
-            rawMouse.z = 10f;
-            mousePanOffset = Camera.main.ScreenToWorldPoint(rawMouse);
-            xPos = mousePanOffset.x * setting.MousePanSensitivity;
-        }
-
-        bool handRaised;
-        private void HandRaiseUpdate ()
-        {
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    handRaised = !handRaised;
-            //    yPos = handRaised ? 0f : -3f;
-            //}
         }
         #endregion
     }

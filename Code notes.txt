@@ -1,0 +1,27 @@
+==================== GENERAL NOTES ====================
+Hand has an update for card position update based on cursor position
+
+Card
+- handles the movement of the card
+
+
+==================== CLASS REFERENCE ====================
+
+Player
+-> Hand -> Handspreader
+        -> Card (cards in hand)
+-> Deck -> Card (cards in deck
+
+Card
+
+==================== UPDATE SEQUENCE ====================
+----- Start -----
+
+Player
+- hand.initialize
+- deck.initiaize
+
+
+
+----- Update -----
+Player: 

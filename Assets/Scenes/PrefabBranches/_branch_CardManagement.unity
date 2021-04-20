@@ -515,23 +515,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
         type: 3}
+      propertyPath: handSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
+        type: 3}
+      propertyPath: rotLerpSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
+        type: 3}
       propertyPath: moveLerpSpeed
-      value: 0.2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
         type: 3}
       propertyPath: verticalOffset
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
-        type: 3}
-      propertyPath: cardDrawInterval
       value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
         type: 3}
+      propertyPath: cardDrawInterval
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
+        type: 3}
       propertyPath: deckSpawnInterval
-      value: 0.025
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
+        type: 3}
+      propertyPath: mousePanSensitivity
+      value: -0.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fa29adaaf086174f869fb27b714f303, type: 3}
@@ -685,6 +700,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerA
+      objectReference: {fileID: 0}
+    - target: {fileID: 1893874842615262152, guid: 65d6df2c8ff3f8f498225f7455a6342e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.27
       objectReference: {fileID: 0}
     - target: {fileID: 4839633294788424576, guid: 65d6df2c8ff3f8f498225f7455a6342e,
         type: 3}
