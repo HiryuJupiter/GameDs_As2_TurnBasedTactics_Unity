@@ -30,6 +30,7 @@ namespace TurnBasedGame.HandManagement
         private float cardDrawInterval;
 
         public List<Card> Cards { get; private set; }
+        public Vector3 ParabolicUpDirection => facingTarget.position - centuralCardPosition.position;
         private Deck deck => player.PlayerDeck;
         #endregion
 
