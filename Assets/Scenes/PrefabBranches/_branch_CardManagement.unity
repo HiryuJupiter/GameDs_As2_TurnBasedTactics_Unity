@@ -283,6 +283,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 679487661437131217, guid: 02ad79205e38f0d438961bed7ca33bb8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 679487663149177643, guid: 02ad79205e38f0d438961bed7ca33bb8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 679487663188186293, guid: 02ad79205e38f0d438961bed7ca33bb8,
         type: 3}
       propertyPath: m_Name
@@ -525,8 +535,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
         type: 3}
+      propertyPath: rotLerpSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
+        type: 3}
       propertyPath: moveLerpSpeed
-      value: 0.2
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
         type: 3}

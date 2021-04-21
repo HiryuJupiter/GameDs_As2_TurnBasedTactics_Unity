@@ -22,7 +22,8 @@ namespace TurnBasedGame.CardManagement
 
         Vector3 highlightPosOffset;
 
-        private Vector3 parabolicUpDir;
+        private Vector3 parabolicUp;
+        private Vector3 parabolicFwd;
 
         public bool InMovingAnimation { get; private set; }
 
@@ -34,7 +35,11 @@ namespace TurnBasedGame.CardManagement
             settings = CardSettings.Instance;
 
             //Cache
-            parabolicUpDir = player.PlayerHand.ParabolicUpDirection;
+            parabolicUp = player.PlayerHand.ParabolicDirRef.up;
+            parabolicFwd = player.PlayerHand.ParabolicDirRef.forward;
+
+            //Debug.DrawRay(player.PlayerHand.ParabolicDirRef.position, parabolicFwd, Color.cyan, 30f);
+            //Debug.DrawRay(player.PlayerHand.ParabolicDirRef.position, parabolicUp, Color.red, 30f);
         }
         #endregion
 
@@ -46,13 +51,13 @@ namespace TurnBasedGame.CardManagement
         }
 
 
-        public void SetHighlightOffsetToSide (bool moveLeft)
+        public void SetHighlightOffsetToSide(bool moveLeft)
         {
             highlightPosOffset = new Vector3(moveLeft ? -settings.HighlightOffsetX : settings.HighlightOffsetX, 0f, 0f);
-            UpdatePosition(false); 
+            UpdatePosition(false);
         }
 
-        public void EnterHighlight ()
+        public void EnterHighlight()
         {
             highlightPosOffset = new Vector3(0f, settings.HighlightOffsetY, -0.5f);
             UpdatePosition(false);
@@ -96,8 +101,14 @@ namespace TurnBasedGame.CardManagement
                 float t = lerpT_move;
                 t = Mathf.Sin(t * Mathf.PI * 0.5f);
 
+                Vector3 offset = ParabolicOffset(t);
+                //if (player.IsMainPlayer)
+                //{
+                //    Debug.DrawLine(Vector3.zero, offset, Color.yellow, 2f);
+                //}
+                transform.position = startPos + ParabolicOffset(t);
                 //transform.position = startPos + ParabolicOffset(t);
-                transform.position = Vector3.Lerp(startPos, targetPos, t);
+                //transform.position = Vector3.Lerp(startPos, targetPos, t);
                 //transform.position = Vector3.Lerp(startPos, targetPos + highlightPosOffset, t) +
                 //    ParabolicOffset(t);
                 yield return null;
@@ -111,6 +122,8 @@ namespace TurnBasedGame.CardManagement
         private Vector3 ParabolicOffset(float t)
         {
             Vector3 dir = (targetPos) - startPos;
+            Debug.DrawLine(startPos, targetPos, Color.magenta, 2f);
+
             float magnitude = dir.magnitude;
 
             float x = t;
@@ -120,10 +133,23 @@ namespace TurnBasedGame.CardManagement
 
             //Scale it so that when x = t = 1, x offset is at the endPosition
             Vector3 scaledParabolicPos = new Vector3(x * magnitude, y * magnitude);
+            //if (player.IsMainPlayer)
+            //{
+            //    Debug.DrawLine(Vector3.zero, scaledParabolicPos, Color.white, 2f);
+            //}
             //Vector3 relativeUpDir = Quaternion.Euler(0f, 0f, 90f) * dir.normalized; //Rotate a vector 90 degrees to the left
-            return Quaternion.LookRotation(Vector3.forward, parabolicUpDir) * scaledParabolicPos;
-        }
+            //return Quaternion.LookRotation(Vector3.forward, Vector3.up) * scaledParabolicPos;
+            //return scaledParabolicPos;
 
+
+            Vector3 tempLine = new Vector3(10, 0, 0);
+            Debug.DrawRay(Vector3.zero, tempLine, Color.green, 5f);
+            Vector3 rotated = Quaternion.LookRotation(parabolicFwd, parabolicUp) * scaledParabolicPos;
+            //Debug.DrawRay(Vector3.zero, rotated, Color.red, 5f);
+
+
+            return Quaternion.LookRotation(parabolicFwd, parabolicUp) * scaledParabolicPos;
+        }
     }
 }
 

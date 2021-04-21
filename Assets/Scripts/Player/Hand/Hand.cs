@@ -14,6 +14,7 @@ namespace TurnBasedGame.HandManagement
         [SerializeField] private Transform centuralCardPosition;
         [SerializeField] private Transform leftLimit;
         [SerializeField] private Transform facingTarget; //The target that the cards are facing
+        [SerializeField] private Transform parabolicDirRef; 
 
         private Player player;
         private HandSpreader spreader;
@@ -30,7 +31,7 @@ namespace TurnBasedGame.HandManagement
         private float cardDrawInterval;
 
         public List<Card> Cards { get; private set; }
-        public Vector3 ParabolicUpDirection => facingTarget.position - centuralCardPosition.position;
+        public Transform ParabolicDirRef => parabolicDirRef;
         private Deck deck => player.PlayerDeck;
         #endregion
 

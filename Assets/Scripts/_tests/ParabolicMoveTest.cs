@@ -44,8 +44,40 @@ public class ParabolicMoveTest : MonoBehaviour
         float y = TileMagnitude * (-x * x + x);
 
         //Scale it so that when x = t = 1, x offset is at the endPosition
+        Vector3 scaledParabolicVector = new Vector3(x * magnitude, y * magnitude);
+
+        Debug.DrawRay(p1.position, scaledParabolicVector, Color.grey, 10f);
+
+        Vector3 relativeUpDir = Quaternion.Euler(-90f, 0f, 90f) * dir.normalized; //Rotate a vector 90 degrees to the left
+        Debug.DrawRay(p1.position, dir, Color.blue, 10f);
+        Debug.DrawRay(p1.position, relativeUpDir, Color.green, 10f);
+
+        Vector3 final = Quaternion.LookRotation(dir, relativeUpDir) * scaledParabolicVector;
+        Debug.DrawRay(p1.position, final, Color.white, 10f);
+
+        return final;
+    }
+}
+
+
+/* Faild WIP
+ 
+ */
+
+/* 2D
+     private Vector3 ParabolicOffset(float t)
+    {
+        Vector3 dir = p2.position - p1.position;
+        float magnitude = dir.magnitude;
+
+        float x = t;
+        // t = t * t * (3f - 2f * t);
+        //-x * x + x is just an inverse parabola, where y = 0 when x = 0 or 1
+        float y = TileMagnitude * (-x * x + x);
+
+        //Scale it so that when x = t = 1, x offset is at the endPosition
         Vector3 scaledParabolicPos = new Vector3(x * magnitude, y * magnitude);
         Vector3 relativeUpDir = Quaternion.Euler(0f, 0f, 90f) * dir.normalized; //Rotate a vector 90 degrees to the left
         return Quaternion.LookRotation(Vector3.forward, relativeUpDir) * scaledParabolicPos;
     }
-}
+ */
