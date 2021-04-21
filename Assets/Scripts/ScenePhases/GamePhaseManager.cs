@@ -6,6 +6,7 @@ using TurnBasedGame.PlayerManagement;
 
 namespace TurnBasedGame
 {
+    [DefaultExecutionOrder(-100)]
     public class GamePhaseManager : MonoBehaviour
     {
         //Const
@@ -17,7 +18,6 @@ namespace TurnBasedGame
 
         [SerializeField] private Player player1;
         [SerializeField] private Player player2;
-        private Dictionary<GamePhases, Action> StateMethod;
 
         //Status
         private bool p1DeckFilled;
@@ -40,15 +40,7 @@ namespace TurnBasedGame
             //Initialization
             //Note: I'm just experimenting with a weird form of state machine, just replace this if
             //you have a different idea.
-            StateMethod = new Dictionary<GamePhases, Action>()
-            {
-                {GamePhases.DrawCard,              () => Phase1Start_DrawCards()},
-                {GamePhases.PlayingHand,           () => Phase2Start_PlayingHand()},
-                {GamePhases.UnitMoving,            () => Phase3Start_UnitMoving()},
-                {GamePhases.UnitFighting,          () => Phase4Start_UnitFighting()},
-                {GamePhases.TurnCompleteEvaluation,() => Phase5Start_TurnComplete()},
-            };
-
+   
             //Delay before start game
             StartCoroutine(Phase0Start_FillDeck());
         }
@@ -60,7 +52,22 @@ namespace TurnBasedGame
             {
                 Debug.Log("--- Switched from [" + Phase + "] to [" + newState + "] ---");
                 Phase = newState;
-                StateMethod[newState].Invoke();
+                switch (Phase)
+                {
+                    //case GamePhases.GameStartFillDeck:
+                    //    break;
+                    case GamePhases.DrawCard:
+                        StartCoroutine(WaitForCardsToBeDrawn());
+                        break;
+                    case GamePhases.PlayingHand:
+                        break;
+                    case GamePhases.UnitMoving:
+                        break;
+                    case GamePhases.UnitFighting:
+                        break;
+                    case GamePhases.TurnCompleteEvaluation:
+                        break;
+                }
             }
         }
 
@@ -74,7 +81,7 @@ namespace TurnBasedGame
 
             //while (!p1DeckFilled)
             while (!p1DeckFilled || !p2DeckFilled)
-                    yield return null;
+                yield return null;
 
             while (!player2.PlayerDeck.AreAllDeckCardsStill())
                 yield return null;
@@ -99,8 +106,6 @@ namespace TurnBasedGame
         #endregion
 
         #region Phase 1 - Draw cards
-        private void Phase1Start_DrawCards() => StartCoroutine(WaitForCardsToBeDrawn());
-
         private IEnumerator WaitForCardsToBeDrawn()
         {
             StartCoroutine(WaitForP1ToDraw());
@@ -109,7 +114,7 @@ namespace TurnBasedGame
 
             //while (!p1Drawn)
             while (!p1Drawn || !p2Drawn)
-                    yield return null;
+                yield return null;
 
             while (!player2.PlayerDeck.AreAllHandCardsStill())
                 yield return null;
@@ -133,28 +138,6 @@ namespace TurnBasedGame
             p2Drawn = true;
         }
         #endregion
-
-        #region Phase 2 - Playing hand
-        private void Phase2Start_PlayingHand()
-        {
-
-        }
-        #endregion
-
-        private void Phase3Start_UnitMoving()
-        {
-            //Disable highlight mode
-        }
-
-        private void Phase4Start_UnitFighting()
-        {
-
-        }
-
-        private void Phase5Start_TurnComplete()
-        {
-
-        }
 
         /*
          * PHASE 0 - GameStartStandby

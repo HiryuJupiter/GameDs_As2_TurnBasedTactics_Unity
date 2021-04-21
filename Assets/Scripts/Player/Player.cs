@@ -21,15 +21,15 @@ namespace TurnBasedGame.PlayerManagement
 
         private void Awake()
         {
-
+            gamePhase = GamePhaseManager.Instance;
+            hand.Initialize(this);
+            deck.Initialize(this);
         }
 
         private void Start()
         {
-            gamePhase = GamePhaseManager.Instance;
 
-            hand.Initialize(this);
-            deck.Initialize(this);
+           
         }
 
         //private void OnGUI()

@@ -77,6 +77,13 @@ namespace TurnBasedGame.CardManagement
 
         private IEnumerator DoLerpPosition()
         {
+            //Vector3 parabolicOffset = ParabolicOffset(1);
+            //Debug.Log("Parabolic offset: " + parabolicUpDir + ". Startpos: " + startPos);
+            //Debug.DrawLine(Vector3.zero, startPos);
+            //transform.position = startPos + parabolicOffset;
+            ////transform.position = startPos + parabolicOffset;
+            //yield break;
+
             inMovingAnimation = true;
             //while (true)
             while (lerpT_move < 1f)
@@ -89,6 +96,61 @@ namespace TurnBasedGame.CardManagement
                 float t = lerpT_move;
                 t = Mathf.Sin(t * Mathf.PI * 0.5f);
 
+                //transform.position = startPos + ParabolicOffset(t);
+                transform.position = Vector3.Lerp(startPos, targetPos, t);
+                //transform.position = Vector3.Lerp(startPos, targetPos + highlightPosOffset, t) +
+                //    ParabolicOffset(t);
+                yield return null;
+            }
+            yield return null;
+
+            inMovingAnimation = false;
+            transform.position = targetPos;
+        }
+
+        private Vector3 ParabolicOffset(float t)
+        {
+            Vector3 dir = (targetPos) - startPos;
+            float magnitude = dir.magnitude;
+
+            float x = t;
+            // t = t * t * (3f - 2f * t);
+            //-x * x + x is just an inverse parabola, where y = 0 when x = 0 or 1
+            float y = settings.ParabolicHeight * (-x * x + x);
+
+            //Scale it so that when x = t = 1, x offset is at the endPosition
+            Vector3 scaledParabolicPos = new Vector3(x * magnitude, y * magnitude);
+            //Vector3 relativeUpDir = Quaternion.Euler(0f, 0f, 90f) * dir.normalized; //Rotate a vector 90 degrees to the left
+            return Quaternion.LookRotation(Vector3.forward, parabolicUpDir) * scaledParabolicPos;
+        }
+
+    }
+}
+
+/*
+ 
+        private IEnumerator DoLerpPosition()
+        {
+            //Vector3 parabolicOffset = ParabolicOffset(1);
+            //Debug.Log("Parabolic offset: " + parabolicUpDir + ". Startpos: " + startPos);
+            //Debug.DrawLine(Vector3.zero, startPos);
+            //transform.position = startPos + parabolicOffset;
+            ////transform.position = startPos + parabolicOffset;
+            //yield break;
+
+            inMovingAnimation = true;
+            //while (true)
+            while (lerpT_move < 1f)
+            {
+                lerpT_move += Time.deltaTime * moveLerpSpeed;
+                if (lerpT_move > 1f)
+                    lerpT_move = 1f;
+
+                //Smooth lerp
+                float t = lerpT_move;
+                t = Mathf.Sin(t * Mathf.PI * 0.5f);
+
+                //transform.position = startPos + ParabolicOffset(t);
                 transform.position = Vector3.Lerp(startPos, targetPos + highlightPosOffset, t);
                 //transform.position = Vector3.Lerp(startPos, targetPos + highlightPosOffset, t) +
                 //    ParabolicOffset(t);
@@ -102,7 +164,7 @@ namespace TurnBasedGame.CardManagement
 
         private Vector3 ParabolicOffset(float t)
         {
-            Vector3 dir = targetPos - startPos;
+            Vector3 dir = (targetPos + highlightPosOffset) - startPos;
             float magnitude = dir.magnitude;
 
             float x = t;
@@ -112,9 +174,7 @@ namespace TurnBasedGame.CardManagement
 
             //Scale it so that when x = t = 1, x offset is at the endPosition
             Vector3 scaledParabolicPos = new Vector3(x * magnitude, y * magnitude);
-            Vector3 relativeUpDir = Quaternion.Euler(0f, 0f, 90f) * dir.normalized; //Rotate a vector 90 degrees to the left
-            return Quaternion.LookRotation(Vector3.forward, relativeUpDir) * scaledParabolicPos;
+            //Vector3 relativeUpDir = Quaternion.Euler(0f, 0f, 90f) * dir.normalized; //Rotate a vector 90 degrees to the left
+            return Quaternion.LookRotation(Vector3.forward, parabolicUpDir) * scaledParabolicPos;
         }
-
-    }
-}
+ */

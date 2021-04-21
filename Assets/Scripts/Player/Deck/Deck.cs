@@ -125,9 +125,15 @@ namespace TurnBasedGame.DeckManagement
 
         void InitializeDeckList ()
         {
-            if (DeckPile == null || DeckPile.Count > 0)
+            if (DeckPile == null )
             {
-                Debug.LogError("Deck already exist");
+                Debug.LogError("Deck is null" + (player.IsMainPlayer ? 1 : 2));
+                DeckPile = new List<Card>();
+            }
+
+            if (DeckPile.Count > 0)
+            {
+                Debug.LogError("Deck has cards" + (player.IsMainPlayer ? 1 : 2));
                 DeckPile = new List<Card>();
             }
         }
