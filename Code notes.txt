@@ -25,3 +25,12 @@ Player
 
 ----- Update -----
 Player: 
+
+==================== CARD MOVING ====================
+<- <- HandSpreader.UpdateSingleCardPosition <- Player.Hand.WaitForHandToBeDrawn
+<- <- HandSpreader.UpdateAllCardPosition <- Player.Hand.TryRemoveCard
+<- HandSpreader.UpdateCardPosition
+<- Deck.FillDeck
+<- Deck.AddToDiscardPile
+
+card.SetTargetPosition

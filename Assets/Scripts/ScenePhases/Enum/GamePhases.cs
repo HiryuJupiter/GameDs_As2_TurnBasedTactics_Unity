@@ -1,16 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-namespace TurnBasedGame
+public enum GamePhases
 {
-    public enum GamePhases
-    {
-        GameStartFillDeck,
-        DrawCard, //Drawing cards from deck
-        PlayingHand, //Playing cards from hand
-        UnitMoving, //Moving pieces
-        UnitFighting,
-        TurnCompleteEvaluation,
-    }
+    Standby,
+    p1_GameStartFillDeck,
+
+    p2_DrawCard,
+    p3_PlayerControl, 
+    p4_AIControlPhase,
+
+    TurnCompleteEvaluation,
 }

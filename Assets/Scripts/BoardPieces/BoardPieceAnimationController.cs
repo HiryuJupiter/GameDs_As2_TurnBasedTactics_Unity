@@ -5,10 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class BoardPieceAnimationController : MonoBehaviour
 {
-
     Animator animator;
 
-    private void Awake()
+    void Awake()
     {
         animator = GetComponent<Animator>();
     }
