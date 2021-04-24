@@ -32,6 +32,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 721470952818905895, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1250079925337796522, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3043467522865522787, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3478242595590152246, guid: b224e459e8a58d54980572310094cd33,
         type: 3}
       propertyPath: m_RootOrder
@@ -87,10 +102,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4067792980967702465, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4417469983202479669, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5487307445022182855, guid: b224e459e8a58d54980572310094cd33,
         type: 3}
       propertyPath: m_Name
       value: Card_Dummy
+      objectReference: {fileID: 0}
+    - target: {fileID: 5487307445022182855, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4959142297484508991, guid: b224e459e8a58d54980572310094cd33, type: 3}

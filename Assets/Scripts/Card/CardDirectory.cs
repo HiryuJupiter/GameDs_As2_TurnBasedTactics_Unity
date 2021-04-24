@@ -8,21 +8,31 @@ public class CardDirectory : MonoBehaviour
 {
     public static CardDirectory Instance;
 
-    [SerializeField] private Card Dummy;
-    [SerializeField] private Card King;
-    [SerializeField] private Card Queen;
-    [SerializeField] private Card Jack;
-    [SerializeField] private Card Knight;
-    [SerializeField] private Card Swordsman;
-    [SerializeField] private Card Archer;
-    [SerializeField] private Card Spearman;
+    [SerializeField] Card DummyCard;
+    [SerializeField] Card KingCard;
+    [SerializeField] Card QueenCard;
+    [SerializeField] Card JackCard;
+    [SerializeField] Card KnightCard;
+    [SerializeField] Card SwordsmanCard;
+    [SerializeField] Card ArcherCard;
+    [SerializeField] Card SpearmanCard;
 
-    private Dictionary<CardTypes, Card> lookup;
+    [SerializeField] UnitPiece DummyPiece;
+    [SerializeField] UnitPiece KingPiece;
+    [SerializeField] UnitPiece QueenPiece;
+    [SerializeField] UnitPiece JackPiece;
+    [SerializeField] UnitPiece KnightPiece;
+    [SerializeField] UnitPiece SwordsmanPiece;
+    [SerializeField] UnitPiece ArcherPiece;
+    [SerializeField] UnitPiece SpearmanPiece;
+
+    private Dictionary<CardTypes, Card> cardLookup;
+    private Dictionary<CardTypes, UnitPiece> pieceLookup;
 
     public Card DrawCard(CardTypes cardType, Vector3 pos, Quaternion rotation)
     {
         //Debug.DrawLine(Vector3.zero, pos, Color.red, 10f);
-        Card card = Instantiate(lookup[cardType], pos, rotation) as Card;
+        Card card = Instantiate(cardLookup[cardType], pos, rotation) as Card;
         return card;
     }
 
@@ -32,25 +42,43 @@ public class CardDirectory : MonoBehaviour
         return card;
     }
 
+    public UnitPiece GetUnitPiece (CardTypes types)
+    {
+        return pieceLookup[types];
+    }
+
     void Awake()
     {
         Instance = this;
-        lookup = new Dictionary<CardTypes, Card>()
-            {
-                {CardTypes.Dummy,       Dummy },
-                {CardTypes.King,        King },
-                {CardTypes.Queen,       Queen },
-                {CardTypes.Jack,        Jack },
-                {CardTypes.Knight,      Knight },
-                {CardTypes.Swordsman,   Swordsman },
-                {CardTypes.Archer,      Archer },
-                {CardTypes.Spearman,    Spearman },
-            };
+        cardLookup = new Dictionary<CardTypes, Card>()
+        {
+            {CardTypes.Dummy,       DummyCard },
+            {CardTypes.King,        KingCard },
+            {CardTypes.Queen,       QueenCard },
+            {CardTypes.Jack,        JackCard },
+            {CardTypes.Knight,      KnightCard },
+            {CardTypes.Swordsman,   SwordsmanCard },
+            {CardTypes.Archer,      ArcherCard },
+            {CardTypes.Spearman,    SpearmanCard },
+        };
+
+        pieceLookup = new Dictionary<CardTypes, UnitPiece>()
+        {
+            {CardTypes.Dummy,       DummyPiece },
+            {CardTypes.King,        KingPiece},
+            {CardTypes.Queen,       QueenPiece},
+            {CardTypes.Jack,        JackPiece},
+            {CardTypes.Knight,      KnightPiece},
+            {CardTypes.Swordsman,   SwordsmanPiece },
+            {CardTypes.Archer,      ArcherPiece},
+            {CardTypes.Spearman,    SpearmanPiece},
+        };
     }
 
+    //Minor methods
     Card RandomCard()
     {
-        int index = Random.Range(0, lookup.Count);
-        return lookup.ElementAt(index).Value;
+        int index = Random.Range(0, cardLookup.Count);
+        return cardLookup.ElementAt(index).Value;
     }
 }

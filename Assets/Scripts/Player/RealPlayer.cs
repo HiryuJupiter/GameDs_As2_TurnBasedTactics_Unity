@@ -4,44 +4,55 @@ using UnityEngine;
 public class RealPlayer : Player
 {
     #region Field and mono
-    PlayerCardPlacement cardPlacer;
-    bool CanUpdate => GamePhaseManager.Phase == GamePhases.p3_PlayerControl;
+    
+    
+    PlayerCardSelectionControl selectionControl;
+    PlayerCardPlacementControl placementControl;
+    PlayerUnitMovingControl unitMoveControl;
 
-    bool CanMouseSelectCard(Card card) =>
-        GamePhaseManager.Phase == GamePhases.p3_PlayerControl &&
-        ControlState != ControlStates.UnitMoving &&
-        card != SelectionSlot.Card;
+
+    public UnitPiece HitUnitPiece { get; private set; }
+    public UnitPiece PrevHitUnitPiece { get; private set; }
+    public Card HitHandCard { get; private set; }
+    public Card PrevHitHandCard { get; private set; }
+    public DummyBoardTile HitTile { get; private set; }
+    public DummyBoardTile PrevHitTile { get; private set; }
+
+    public MouseOverObjects MouseOverObject { get; private set; } =
+    MouseOverObjects.None;
+    public MouseOverObjects PrevMouseOverObject { get; private set; } =
+    MouseOverObjects.None;
 
     protected override void Awake()
     {
         IsMainPlayer = true;
-        cardPlacer = new PlayerCardPlacement(this);
+        selectionControl = new PlayerCardSelectionControl(this);
+        placementControl = new PlayerCardPlacementControl(this);
+        unitMoveControl = new PlayerUnitMovingControl(this);
+
         base.Awake();
     }
 
     private void Update()
     {
-        if (CanUpdate)
+        CheckForRaycastHitObject();
+        switch (GamePhaseManager.Phase)
         {
-            switch (ControlState)
-            {
-                case ControlStates.Standby:
-                    break;
-                case ControlStates.CardSelected:
-                    cardPlacer.TickUpdate();
-                    
-                    break;
-                case ControlStates.UnitMoving:
-                    break;
-                default:
-                    break;
-            }
+            case GamePhases.phase3_CardSelection:
+                selectionControl.TickUpdate();
+                break;
+            case GamePhases.phase4_Placement:
+                placementControl.TickUpdate();
+                break;
+            case GamePhases.phase5_UnitControl:
+                unitMoveControl.TickUpdate();
+                break;
         }
     }
 
     void OnGUI()
     {
-        GUI.Label(new Rect(20, 20, 200, 20), "ControlState: " + ControlState);
+        //GUI.Label(new Rect(20, 20, 200, 20), "ControlState: " + ControlState);
 
         GUI.Label(new Rect(100f, 0f, 200f, 20f), "=== Deck pile === ");
         for (int i = 0; i < PlayerDeck.Cards.Count; i++)
@@ -67,113 +78,76 @@ public class RealPlayer : Player
             GUI.Label(new Rect(400f, 20 + 20f * i, 200f, 20f),
                     i + ": " + DiscardPile.Cards[i]);
         }
-
-        if (HighlightedCard != null)
-        {
-            GUI.Label(new Rect(700f, 0f, 200f, 20f), "highlighted: " + HighlightedCard);
-        }
     }
     #endregion
 
-    #region Public - Mouse highlight
-    public override void MouseEnterCard(Card card)
+    #region Public 
+    public void FinishedSelectingCard()
     {
-        if (!CanMouseSelectCard(card))
-            return;
-
-        //If highlighting a new card
-        if (HighlightedCard != card)
-        {
-            HighlightedCard = card;
-            Hand.SetHighlightCard(card);
-        }
+        phaseManager.ToP4_CardPlacementPhase();
     }
 
-    public override void MouseExitsCard(Card card)
+    public void CancelPlacement ()
     {
-        if (!CanMouseSelectCard(card))
-            return;
-
-        //If exiting the already highlighted card
-        if (HighlightedCard == card)
-        {
-            UnhighlightCards();
-        }
-    }
-
-    public override void UnhighlightCards()
-    {
-        Hand.ExitHighlight();
-        HighlightedCard = null;
-    }
-    #endregion
-
-    #region Public - Card selection and placement
-    public override void ClickedOnCard(Card card)
-    {
-        if (!CanMouseSelectCard(card))
-            return;
-
-        if (Hand.TryRemoveCardFromHand(card))
-        {
-            //Card
-            ReturnSelectionSlotCardToHand();
-            UnhighlightCards();
-            SelectionSlot.SetAsSelectedCard(card);
-            Hand.RefreshHandCardPositions();
-
-            //Status change
-            ControlState = ControlStates.CardSelected;
-            Hand.LowerHand();
-        }
-        else
-        {
-            Debug.LogError("Shouldn't happen. Card " + card);
-        }
-    }
-
-    public override void PlaceCard()
-    {
-        //Clear highlight
-        UnhighlightCards();
-
-        //Card
-        DiscardPile.AddToDiscardPile(SelectionSlot.Card);
-
-        //Status change
-        ControlState = ControlStates.Standby;
-        Hand.RaiseHand();
-    }
-    public void CancelCardSelection()
-    {
-        //Card
-        ReturnSelectionSlotCardToHand();
-        UnhighlightCards();
-        Hand.RefreshHandCardPositions();
-
-        //Status change
-        ControlState = ControlStates.Standby;
-        Hand.RaiseHand();
-    }
-
-    void ReturnSelectionSlotCardToHand ()
-    {
+        //Return selection slot card to hand, if there is one.
         if (SelectionSlot.TryRemoveCard(out Card card))
         {
             Hand.AddCard(card);
         }
+
+        //Display hand
+        Hand.RaiseHand();
+        Hand.RefreshHandCardPositions();
+
+        phaseManager.ToP3_CardSelection();
     }
     #endregion
 
-    #region Public - move pieces
-    public override void SelectPiece(DummyPiece piece)
-    {
-        ControlState = ControlStates.UnitMoving;
-    }
+    #region Raycast hit
+    Ray ray => Camera.main.ScreenPointToRay(Input.mousePosition);
 
-    public override void UnselectUnit()
+    void CheckForRaycastHitObject()
     {
+        PrevMouseOverObject = MouseOverObject;
+        PrevHitUnitPiece = HitUnitPiece;
+        PrevHitHandCard = HitHandCard;
+        PrevHitTile = HitTile;
 
+        MouseOverObject = MouseOverObjects.None;
+        HitUnitPiece = null;
+        HitHandCard = null;
+        HitTile = null;
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        {
+            if (settings.IsOnCardLayer(hit.collider)) //Hand card
+            {
+                HitHandCard = hit.collider.GetComponent<Card>();
+                if (HitHandCard != null)
+                {
+                    if (HitHandCard.IsMainPlayer && HitHandCard.IsHandcard)
+                        MouseOverObject = MouseOverObjects.HandCard;
+                }
+                else
+                    Debug.Log("Missing card script on " + hit.collider.gameObject);
+            }
+            else if (settings.IsOnTileLayer(hit.collider)) //Tile
+            {
+                HitTile = hit.collider.GetComponent<DummyBoardTile>();
+                if (HitTile != null)
+                    MouseOverObject = MouseOverObjects.Tile;
+                else
+                    Debug.Log("Missing tile script on " + hit.collider.gameObject);
+            }
+            else if (settings.IsOnUnitPieceLayer(hit.collider)) //Unit piece
+            {
+                HitUnitPiece = hit.collider.GetComponent<UnitPiece>();
+                if (HitUnitPiece != null)
+                    MouseOverObject = MouseOverObjects.UnitPiece;
+                else
+                    Debug.Log("Missing unit piece script on " + hit.collider.gameObject);
+            }
+        }
     }
     #endregion
 }

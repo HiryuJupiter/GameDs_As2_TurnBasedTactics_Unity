@@ -7,10 +7,8 @@ public class DummyBoardTile : MonoBehaviour
 
     Material material;
     Color defaultColor;
-    public bool IsPlayerOneSide => isPlayer1Tile;
-
-    public void SetSide(bool isPlayer1Tile) =>
-        this.isPlayer1Tile = isPlayer1Tile;
+    public bool IsMainPlayer
+        => isPlayer1Tile;
 
     public void Highlight (bool requestedByPlayer1)
     {

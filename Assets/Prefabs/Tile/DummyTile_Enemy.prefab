@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1412584756030414630}
   - component: {fileID: 3004541659984637435}
   - component: {fileID: 6012584156758045192}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DummyTile_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

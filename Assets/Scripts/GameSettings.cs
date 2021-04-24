@@ -6,6 +6,14 @@ public class GameSettings : MonoBehaviour
 {
     public static GameSettings Instance { get; private set; }
 
+    [Header("PhysicsLayers")]
+    [SerializeField] LayerMask unitPieceLayer;
+    [SerializeField] LayerMask tileLayer;
+    [SerializeField] LayerMask cardLayer;
+    public LayerMask UnitPieceLayer => unitPieceLayer;
+    public LayerMask TileLayer => tileLayer;
+    public LayerMask CardLayer => cardLayer;
+
     [Header("Card spawning")]
     [SerializeField] int handSize = 5;
     [SerializeField] int deckSize = 30;
@@ -53,4 +61,13 @@ public class GameSettings : MonoBehaviour
     {
         Instance = this;
     }
+
+
+
+    public bool IsOnTileLayer (Collider collider) => 
+        tileLayer == (tileLayer | (1 << collider.gameObject.layer));
+    public bool IsOnUnitPieceLayer (Collider collider) => 
+        unitPieceLayer == (unitPieceLayer | (1 << collider.gameObject.layer));
+    public bool IsOnCardLayer (Collider collider) => 
+        cardLayer == (cardLayer | (1 << collider.gameObject.layer));
 }

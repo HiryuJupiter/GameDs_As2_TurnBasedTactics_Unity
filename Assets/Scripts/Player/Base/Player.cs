@@ -3,25 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public abstract class Player : MonoBehaviour
 {
-    public enum ControlStates { Standby, CardSelected, UnitMoving }
-
     #region Fields
     [SerializeField] PlayerHand hand;
     [SerializeField] Deck deck;
     [SerializeField] DiscardPile discardPile;
     [SerializeField] SelectionSlot selectionSlot;
 
-    protected Card HighlightedCard;
-    protected DummyPiece selectedUnit;
+    protected UIManager uiM;
+    protected GamePhaseManager phaseManager;
+    protected GameSettings settings;
 
     public bool IsMainPlayer { get; protected set; } = false;
     public PlayerHand Hand => hand;
     public Deck PlayerDeck => deck;
     public DiscardPile DiscardPile => discardPile;
     public SelectionSlot SelectionSlot => selectionSlot;
-    public ControlStates ControlState { get; protected set; } = ControlStates.Standby;
     #endregion
 
     #region Mono
@@ -31,10 +29,16 @@ public class Player : MonoBehaviour
         deck.Initialize(this);
         selectionSlot.Initialize(this);
         discardPile.Initialize(this);
+
+        settings = GameSettings.Instance;
+    }
+
+    private void Start()
+    {
+        phaseManager = GamePhaseManager.Instance;
+        uiM = UIManager.Instance;
     }
     #endregion
-
-    public virtual void RunAISequence() { }
 
     #region Public - Card draw
     public void FillDeck()
@@ -44,22 +48,8 @@ public class Player : MonoBehaviour
 
     public void DrawHand()
     {
-        ControlState = ControlStates.Standby;
         Hand.RaiseHand();
         Hand.DrawHand();
     }
     #endregion
-
-    // Mouse highlight
-    public virtual void MouseEnterCard(Card card) {}
-    public virtual void MouseExitsCard(Card card) {}
-    public virtual void UnhighlightCards() {}
-
-    // Card selection and placement
-    public virtual void ClickedOnCard(Card card) {}
-    public virtual void PlaceCard() {}
-
-    // Move pieces
-    public virtual void SelectPiece (DummyPiece piece) {}
-    public virtual void UnselectUnit () {}
 }

@@ -15,12 +15,13 @@ public class GamePhaseManager : MonoBehaviour
     //Variables
     public static GamePhaseManager Instance { get; private set; }
 
-    [SerializeField] private Player player1;
+    [SerializeField] private RealPlayer player1;
     [SerializeField] private Player player2;
 
     //Status
 
     //Properties
+    public RealPlayer Player1 => player1;
     public static GamePhases Phase { get; private set; } = GamePhases.Standby;
     public static int Turn { get; private set; } = 0;
 
@@ -33,24 +34,31 @@ public class GamePhaseManager : MonoBehaviour
     void Start()
     {
         uiM = UIManager.Instance;
-        GoToPhase(GamePhases.p1_GameStartFillDeck);
+        GoToPhase(GamePhases.phase1_GameStartFillDeck);
     }
     #endregion
 
     #region Public - phase transition requests
-    public void PlayerFinishedControlPhase()
+    public void ToP3_CardSelection()
     {
-        GoToPhase(GamePhases.p4_AIControlPhase);
+        uiM.SetActive_PlacementButton(false);
+        GoToPhase(GamePhases.phase3_CardSelection);
     }
-
-    public void AIFinishedControlPhase()
+    public void ToP4_CardPlacementPhase()
     {
-        GoToPhase(GamePhases.TurnCompleteEvaluation);
+        uiM.SetActive_PlacementButton(true);
+        GoToPhase(GamePhases.phase4_Placement);
     }
+    public void ToP5_UnitControlMode()
+    {
+        uiM.SetActive_PlacementButton(false);
+        GoToPhase(GamePhases.phase5_UnitControl);
+    }
+    public void ToP6_AISequence() => GoToPhase(GamePhases.phase6_AIControlPhase);
+    public void To_Evaluation() => GoToPhase(GamePhases.TurnCompleteEvaluation);
     #endregion
 
     #region Phase transition 
-
     void GoToPhase(GamePhases newState)
     {
         if (Phase != newState)
@@ -61,15 +69,17 @@ public class GamePhaseManager : MonoBehaviour
 
             switch (Phase)
             {
-                case GamePhases.p1_GameStartFillDeck:
-                    StartCoroutine(P1_FillDeck());
+                case GamePhases.phase1_GameStartFillDeck:
+                    StartCoroutine(Phase1_FillDeck());
                     break;
-                case GamePhases.p2_DrawCard:
-                    StartCoroutine(P2_DrawHand());
+                case GamePhases.phase2_DrawCard:
+                    StartCoroutine(Phase2_DrawHand());
                     break;
-                case GamePhases.p3_PlayerControl:
+                case GamePhases.phase3_CardSelection:
                     break;
-                case GamePhases.p4_AIControlPhase:
+                case GamePhases.phase5_UnitControl:
+                    break;
+                case GamePhases.phase6_AIControlPhase:
                     break;
                 case GamePhases.TurnCompleteEvaluation:
                     StartCoroutine(TurnCompleteEvaluation());
@@ -82,7 +92,7 @@ public class GamePhaseManager : MonoBehaviour
     #endregion
 
     #region Phases
-    IEnumerator P1_FillDeck()
+    IEnumerator Phase1_FillDeck()
     {
         player1.FillDeck();
         player2.FillDeck();
@@ -91,10 +101,10 @@ public class GamePhaseManager : MonoBehaviour
         while (!IsDeckStill)
             yield return null;
 
-        GoToPhase(GamePhases.p2_DrawCard);
+        GoToPhase(GamePhases.phase2_DrawCard);
     }
 
-    IEnumerator P2_DrawHand()
+    IEnumerator Phase2_DrawHand()
     {
         player1.DrawHand();
         player2.DrawHand();
@@ -103,29 +113,15 @@ public class GamePhaseManager : MonoBehaviour
         while (!IsHandStill)
             yield return null;
 
-        GoToPhase(GamePhases.p3_PlayerControl);
+        GoToPhase(GamePhases.phase3_CardSelection);
     }
 
     IEnumerator TurnCompleteEvaluation()
     {
-        GoToPhase(GamePhases.p1_GameStartFillDeck);
+        GoToPhase(GamePhases.phase1_GameStartFillDeck);
         yield return null;
     }
     #endregion
-
-    /*
-     * PHASE 0 - GameStartStandby
-     * - Play "Game Start" splash
-     * 
-     * PHASE 1 - Drawing
-     * - Player 1 automatically draw cards
-     * - Player 2 automatically draw cards
-     * 
-     * PHASE 3 - UnitMoving
-     * PHASE 4 - UnitFighting
-     * PHASE 5 - TurnCompleteEvaluation
-     * 
-     */
 
     void OnGUI()
     {

@@ -16,6 +16,8 @@ public class Card : MonoBehaviour
     //Cache
     CardTypes cardType;
 
+    public bool IsMainPlayer => player.IsMainPlayer;
+    public bool IsHandcard { get; private set; }
     public bool InMovingAnimation => mover.InDirectMove || mover.InParabolicMove;
     public bool InRotationAnimation => rotator.InRotationAnimation;
     public bool InScalingAnimation => scaler.InScalingAnimation;
@@ -35,6 +37,10 @@ public class Card : MonoBehaviour
     }
     #endregion
 
+    #region Public - set hand
+    public void SetIsHandcard(bool isTrue) => IsHandcard = isTrue;
+    #endregion
+
     #region Movement
     public void SetTargetPosition(Vector3 targetPos, bool parabolicMove)
         => mover.SetTargetPosition(targetPos, parabolicMove);
@@ -47,7 +53,7 @@ public class Card : MonoBehaviour
     public void HighlightOffsetMove(bool moveLeft)
     {
         mover.SetHighlightOffsetToSide(moveLeft);
-        scaler.SetHighlightOffsetToSide(moveLeft);
+        scaler.ExitHighlight();
     }
 
     public void EnterHighlight()
@@ -61,43 +67,9 @@ public class Card : MonoBehaviour
         mover.ExitHighlight();
         scaler.ExitHighlight();
     }
-    #endregion
 
-    #region Detect mouse enter and exit
-    void OnMouseEnter() => player.MouseEnterCard(this);
-
-    void OnMouseExit() => player.MouseExitsCard(this);
-
-    void OnMouseDown() => player.ClickedOnCard(this);
-    #endregion
-
-    #region Minor methods 
-    public override string ToString() => cardType.ToString();
+    public void SetPanningX(float x) => mover.SetPanningX(x);
+    public void SetPanningY(float y) => mover.SetPanningY(y);
+    public void ExitPanning() => mover.ClearPanning();
     #endregion
 }
-
-/*
-         IEnumerator DoLerpPosition()
-        {
-            inMovingAnimation = true;
-            //while (true)
-            while (lerpT_move < 1f)
-            {
-                lerpT_move += Time.deltaTime * moveLerpSpeed;
-                if (lerpT_move > 1f)
-                    lerpT_move = 1f;
-
-                //Smooth lerp
-                float t = lerpT_move;
-                t = Mathf.Sin(t * Mathf.PI * 0.5f);
-
-                transform.position = Vector3.Lerp(startPos, targetPos + highlightPosOffset, t);
-                yield return null;
-            }
-            yield return null;
-
-            inMovingAnimation = false;
-            transform.position = targetPos + highlightPosOffset;
-        }
-
- */

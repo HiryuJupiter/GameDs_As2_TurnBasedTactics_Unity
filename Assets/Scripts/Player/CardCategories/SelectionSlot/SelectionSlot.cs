@@ -21,8 +21,10 @@ public class SelectionSlot : MonoBehaviour
     public void SetAsSelectedCard(Card card)
     {
         if (card == null)
+        {
+            Debug.LogError("No card! ");
             return;
-
+        }
         this.card = card;
         card.SetTargetPosition(slotReference.position, false);
         card.SetTargetRotation(slotReference.rotation);

@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
     public Text P1HP;
     public Text P2HP;
     public Text Phase;
+    public GameObject CancelPlacementButton;
 
     private void Awake()
     {
@@ -30,4 +31,7 @@ public class UIManager : MonoBehaviour
     {
         Phase.text = phase;
     }
+
+    public void SetActive_PlacementButton (bool isActive) => 
+        CancelPlacementButton.SetActive(isActive);
 }

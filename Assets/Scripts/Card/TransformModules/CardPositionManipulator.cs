@@ -6,7 +6,6 @@ public class CardPositionManipulator
     #region Field and ctor
     //Ref
     Player player;
-    PlayerHand hand;
     Card card;
     Transform transform;
     GameSettings settings;
@@ -18,16 +17,16 @@ public class CardPositionManipulator
     float lerpT_move;
 
     Vector3 highlightOffset;
+    Vector3 panningOffset;
 
     public bool InDirectMove { get; private set; } = false;
     public bool InParabolicMove { get; private set; } = false;
-    Vector3 finalPos => endLerpPos + highlightOffset + hand.PanningOffset;
+    Vector3 finalPos => endLerpPos + highlightOffset + panningOffset;
 
     public CardPositionManipulator(Player player, Card card)
     {
         this.player = player;
         this.card = card;
-        hand = player.Hand;
         transform = card.transform;
         settings = GameSettings.Instance;
 
@@ -61,6 +60,23 @@ public class CardPositionManipulator
     {
         highlightOffset = new Vector3(0f, 0f, 0f);
         UpdatePosition(true, false);
+    }
+    #endregion
+
+    #region Public - set panning position
+    public void SetPanningX(float x)
+    {
+        panningOffset.x = x;
+    }
+
+    public void SetPanningY(float y)
+    {
+        panningOffset.y = y;
+    }
+
+    public void ClearPanning()
+    {
+        panningOffset = Vector3.zero;
     }
     #endregion
 

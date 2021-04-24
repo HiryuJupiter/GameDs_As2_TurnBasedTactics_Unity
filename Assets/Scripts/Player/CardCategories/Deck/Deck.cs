@@ -38,7 +38,6 @@ public class Deck : MonoBehaviour
         {
             card = Cards[Cards.Count - 1];
             Cards.RemoveAt(Cards.Count - 1);
-            card.transform.parent = hand.transform;
             return true;
         }
         return false;

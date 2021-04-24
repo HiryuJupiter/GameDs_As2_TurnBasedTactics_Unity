@@ -31,10 +31,6 @@ public class CardScaleManipulator
         startingScale = transform.localScale;
     }
 
-    public void SetHighlightOffsetToSide(bool moveLeft)
-    {
-        SetScale(startingScale);
-    }
     public void EnterHighlight()
     {
         SetScale(startingScale + settings.HighlightScale);

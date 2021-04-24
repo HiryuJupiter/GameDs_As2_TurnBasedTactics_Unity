@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8397988311873903897}
   - component: {fileID: 3390089940851277760}
   - component: {fileID: 5772948037598639656}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DummyTile_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}

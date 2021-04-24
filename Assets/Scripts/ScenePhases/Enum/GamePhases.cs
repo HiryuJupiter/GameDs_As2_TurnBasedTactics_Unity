@@ -4,11 +4,13 @@ using UnityEngine;
 public enum GamePhases
 {
     Standby,
-    p1_GameStartFillDeck,
+    phase1_GameStartFillDeck,
 
-    p2_DrawCard,
-    p3_PlayerControl, 
-    p4_AIControlPhase,
+    phase2_DrawCard,
+    phase3_CardSelection, //Card highlight, selection
+    phase4_Placement,
+    phase5_UnitControl,  //Unit move, attack
+    phase6_AIControlPhase,
 
     TurnCompleteEvaluation,
 }

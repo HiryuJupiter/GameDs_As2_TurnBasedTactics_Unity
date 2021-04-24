@@ -16,10 +16,8 @@ public class PlayerHand : MonoBehaviour
     //Cache
     int handSize;
     float cardDrawInterval;
-    private Vector3 panningOffset;
 
     public List<Card> Cards { get; private set; }
-    public Vector3 PanningOffset => panningOffset;
     Deck deck => player.PlayerDeck;
     #endregion
 
@@ -51,17 +49,18 @@ public class PlayerHand : MonoBehaviour
     {
         if (!player.IsMainPlayer)
             return;
-        panningOffset.y = -0f;
-    }
-
-    public void LowerHand()
-    {
-        panningOffset.y = -1f;
+        foreach (Card card in Cards)
+        {
+            card.SetPanningY(0f);
+        }
     }
 
     public void HideHand()
     {
-        panningOffset.y = -3f;
+        foreach (Card card in Cards)
+        {
+            card.SetPanningY(-5f);
+        }
     }
 
     public void PanningUpdate()
@@ -84,7 +83,7 @@ public class PlayerHand : MonoBehaviour
     }
     #endregion
 
-    #region Public - Drawing and custom add card
+    #region Public - Adding and removing card
     public void DrawHand() => StartCoroutine(DoDrawHand());
     IEnumerator DoDrawHand()
     {
@@ -94,7 +93,7 @@ public class PlayerHand : MonoBehaviour
         {
             if (deck.TryDrawCard(out Card card))
             {
-                Cards.Add(card);
+                AddCard(card, false);
             }
             else
                 break; //No more cards in deck
@@ -107,26 +106,27 @@ public class PlayerHand : MonoBehaviour
         }
     }
 
-    public void AddCard(Card card)
+    public void AddCard(Card card, bool updatePos = true)
     {
         Cards.Add(card);
-        spreader.UpdateAllCardTransforms(false);
-    }
-    #endregion
+        card.SetIsHandcard(true);
 
-    #region Public - card selection
-    public bool TryRemoveCardFromHand(Card card) //A verbose name but makes it distinct from Deck's DrawCard method
+        if (updatePos)
+            spreader.UpdateAllCardTransforms(false);
+    }
+
+    public bool TryRemoveCardFromHand(Card card) 
     {
         if (Cards.Contains(card))
         {
             Cards.Remove(card);
+            card.ExitHighlight();
+            card.ExitPanning();
+            card.SetIsHandcard(false);
             spreader.UpdateAllCardTransforms(false);
             return true;
         }
-        else
-        {
-            Debug.LogError("Doesn't contain card!");
-        }
+        Debug.LogError("Doesn't contain card!");
         return false;
     }
     #endregion
@@ -155,7 +155,7 @@ public class PlayerHand : MonoBehaviour
             }
         }
     }
-    public void ExitHighlight()
+    public void ExitHighlightOnAllCards()
     {
         foreach (var c in Cards)
         {
