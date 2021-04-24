@@ -10,7 +10,8 @@ public class UIManager : MonoBehaviour
     public Text P1HP;
     public Text P2HP;
     public Text Phase;
-    public GameObject CancelPlacementButton;
+    public GameObject Button_CancelCardPlacement;
+    public GameObject Button_EnterUnitBattle;
 
     private void Awake()
     {
@@ -32,6 +33,20 @@ public class UIManager : MonoBehaviour
         Phase.text = phase;
     }
 
-    public void SetActive_PlacementButton (bool isActive) => 
-        CancelPlacementButton.SetActive(isActive);
+    public void EnterCardSelection ()
+    {
+        Button_EnterUnitBattle.SetActive(true);
+        Button_CancelCardPlacement.SetActive(false);
+    }
+
+    public  void EnterCardPlacement ()
+    {
+        Button_EnterUnitBattle.SetActive(false);
+        Button_CancelCardPlacement.SetActive(true);
+    }
+
+    public void EnterUnitControl ()
+    {
+        Button_EnterUnitBattle.SetActive(false);
+    }
 }

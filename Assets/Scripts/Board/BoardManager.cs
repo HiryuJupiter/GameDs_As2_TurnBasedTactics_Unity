@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DummyBoardManager : MonoBehaviour
+public class BoardManager : MonoBehaviour
 {
-    [SerializeField] DummyBoardTile playerTile;
-    [SerializeField] DummyBoardTile enemyTile;
+    #region Field and mono
+    public static BoardManager Instance;
+
+    [SerializeField] BoardTile playerTile;
+    [SerializeField] BoardTile enemyTile;
     [SerializeField] float tileSize = 1f;
     [SerializeField] int xCount = 4;
     [SerializeField] int zCount = 4;
@@ -13,6 +17,14 @@ public class DummyBoardManager : MonoBehaviour
     float halfTileSize;
     int halfXCount;
     int halfZCount;
+    public BoardTile[,] tiles { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+        tiles = new BoardTile[xCount, zCount];
+    }
+
     private void Start()
     {
         //Cache
@@ -28,22 +40,43 @@ public class DummyBoardManager : MonoBehaviour
         //Start
         FillBoard();
     }
+    #endregion
 
+    #region Public
+    #endregion
+
+    #region Board generation
     void FillBoard()
     {
         for (int x = 0; x < xCount; x++)
         {
             for (int z = 0; z < zCount; z++)
             {
-                DummyBoardTile pf = z < halfZCount ? playerTile : enemyTile;
-                Instantiate(pf, GetTileWorldPos(x, z), playerTile.transform.rotation);
+                BoardTile pf = z < halfZCount ? playerTile : enemyTile;
+                BoardTile t = Instantiate(pf, GetTileWorldPos(x, z), 
+                    playerTile.transform.rotation);
+                t.SetIndex = new Vector2Int(x, z);
+
+                tiles[x, z] = t;
             }
         }
     }
+    #endregion
 
-    Vector3 GetTileWorldPos(int x, int z)
+    #region Minor
+    public Vector3 GetTileWorldPos(int x, int z)
     {
         return startPoint + new Vector3(halfTileSize + tileSize * x, 0f,
             halfTileSize + tileSize * z);
     }
+    #endregion
 }
+
+/*
+ for (int x = 0; x < board.tiles.GetLength(0); x++)
+        {
+            for (int z = 0; z < board.tiles.GetLength(1); z++)
+            {
+            }
+        }
+ */

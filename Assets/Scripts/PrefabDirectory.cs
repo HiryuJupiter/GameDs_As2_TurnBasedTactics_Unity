@@ -4,9 +4,9 @@ using System.Linq;
 using UnityEngine;
 
 [DefaultExecutionOrder(-1000)]
-public class CardDirectory : MonoBehaviour
+public class PrefabDirectory : MonoBehaviour
 {
-    public static CardDirectory Instance;
+    public static PrefabDirectory Instance;
 
     [SerializeField] Card DummyCard;
     [SerializeField] Card KingCard;

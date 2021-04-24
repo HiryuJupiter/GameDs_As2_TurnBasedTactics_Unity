@@ -10,7 +10,7 @@ public class Deck : MonoBehaviour
 
     Player player;
     PlayerHand hand;
-    CardDirectory cardDir;
+    PrefabDirectory cardDir;
 
     public List<Card> Cards { get; private set; }
     #endregion
@@ -22,7 +22,7 @@ public class Deck : MonoBehaviour
         Cards = new List<Card>();
 
         //Reference
-        cardDir = CardDirectory.Instance;
+        cardDir = PrefabDirectory.Instance;
         this.player = player;
         hand = player.Hand;
     }

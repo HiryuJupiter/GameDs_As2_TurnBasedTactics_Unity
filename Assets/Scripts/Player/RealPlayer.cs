@@ -4,24 +4,22 @@ using UnityEngine;
 public class RealPlayer : Player
 {
     #region Field and mono
-    
-    
     PlayerCardSelectionControl selectionControl;
     PlayerCardPlacementControl placementControl;
     PlayerUnitMovingControl unitMoveControl;
 
-
-    public UnitPiece HitUnitPiece { get; private set; }
-    public UnitPiece PrevHitUnitPiece { get; private set; }
-    public Card HitHandCard { get; private set; }
-    public Card PrevHitHandCard { get; private set; }
-    public DummyBoardTile HitTile { get; private set; }
-    public DummyBoardTile PrevHitTile { get; private set; }
-
-    public MouseOverObjects MouseOverObject { get; private set; } =
-    MouseOverObjects.None;
-    public MouseOverObjects PrevMouseOverObject { get; private set; } =
-    MouseOverObjects.None;
+    //Currently raycast hit unit piece
+    public UnitPiece CurrUnit { get; private set; }
+    public UnitPiece PrevUnit { get; private set; }
+    //Currently raycast hit hand-card
+    public Card CurrCard { get; private set; }
+    public Card PrevCard { get; private set; }
+    //Currently raycast hit tile of player 1 (for spawning pieces)
+    public BoardTile CurrP1Tile { get; private set; }
+    public BoardTile PrevP1Tile { get; private set; }
+    //Tile of any player
+    public BoardTile CurrAnyTile { get; private set; }
+    public BoardTile PrevAnyTile { get; private set; }
 
     protected override void Awake()
     {
@@ -75,26 +73,49 @@ public class RealPlayer : Player
         GUI.Label(new Rect(550f, 0f, 200f, 20f), "=== Discard pile === ");
         for (int i = 0; i < DiscardPile.Cards.Count; i++)
         {
-            GUI.Label(new Rect(400f, 20 + 20f * i, 200f, 20f),
+            GUI.Label(new Rect(550f, 20 + 20f * i, 200f, 20f),
                     i + ": " + DiscardPile.Cards[i]);
         }
+
+        GUI.Label(new Rect(700f, 0f, 200f, 20f), "PrevUnit: " + PrevUnit);
+        GUI.Label(new Rect(700f, 20f, 200f, 20f), "PrevCard: " + PrevCard);
+        GUI.Label(new Rect(700f, 40f, 200f, 20f), "PrevTile: " + PrevP1Tile);
+        GUI.Label(new Rect(700f, 60f, 200f, 20f), "CurrUnit: " + CurrUnit);
+        GUI.Label(new Rect(700f, 80f, 200f, 20f), "CurrCard: " + CurrCard);
+        GUI.Label(new Rect(700f, 100f, 200f, 20f), "CurrTile: " + CurrP1Tile);
+
     }
     #endregion
 
-    #region Public 
+    #region Public - Phase transitions
     public void FinishedSelectingCard()
     {
         phaseManager.ToP4_CardPlacementPhase();
     }
 
-    public void CancelPlacement ()
+    public void SpawnedAUnitPiece()
     {
-        //Return selection slot card to hand, if there is one.
+        EnterHandCardSelection();
+    }
+
+    public void EnterUnitControlMode() //Also invoked by UI button click
+    {
+        phaseManager.ToP5_UnitControlMode();
+    }
+
+    public void CancelCardPlacement() //Also invoked by UI button click
+    {
+        //Return selection slot card to hand
         if (SelectionSlot.TryRemoveCard(out Card card))
         {
             Hand.AddCard(card);
         }
 
+        EnterHandCardSelection();
+    }
+
+    void EnterHandCardSelection()
+    {
         //Display hand
         Hand.RaiseHand();
         Hand.RefreshHandCardPositions();
@@ -108,44 +129,47 @@ public class RealPlayer : Player
 
     void CheckForRaycastHitObject()
     {
-        PrevMouseOverObject = MouseOverObject;
-        PrevHitUnitPiece = HitUnitPiece;
-        PrevHitHandCard = HitHandCard;
-        PrevHitTile = HitTile;
+        //PrevMouseOverObject = MouseOverObject;
+        PrevUnit = CurrUnit;
+        PrevCard = CurrCard;
+        PrevP1Tile = CurrP1Tile;
+        PrevAnyTile = CurrAnyTile;
 
-        MouseOverObject = MouseOverObjects.None;
-        HitUnitPiece = null;
-        HitHandCard = null;
-        HitTile = null;
+        //MouseOverObject = MouseOverObjects.None;
+        CurrUnit = null;
+        CurrCard = null;
+        CurrP1Tile = null;
+        CurrAnyTile = null;
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
             if (settings.IsOnCardLayer(hit.collider)) //Hand card
             {
-                HitHandCard = hit.collider.GetComponent<Card>();
-                if (HitHandCard != null)
+                Card c = hit.collider.GetComponent<Card>();
+                if (c != null && c.IsMainPlayer && c.IsHandcard)
                 {
-                    if (HitHandCard.IsMainPlayer && HitHandCard.IsHandcard)
-                        MouseOverObject = MouseOverObjects.HandCard;
+                    CurrCard = c;
                 }
-                else
-                    Debug.Log("Missing card script on " + hit.collider.gameObject);
             }
             else if (settings.IsOnTileLayer(hit.collider)) //Tile
             {
-                HitTile = hit.collider.GetComponent<DummyBoardTile>();
-                if (HitTile != null)
-                    MouseOverObject = MouseOverObjects.Tile;
-                else
-                    Debug.Log("Missing tile script on " + hit.collider.gameObject);
+                BoardTile t = hit.collider.GetComponent<BoardTile>();
+                if (t != null)
+                {
+                    CurrAnyTile = t;
+                    if (t.IsMainPlayer)
+                    {
+                        CurrP1Tile = t;
+                    }
+                }
             }
             else if (settings.IsOnUnitPieceLayer(hit.collider)) //Unit piece
             {
-                HitUnitPiece = hit.collider.GetComponent<UnitPiece>();
-                if (HitUnitPiece != null)
-                    MouseOverObject = MouseOverObjects.UnitPiece;
-                else
-                    Debug.Log("Missing unit piece script on " + hit.collider.gameObject);
+                CurrUnit = hit.collider.GetComponent<UnitPiece>();
+                //if (HitUnitPiece != null)
+                //    MouseOverObject = MouseOverObjects.UnitPiece;
+                //else
+                //    Debug.Log("Missing unit piece script on " + hit.collider.gameObject);
             }
         }
     }

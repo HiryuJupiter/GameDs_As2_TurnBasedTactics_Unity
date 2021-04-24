@@ -41,30 +41,31 @@ public class GamePhaseManager : MonoBehaviour
     #region Public - phase transition requests
     public void ToP3_CardSelection()
     {
-        uiM.SetActive_PlacementButton(false);
+        uiM.EnterCardSelection();
         GoToPhase(GamePhases.phase3_CardSelection);
     }
     public void ToP4_CardPlacementPhase()
     {
-        uiM.SetActive_PlacementButton(true);
+        uiM.EnterCardPlacement();
         GoToPhase(GamePhases.phase4_Placement);
     }
     public void ToP5_UnitControlMode()
     {
-        uiM.SetActive_PlacementButton(false);
+        uiM.EnterUnitControl();
         GoToPhase(GamePhases.phase5_UnitControl);
     }
+
     public void ToP6_AISequence() => GoToPhase(GamePhases.phase6_AIControlPhase);
     public void To_Evaluation() => GoToPhase(GamePhases.TurnCompleteEvaluation);
     #endregion
 
     #region Phase transition 
-    void GoToPhase(GamePhases newState)
+    void GoToPhase(GamePhases newPhase)
     {
-        if (Phase != newState)
+        if (Phase != newPhase)
         {
-            Debug.Log("--- Game phase switch from [" + Phase + "] to [" + newState + "] ---");
-            Phase = newState;
+            //Debug.Log("[" + Phase + "] to [" + newPhase + "] ---");
+            Phase = newPhase;
             uiM.SetPhase(Phase.ToString());
 
             switch (Phase)

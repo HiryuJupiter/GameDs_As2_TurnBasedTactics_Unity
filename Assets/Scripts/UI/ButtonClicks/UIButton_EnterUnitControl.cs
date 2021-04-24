@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class CancelPlacementButton : MonoBehaviour, IPointerClickHandler
+public class UIButton_EnterUnitControl : MonoBehaviour, IPointerClickHandler
 {
     GamePhaseManager phaseManager;
 
@@ -15,7 +15,7 @@ public class CancelPlacementButton : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        phaseManager.Player1.CancelPlacement();
+        phaseManager.Player1.EnterUnitControlMode();
     }
 
 }

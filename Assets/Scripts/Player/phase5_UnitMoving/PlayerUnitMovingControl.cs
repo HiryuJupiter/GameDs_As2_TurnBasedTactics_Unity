@@ -60,12 +60,12 @@ public class PlayerUnitMovingControl : MonoBehaviour
         return false;
     }
 
-    bool TryCheckForTile (out DummyBoardTile tile)
+    bool TryCheckForTile (out BoardTile tile)
     {
         tile = null;
         if (Physics.Raycast(ray, out RaycastHit hit, 100f, settings.TileLayer))
         {
-            tile = hit.collider.GetComponent<DummyBoardTile>();
+            tile = hit.collider.GetComponent<BoardTile>();
             if (tile != null && tile.IsMainPlayer)
             {
                 hitObject = tile;

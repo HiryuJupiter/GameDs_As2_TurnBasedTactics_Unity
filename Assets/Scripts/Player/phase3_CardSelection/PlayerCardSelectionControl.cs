@@ -46,32 +46,29 @@ public class PlayerCardSelectionControl : MonoBehaviour
     #region Public - Card selection and placement
     void SelectionUpdate()
     {
-        if (HoveringOverHandCard && Input.GetMouseButtonDown(0))
+        if (OnCard && Input.GetMouseButtonDown(0))
         {
-            if (player.MouseOverObject == MouseOverObjects.HandCard)
+            Card card = player.CurrCard;
+
+            if (player.Hand.TryRemoveCardFromHand(card))
             {
-                Card card = player.HitHandCard;
+                //Exit highlight before card swap
+                ExitHighlightOnAllCards();
 
-                if (player.Hand.TryRemoveCardFromHand(card))
-                {
-                    //Exit highlight before card swap
-                    ExitHighlightOnAllCards();
+                //Card swap
+                //player.ReturnSelectionSlotCardToHand();
+                player.SelectionSlot.SetAsSelectedCard(card);
 
-                    //Card swap
-                    //player.ReturnSelectionSlotCardToHand();
-                    player.SelectionSlot.SetAsSelectedCard(card);
-                    
-                    //Peripheral
-                    player.Hand.RefreshHandCardPositions();
-                    player.Hand.HideHand();
+                //Peripheral
+                player.Hand.RefreshHandCardPositions();
+                player.Hand.HideHand();
 
-                    //Phase change
-                    player.FinishedSelectingCard();
-                }
-                else
-                {
-                    Debug.LogError("Shouldn't happen. Card " + card);
-                }
+                //Phase change
+                player.FinishedSelectingCard();
+            }
+            else
+            {
+                Debug.LogError("Shouldn't happen. Card " + card);
             }
         }
     }
@@ -79,19 +76,18 @@ public class PlayerCardSelectionControl : MonoBehaviour
     #endregion
 
     #region Minor methods
-    bool MouseEntersNewCard => HoveringOverHandCard &&
-            (player.HitHandCard != player.PrevHitHandCard || player.PrevMouseOverObject != MouseOverObjects.HandCard);
-    bool HoveringOverHandCard => player.MouseOverObject == MouseOverObjects.HandCard;
-    bool MouseExitsAllCards => player.PrevMouseOverObject == MouseOverObjects.HandCard &&
-        player.MouseOverObject != MouseOverObjects.HandCard;
+    bool MouseEntersNewCard => OnCard && player.CurrCard != player.PrevCard;
+    bool MouseExitsAllCards => PrevOnCard && !OnCard;
+    bool OnCard => player.CurrCard != null;
+    bool PrevOnCard => player.PrevCard != null;
 
     void ExitHighlightOnAllCards () => player.Hand.ExitHighlightOnAllCards();
 
     void EnterHighlightOnNewCard ()
     {
-        if (player.HitHandCard != null)
+        if (player.CurrCard != null)
         {
-            player.HitHandCard.EnterHighlight();
+            player.CurrCard.EnterHighlight();
         }
     }
     #endregion
