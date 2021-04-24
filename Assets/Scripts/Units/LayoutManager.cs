@@ -7,16 +7,20 @@ namespace Layout
     
     public class LayoutManager : MonoBehaviour
     {
+        [Header("Offsets")]
         public float laneDistX = 0f;
         public float laneDistZ = 1.04f;
         public float offsetDist;
+
+        [Header("Map Size")]
         public int horiLanes;
         public int[] vertLanes = new int[2];
         bool spawningBlue = true;
         bool oddLane;
         int colour;
         int currentLaneSpawned;
-        public GameObject[,] hexPoints;
+        
+        public static GameObject[,] hexPoints;
 
 
         public GameObject[] hex = new GameObject[2];
@@ -52,6 +56,12 @@ namespace Layout
                 GameObject currentHex = Instantiate(hex[colour], spawnStart.position, spawnStart.rotation);
 
                 hexPoints[i + colour * vertLanes[colour], currentLaneSpawned] = currentHex;
+
+                if(i == 0)
+                {
+                    Hex newHex = currentHex.GetComponent<Hex>();
+                    newHex.spawnable = true;
+                }
 
                 spawnStart.position = new Vector3(spawnStart.position.x, spawnStart.position.y, spawnStart.position.z + laneDistZ);
 

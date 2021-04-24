@@ -10,6 +10,9 @@ public class UnitManager : MonoBehaviour
     public bool human;
     public Material highlight;
     public Material defaultTeam;
+    public Hex currentHex;
+   
+
 
 
     // Start is called before the first frame update
@@ -30,13 +33,19 @@ public class UnitManager : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 GameObject currentObj = hit.transform.gameObject;
-                Hex currentHex = currentObj.GetComponent<Hex>();
+                currentHex = currentObj.GetComponent<Hex>();
 
-                if (currentHex.blue)
+                if (currentHex.blue && currentHex.spawnable)
                 {
+                    currentHex.highlighted = true;
 
-                    currentObj.GetComponent<Renderer>().material = highlight;
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        Instantiate(units[unitIndex], currentHex.attachPoint.position, currentHex.attachPoint.rotation);
+                        looping = false;
+                        yield return null;
 
+                    }
                 }
 
 
@@ -49,13 +58,7 @@ public class UnitManager : MonoBehaviour
                
                     
             }
-            if (Input.GetMouseButtonDown(0))
-            {
-                Instantiate(units[unitIndex], transform.position, transform.rotation);
-                looping = false;
-                yield return null;
-                
-            }
+            
             yield return null;
         }
 
