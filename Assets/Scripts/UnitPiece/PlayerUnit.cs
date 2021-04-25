@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitPiece : MonoBehaviour
+public class PlayerUnit : MonoBehaviour
 {
     #region Fields
     [SerializeField] Renderer renderer;
@@ -13,6 +13,7 @@ public class UnitPiece : MonoBehaviour
 
     //Ref
     Material material;
+    BoardManager board;
 
     //Status
     Vector3 startPos;
@@ -33,6 +34,7 @@ public class UnitPiece : MonoBehaviour
         //Ref
         material = renderer.material;
         defaultColor = material.color;
+        board = BoardManager.Instance;
 
         //Cache
         this.player = player;
@@ -112,4 +114,17 @@ public class UnitPiece : MonoBehaviour
         callback();
     }
     #endregion
+
+    public void KilledByEnemy ()
+    {
+        if (board.TryGetTile(TileIndex.x, TileIndex.y, out BoardTile tile))
+        {
+            tile.SetUnitPiece(null);
+        }
+        else
+            Debug.LogError("no tile");
+
+
+        Destroy(gameObject);
+    }
 }

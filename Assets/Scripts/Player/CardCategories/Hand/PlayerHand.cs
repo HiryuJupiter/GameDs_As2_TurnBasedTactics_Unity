@@ -12,6 +12,7 @@ public class PlayerHand : MonoBehaviour
 
     Player player;
     HandSpreader spreader;
+    GameState gameState;
 
     //Cache
     int handSize;
@@ -29,6 +30,7 @@ public class PlayerHand : MonoBehaviour
 
         //Reference
         this.player = player;
+        gameState = GameState.Instance;
         spreader = new HandSpreader(player, centuralCardPosition, leftLimit, facingTarget.position);
 
         //Cache
@@ -103,6 +105,14 @@ public class PlayerHand : MonoBehaviour
         {
             spreader.UpdateSingleCardTransform(i, true);
             yield return new WaitForSeconds(cardDrawInterval);
+        }
+    }
+
+    public void CustomDrawCard ()
+    {
+        if (deck.TryDrawCard(out Card card))
+        {
+            AddCard(card, true);
         }
     }
 

@@ -11,8 +11,8 @@ public class UnitPieceManager : MonoBehaviour
 
     Quaternion P1Facing, P2Facing;
 
-    public List<UnitPiece> P1Pieces {get; private set;} = new List<UnitPiece>();
-    public List<UnitPiece> P2Pieces { get; private set; } = new List<UnitPiece>();
+    public List<PlayerUnit> P1Pieces {get; private set;} = new List<PlayerUnit>();
+    public List<PlayerUnit> P2Pieces { get; private set; } = new List<PlayerUnit>();
 
     private void Awake()
     {
@@ -32,11 +32,11 @@ public class UnitPieceManager : MonoBehaviour
 
     }
 
-    public UnitPiece SpawnUnit (CardTypes type, Vector2Int index, Player player)
+    public PlayerUnit SpawnUnit (CardTypes type, Vector2Int index, Player player)
     {
         Vector3 pos = board.GetTileWorldPos(index.x, index.y);
         Quaternion rot = player.IsMainPlayer ? P1Facing : P2Facing;
-        UnitPiece unit = Instantiate(dir.GetUnitPiece(type), pos, rot) as UnitPiece;
+        PlayerUnit unit = Instantiate(dir.GetUnitPiece(type), pos, rot) as PlayerUnit;
         unit.SpawnInitialization(player, index);
 
         AddUnitToList(unit, player.IsMainPlayer);
@@ -44,7 +44,7 @@ public class UnitPieceManager : MonoBehaviour
     }
 
     #region Minor
-    void AddUnitToList (UnitPiece unit, bool isMainPlayer )
+    void AddUnitToList (PlayerUnit unit, bool isMainPlayer )
     {
         (isMainPlayer ? P1Pieces : P2Pieces).Add(unit);
     }

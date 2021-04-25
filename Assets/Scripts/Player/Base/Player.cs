@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class Player : MonoBehaviour
 {
+    public static Player Instance;
+
     #region Fields
     [SerializeField] PlayerHand hand;
     [SerializeField] Deck deck;
@@ -14,6 +16,7 @@ public abstract class Player : MonoBehaviour
     protected UIManager uiM;
     protected GamePhaseManager phaseManager;
     protected GameSettings settings;
+    protected GameState gameState;
 
     public bool IsMainPlayer { get; protected set; } = false;
     public PlayerHand Hand => hand;
@@ -33,12 +36,16 @@ public abstract class Player : MonoBehaviour
         discardPile.Initialize(this);
 
         settings = GameSettings.Instance;
+        Instance = this;
     }
 
     private void Start()
     {
         phaseManager = GamePhaseManager.Instance;
         uiM = UIManager.Instance;
+        gameState = GameState.Instance;
+
+        
     }
     #endregion
 
@@ -52,15 +59,20 @@ public abstract class Player : MonoBehaviour
     {
         Hand.RaiseHand();
         Hand.DrawHand();
+
+        CheckIfCanDisplayBuyCardButton();
     }
     #endregion
 
     #region Public - Phase transitions
-    public void EnterUnitControl() //Also invoked by UI button click
+    public void BuyCard() //Also invoked by UI button click
     {
-        Hand.HideHand();
-        Hand.RefreshHandCardPositions();
-        phaseManager.ToP5_UnitControlMode();
+        if (gameState.TryBuyCard())
+        {
+            Hand.CustomDrawCard();
+            Hand.RefreshHandCardPositions();
+            CheckIfCanDisplayBuyCardButton();
+        }
     }
 
     public void CancelCardPlacement() //Also invoked by UI button click
@@ -80,12 +92,25 @@ public abstract class Player : MonoBehaviour
         Hand.RaiseHand();
         Hand.RefreshHandCardPositions();
 
+        //UI
+        CheckIfCanDisplayBuyCardButton();
+
         phaseManager.ToP3_CardSelection();
     }
 
-    public void FinishedCardSelection()
+    public void GoToCardPlacement()
     {
         phaseManager.ToP4_CardPlacementPhase();
     }
     #endregion
+
+    public void CheckIfCanDisplayBuyCardButton ()
+    {
+        if (gameState.HasMoneyForCard && 
+            hand.Cards.Count < 15f && 
+            deck.Cards.Count > 0)
+            uiM.ToggleBuyCardButton(true);
+        else
+            uiM.ToggleBuyCardButton(false);
+    }
 }

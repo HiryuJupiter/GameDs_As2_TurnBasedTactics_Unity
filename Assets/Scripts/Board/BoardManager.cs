@@ -43,6 +43,21 @@ public class BoardManager : MonoBehaviour
     #endregion
 
     #region Public
+    public bool TryGetTile (int x, int y, out BoardTile tile)
+    {
+        tile = null;
+        if (x >= 0 && x < tiles.GetLength(0) &&
+            y >= 0 && y < tiles.GetLength(1))
+        {
+            tile = tiles[x, y];
+            return true;
+        }
+        else
+        {
+            Debug.LogError("tile index out of bounds");
+            return false;
+        }
+    }
     #endregion
 
     #region Board generation

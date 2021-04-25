@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UIButton_EnterUnitControl : MonoBehaviour, IPointerClickHandler
+public class UIButton_BuyCard : MonoBehaviour, IPointerClickHandler
 {
     GamePhaseManager phaseManager;
 
@@ -15,7 +15,6 @@ public class UIButton_EnterUnitControl : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        phaseManager.Player1.EnterUnitControl();
+        phaseManager.Player.BuyCard();
     }
-
 }

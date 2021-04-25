@@ -7,13 +7,14 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
 
-    public Text P1HP;
-    public Text P2HP;
-    public Text Phase;
-    public GameObject Button_CancelCardPlacement;
-    public GameObject Button_EnterUnitBattle;
-    public GameObject GameOverScreen;
-    public GameObject GameWonScreen;
+    [SerializeField] Text P1HP;
+    [SerializeField] Text Wave;
+    [SerializeField] Text Gold;
+    [SerializeField] Text Phase;
+    [SerializeField] GameObject Button_CancelCardPlacement;
+    [SerializeField] GameObject Button_BuyCard;
+    [SerializeField] GameObject GameOverScreen;
+    [SerializeField] GameObject GameWonScreen;
 
     private void Awake()
     {
@@ -22,12 +23,17 @@ public class UIManager : MonoBehaviour
 
     public void SetP1HP (int amount)
     {
-        P1HP.text = "P1HP = " + amount;
+        P1HP.text = "HP = " + amount;
     }
 
-    public void SetP2HP(int amount)
+    public void SetScore(int wave)
     {
-        P2HP.text = "P2HP = " + amount;
+        Wave.text = "KILLS = " + wave;
+    }
+
+    public void SetGold(int gold)
+    {
+        Gold.text = "$ = " + gold;
     }
 
     public void SetPhase(string phase)
@@ -47,20 +53,20 @@ public class UIManager : MonoBehaviour
 
     public void EnterCardSelection ()
     {
-        Button_EnterUnitBattle.SetActive(true);
         Button_CancelCardPlacement.SetActive(false);
     }
 
-    public  void EnterCardPlacement ()
+    public void EnterCardPlacement ()
     {
-        Button_EnterUnitBattle.SetActive(false);
         Button_CancelCardPlacement.SetActive(true);
+        ToggleBuyCardButton(false);
     }
 
-    public void EnterUnitControl ()
+    public void ToggleBuyCardButton (bool isVisible)
     {
-        Button_EnterUnitBattle.SetActive(false);
+        Button_BuyCard.SetActive(isVisible);
     }
+
 
     private void Update()
     {

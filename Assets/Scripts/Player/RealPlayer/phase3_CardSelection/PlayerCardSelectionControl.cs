@@ -64,7 +64,7 @@ public class PlayerCardSelectionControl : MonoBehaviour
                 player.Hand.RefreshHandCardPositions();
 
                 //Phase change
-                player.FinishedCardSelection();
+                player.GoToCardPlacement();
             }
             else
             {

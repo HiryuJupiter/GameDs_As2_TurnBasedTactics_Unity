@@ -19,17 +19,17 @@ public class PrefabDirectory : MonoBehaviour
     [SerializeField] Card SpearmanCard;
 
     [Header("Unit pieces")]
-    [SerializeField] UnitPiece GodzillaPiece;
-    [SerializeField] UnitPiece KingPiece;
-    [SerializeField] UnitPiece QueenPiece;
-    [SerializeField] UnitPiece JackPiece;
-    [SerializeField] UnitPiece KnightPiece;
-    [SerializeField] UnitPiece SwordsmanPiece;
-    [SerializeField] UnitPiece ArcherPiece;
-    [SerializeField] UnitPiece SpearmanPiece;
+    [SerializeField] PlayerUnit GodzillaPiece;
+    [SerializeField] PlayerUnit KingPiece;
+    [SerializeField] PlayerUnit QueenPiece;
+    [SerializeField] PlayerUnit JackPiece;
+    [SerializeField] PlayerUnit KnightPiece;
+    [SerializeField] PlayerUnit SwordsmanPiece;
+    [SerializeField] PlayerUnit ArcherPiece;
+    [SerializeField] PlayerUnit SpearmanPiece;
 
     private Dictionary<CardTypes, Card> cardLookup;
-    private Dictionary<CardTypes, UnitPiece> pieceLookup;
+    private Dictionary<CardTypes, PlayerUnit> pieceLookup;
 
     public Card DrawCard(CardTypes cardType, Vector3 pos, Quaternion rotation)
     {
@@ -44,7 +44,7 @@ public class PrefabDirectory : MonoBehaviour
         return card;
     }
 
-    public UnitPiece GetUnitPiece (CardTypes types)
+    public PlayerUnit GetUnitPiece (CardTypes types)
     {
         return pieceLookup[types];
     }
@@ -54,7 +54,7 @@ public class PrefabDirectory : MonoBehaviour
         Instance = this;
         cardLookup = new Dictionary<CardTypes, Card>()
         {
-            {CardTypes.Godzilla,       GodzillaCard },
+            {CardTypes.Godzilla,    GodzillaCard },
             {CardTypes.King,        KingCard },
             {CardTypes.Queen,       QueenCard },
             {CardTypes.Jack,        JackCard },
@@ -64,7 +64,7 @@ public class PrefabDirectory : MonoBehaviour
             {CardTypes.Spearman,    SpearmanCard },
         };
 
-        pieceLookup = new Dictionary<CardTypes, UnitPiece>()
+        pieceLookup = new Dictionary<CardTypes, PlayerUnit>()
         {
             {CardTypes.Godzilla,       GodzillaPiece },
             {CardTypes.King,        KingPiece},

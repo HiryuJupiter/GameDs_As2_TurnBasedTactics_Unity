@@ -9,8 +9,8 @@ public class RealPlayer : Player
 
     #region Raycast Targets
     //Currently raycast hit unit piece
-    public UnitPiece CurrUnit { get; protected set; }
-    public UnitPiece PrevUnit { get; protected set; }
+    public PlayerUnit CurrUnit { get; protected set; }
+    public PlayerUnit PrevUnit { get; protected set; }
     //Currently raycast hit hand-card
     public Card CurrCard { get; protected set; }
     public Card PrevCard { get; protected set; }
@@ -189,7 +189,7 @@ public class RealPlayer : Player
         }
         if (Physics.Raycast(ray, out RaycastHit hitUnit, 100f, settings.UnitPieceLayer)) //Unit piece
         {
-            UnitPiece unit = hitUnit.collider.GetComponent<UnitPiece>();
+            PlayerUnit unit = hitUnit.collider.GetComponent<PlayerUnit>();
             if (unit != null && unit.IsMainPlayer)
             {
                 CurrUnit = unit;

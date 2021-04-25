@@ -59,7 +59,7 @@ public class PlayerCardPlacementControl : MonoBehaviour
                 player.Hand.RefreshHandCardPositions();
 
                 //Spawn unit
-                UnitPiece unit =  unitSpawner.SpawnUnit(card.CardType, player.CurrSpawnTile.Index, player);
+                PlayerUnit unit =  unitSpawner.SpawnUnit(card.CardType, player.CurrSpawnTile.Index, player);
 
                 //Set unit
                 player.CurrSpawnTile.SetUnitPiece(unit);

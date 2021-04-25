@@ -16,12 +16,10 @@ public class GamePhaseManager : MonoBehaviour
     public static GamePhaseManager Instance { get; private set; }
 
     [SerializeField] private RealPlayer player1;
-    [SerializeField] private Player player2;
-
     //Status
 
     //Properties
-    public RealPlayer Player1 => player1;
+    public RealPlayer Player => player1;
     public static GamePhases Phase { get; private set; } = GamePhases.Standby;
     public static int Turn { get; private set; } = 0;
 
@@ -49,11 +47,11 @@ public class GamePhaseManager : MonoBehaviour
         uiM.EnterCardPlacement();
         GoToPhase(GamePhases.phase4_Placement);
     }
-    public void ToP5_UnitControlMode()
-    {
-        uiM.EnterUnitControl();
-        GoToPhase(GamePhases.phase5_UnitControl);
-    }
+    //public void ToP5_UnitControlMode()
+    //{
+    //    uiM.EnterUnitControl();
+    //    GoToPhase(GamePhases.phase5_UnitControl);
+    //}
 
     public void ToP6_AISequence() => GoToPhase(GamePhases.phase6_AIControlPhase);
     public void To_Evaluation() => GoToPhase(GamePhases.TurnCompleteEvaluation);
@@ -97,7 +95,7 @@ public class GamePhaseManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         player1.FillDeck();
-        player2.FillDeck();
+        //player2.FillDeck();
 
         yield return new WaitForSeconds(2f);
         while (!IsDeckStill)
@@ -109,7 +107,7 @@ public class GamePhaseManager : MonoBehaviour
     IEnumerator Phase2_DrawHand()
     {
         player1.DrawHand();
-        player2.DrawHand();
+        //player2.DrawHand();
 
         yield return new WaitForSeconds(0.5f);
         while (!IsHandStill)
@@ -131,7 +129,7 @@ public class GamePhaseManager : MonoBehaviour
     //}
 
     #region Minor expressions
-    bool IsHandStill => player1.Hand.AreCardsStill() && player2.Hand.AreCardsStill();
-    bool IsDeckStill => player1.PlayerDeck.AreCardsInDeckStill() && player2.PlayerDeck.AreCardsInDeckStill();
+    bool IsHandStill => player1.Hand.AreCardsStill();
+    bool IsDeckStill => player1.PlayerDeck.AreCardsInDeckStill();
     #endregion
 }

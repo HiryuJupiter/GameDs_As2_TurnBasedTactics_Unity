@@ -7,12 +7,16 @@ public class GameSettings : MonoBehaviour
     public static GameSettings Instance { get; private set; }
 
     [Header("PhysicsLayers")]
-    [SerializeField] LayerMask unitPieceLayer;
+    [SerializeField] LayerMask playerUnitLayer;
     [SerializeField] LayerMask tileLayer;
     [SerializeField] LayerMask cardLayer;
-    public LayerMask UnitPieceLayer => unitPieceLayer;
+    [SerializeField] LayerMask enemyLayer;
+    [SerializeField] LayerMask playerBulletLayer;
+    public LayerMask UnitPieceLayer => playerUnitLayer;
     public LayerMask TileLayer => tileLayer;
     public LayerMask CardLayer => cardLayer;
+    public LayerMask EnemyLayer => enemyLayer;
+    public LayerMask PlayerBulletLayer => playerBulletLayer;
 
     [Header("Card spawning")]
     [SerializeField] int handSize = 5;
@@ -48,7 +52,6 @@ public class GameSettings : MonoBehaviour
     [SerializeField] float mousePanSensitivity = -0.01f;
     public float MousePanSensitivity => mousePanSensitivity;
 
-
     [Header("Card highlight")]
     [SerializeField] float highlightOffsetX = 0.1f;
     [SerializeField] float highlightOffsetY = 1.2f;
@@ -62,12 +65,16 @@ public class GameSettings : MonoBehaviour
         Instance = this;
     }
 
-
-
-    public bool IsOnTileLayer (Collider collider) => 
+    public bool IsOnTileLayer(Collider collider) =>
         tileLayer == (tileLayer | (1 << collider.gameObject.layer));
-    public bool IsOnUnitPieceLayer (Collider collider) => 
-        unitPieceLayer == (unitPieceLayer | (1 << collider.gameObject.layer));
-    public bool IsOnCardLayer (Collider collider) => 
+    public bool IsOnPlayerUnitLayer(Collider collider) =>
+        playerUnitLayer == (playerUnitLayer | (1 << collider.gameObject.layer));
+    public bool IsOnCardLayer(Collider collider) =>
         cardLayer == (cardLayer | (1 << collider.gameObject.layer));
+
+    public bool IsOnEnemyLayer(Collider collider) =>
+   enemyLayer == (enemyLayer | (1 << collider.gameObject.layer));
+
+    public bool IsOnPlayerButtleLayer(Collider collider) =>
+    PlayerBulletLayer == (PlayerBulletLayer | (1 << collider.gameObject.layer));
 }

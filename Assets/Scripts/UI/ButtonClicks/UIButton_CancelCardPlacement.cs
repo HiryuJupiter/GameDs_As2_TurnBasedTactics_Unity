@@ -15,7 +15,7 @@ public class UIButton_CancelCardPlacement : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        phaseManager.Player1.CancelCardPlacement();
+        phaseManager.Player.CancelCardPlacement();
     }
 
 }

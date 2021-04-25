@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PlayerUnitMovingControl : MonoBehaviour
 {
-    UnitPiece movingUnit;
-    UnitPiece targetUnit;
+    PlayerUnit movingUnit;
+    PlayerUnit targetUnit;
     BoardTile targetTile;
 
     enum Mode { SelectUnit, MoveUnit, AttackUnit}
