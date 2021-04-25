@@ -54,12 +54,15 @@ public class PlayerCardPlacementControl : MonoBehaviour
             if (player.SelectionSlot.TryRemoveCard(out Card card))
             {
                 //Clean up highlight
-                player.CurrP1Tile.ToggleHoverHighlight(false);
+                player.CurrSpawnTile.ToggleHoverHighlight(false);
                 player.Hand.HideHand();
                 player.Hand.RefreshHandCardPositions();
 
                 //Spawn unit
-                unitSpawner.SpawnUnit(card.CardType, player.CurrP1Tile.Index, player);
+                UnitPiece unit =  unitSpawner.SpawnUnit(card.CardType, player.CurrSpawnTile.Index, player);
+
+                //Set unit
+                player.CurrSpawnTile.SetUnitPiece(unit);
 
                 //Phase transition
                 player.EnterCardSelection();

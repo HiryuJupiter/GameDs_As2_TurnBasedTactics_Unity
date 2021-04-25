@@ -32,14 +32,15 @@ public class UnitPieceManager : MonoBehaviour
 
     }
 
-    public void SpawnUnit (CardTypes type, Vector2Int index, Player player)
+    public UnitPiece SpawnUnit (CardTypes type, Vector2Int index, Player player)
     {
         Vector3 pos = board.GetTileWorldPos(index.x, index.y);
         Quaternion rot = player.IsMainPlayer ? P1Facing : P2Facing;
         UnitPiece unit = Instantiate(dir.GetUnitPiece(type), pos, rot) as UnitPiece;
-        unit.SpawnInitialization(player);
+        unit.SpawnInitialization(player, index);
 
         AddUnitToList(unit, player.IsMainPlayer);
+        return unit;
     }
 
     #region Minor

@@ -24,10 +24,11 @@ public class UnitPiece : MonoBehaviour
     public bool isMoving { get; private set; }
     public bool IsMainPlayer { get; private set; }
     public Player player { get; private set; }
+    public Vector2Int TileIndex { get; private set; }
     #endregion
 
     #region Spawn initialization
-    public void SpawnInitialization(Player player)
+    public void SpawnInitialization(Player player, Vector2Int tileIndex)
     {
         //Ref
         material = renderer.material;
@@ -36,7 +37,9 @@ public class UnitPiece : MonoBehaviour
         //Cache
         this.player = player;
         IsMainPlayer = player.IsMainPlayer;
-        
+
+        //Status
+        TileIndex = tileIndex;
 
         //Intiailize
         allianceRing.color = IsMainPlayer ? Color.green : Color.red;

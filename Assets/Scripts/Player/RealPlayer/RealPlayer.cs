@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class RealPlayer : Player
 {
-    
-
     PlayerCardSelectionControl selectionControl;
     PlayerCardPlacementControl placementControl;
     PlayerUnitMovingControl unitMoveControl;
@@ -17,8 +15,8 @@ public class RealPlayer : Player
     public Card CurrCard { get; protected set; }
     public Card PrevCard { get; protected set; }
     //Currently raycast hit tile of player 1 (for spawning pieces)
-    public BoardTile CurrP1Tile { get; protected set; }
-    public BoardTile PrevP1Tile { get; protected set; }
+    public BoardTile CurrSpawnTile { get; protected set; }
+    public BoardTile PrevSpawnTile { get; protected set; }
     //Tile of any player
     public BoardTile CurrAnyTile { get; protected set; }
     public BoardTile PrevAnyTile { get; protected set; }
@@ -64,23 +62,23 @@ public class RealPlayer : Player
     }
     #endregion
 
-    #region Tile selection
-    public bool MouseEntersNewTile => OnTile && CurrP1Tile != PrevP1Tile;
+    #region Spawn tile selection
+    public bool MouseEntersNewTile => OnTile && CurrSpawnTile != PrevSpawnTile;
     public bool MouseExitsAllTiles => PrevOnTile && !OnTile;
-    public bool OnTile => CurrP1Tile != null;
-    public bool PrevOnTile => PrevP1Tile != null;
+    public bool OnTile => CurrSpawnTile != null;
+    public bool PrevOnTile => PrevSpawnTile != null;
 
     public void ExitHighlightOnPrevTile()
     {
         if (PrevOnTile)
-            PrevP1Tile.ToggleHoverHighlight(false);
+            PrevSpawnTile.ToggleHoverHighlight(false);
     }
 
     public void EnterHighlightOnNewTile()
     {
-        if (CurrP1Tile != null)
+        if (CurrSpawnTile != null)
         {
-            CurrP1Tile.ToggleHoverHighlight(true);
+            CurrSpawnTile.ToggleHoverHighlight(true);
         }
     }
     #endregion
@@ -144,10 +142,10 @@ public class RealPlayer : Player
 
         GUI.Label(new Rect(700f, 0f, 200f, 20f), "PrevUnit: " + PrevUnit);
         GUI.Label(new Rect(700f, 20f, 200f, 20f), "PrevCard: " + PrevCard);
-        GUI.Label(new Rect(700f, 40f, 200f, 20f), "PrevTile: " + PrevP1Tile);
+        GUI.Label(new Rect(700f, 40f, 200f, 20f), "PrevTile: " + PrevSpawnTile);
         GUI.Label(new Rect(700f, 60f, 200f, 20f), "CurrUnit: " + CurrUnit);
         GUI.Label(new Rect(700f, 80f, 200f, 20f), "CurrCard: " + CurrCard);
-        GUI.Label(new Rect(700f, 100f, 200f, 20f), "CurrTile: " + CurrP1Tile);
+        GUI.Label(new Rect(700f, 100f, 200f, 20f), "CurrTile: " + CurrSpawnTile);
 
     }
 
@@ -159,16 +157,50 @@ public class RealPlayer : Player
         //PrevMouseOverObject = MouseOverObject;
         PrevUnit = CurrUnit;
         PrevCard = CurrCard;
-        PrevP1Tile = CurrP1Tile;
+        PrevSpawnTile = CurrSpawnTile;
         PrevAnyTile = CurrAnyTile;
 
         //MouseOverObject = MouseOverObjects.None;
         CurrUnit = null;
         CurrCard = null;
-        CurrP1Tile = null;
+        CurrSpawnTile = null;
         CurrAnyTile = null;
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f))
+        if (Physics.Raycast(ray, out RaycastHit hitCard, 100f, settings.CardLayer)) //Hand card
+        {
+            Card c = hitCard.collider.GetComponent<Card>();
+            if (c != null && c.IsMainPlayer && c.IsHandcard)
+            {
+                CurrCard = c;
+            }
+        }
+
+        if (Physics.Raycast(ray, out RaycastHit hitTile, 100f, settings.TileLayer)) //Tile
+        {
+            BoardTile t = hitTile.collider.GetComponent<BoardTile>();
+            if (t != null)
+            {
+                CurrAnyTile = t;
+                if (t.IsMainPlayer && !t.IsOccupied)
+                {
+                    CurrSpawnTile = t;
+                }
+            }
+        }
+        if (Physics.Raycast(ray, out RaycastHit hitUnit, 100f, settings.UnitPieceLayer)) //Unit piece
+        {
+            UnitPiece unit = hitUnit.collider.GetComponent<UnitPiece>();
+            if (unit != null && unit.IsMainPlayer)
+            {
+                CurrUnit = unit;
+            }
+        }
+    }
+    #endregion
+}
+
+/*
+      //if (Physics.Raycast(ray, out RaycastHit hit, 100f))
         {
             if (settings.IsOnCardLayer(hit.collider)) //Hand card
             {
@@ -184,9 +216,9 @@ public class RealPlayer : Player
                 if (t != null)
                 {
                     CurrAnyTile = t;
-                    if (t.IsMainPlayer)
+                    if (t.IsMainPlayer && !t.IsOccupied)
                     {
-                        CurrP1Tile = t;
+                        CurrSpawnTile = t;
                     }
                 }
             }
@@ -199,6 +231,4 @@ public class RealPlayer : Player
                 }
             }
         }
-    }
-    #endregion
-}
+ */

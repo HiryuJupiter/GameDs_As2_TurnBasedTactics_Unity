@@ -7,10 +7,16 @@ public class BoardTile : MonoBehaviour
 
     Material material;
     Color defaultColor;
+    public UnitPiece Unit { get; private set; }
     public Vector2Int Index { get; private set; }
     public bool IsMainPlayer => isPlayer1Tile;
+    public bool IsOccupied => Unit != null;
     public Vector2Int SetIndex { set { Index = value;} }
 
+    public void SetUnitPiece (UnitPiece unit)
+    {
+        Unit = unit;
+    }
 
     public void ToggleAttackHighlight(bool isOn)
     {
