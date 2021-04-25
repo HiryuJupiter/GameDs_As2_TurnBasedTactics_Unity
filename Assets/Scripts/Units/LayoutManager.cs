@@ -54,12 +54,16 @@ namespace Layout
             {
 
                 GameObject currentHex = Instantiate(hex[colour], spawnStart.position, spawnStart.rotation);
+                int xPoint = i + colour * vertLanes[colour];
+                hexPoints[xPoint, currentLaneSpawned] = currentHex;
+                Hex newHex = currentHex.GetComponent<Hex>();
+                newHex.vertPoint = xPoint;
+                newHex.horiPoint = currentLaneSpawned;
+                newHex.oddLane = oddLane;
 
-                hexPoints[i + colour * vertLanes[colour], currentLaneSpawned] = currentHex;
-
-                if(i == 0)
+                if (i == 0)
                 {
-                    Hex newHex = currentHex.GetComponent<Hex>();
+                   
                     newHex.spawnable = true;
                 }
 

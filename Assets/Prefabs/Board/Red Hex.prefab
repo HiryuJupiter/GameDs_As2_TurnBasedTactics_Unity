@@ -1396,7 +1396,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blue: 0
+  spawnable: 0
   highlighted: 0
+  movable: 0
+  selected: 0
+  attachedBlue: 0
+  oddLane: 0
   highlight: {fileID: 2100000, guid: 8309bba7c0bb8e24da0e0a9f373a67ec, type: 2}
   teamColour: {fileID: 2100000, guid: 3160fa1268ec4754ca65eae896a7b5f1, type: 2}
+  selectedColour: {fileID: 2100000, guid: dd69a09f701ffee46b31eef513788036, type: 2}
+  attachedColour: {fileID: 2100000, guid: 49f784ff0a8ab0747adc17e84a0df765, type: 2}
   attachPoint: {fileID: 1771221412949742050}
+  attachedObject: {fileID: 0}
+  horiPoint: 0
+  vertPoint: 0

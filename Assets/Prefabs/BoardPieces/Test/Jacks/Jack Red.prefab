@@ -451,6 +451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6515632615453130358}
+  - component: {fileID: 2645295333163843441}
   m_Layer: 0
   m_Name: Jack Red
   m_TagString: Untagged
@@ -473,6 +474,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2645295333163843441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5929772177854767586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d812f444408202a4b80ed0dbcd082bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 1
+  unitName: 
+  maxHealth: 200
+  currentHealth: 200
+  unitDamage: 20
+  blue: 0
+  selected: 0
+  attachedHex: {fileID: 0}
+  dummy: 1
+  state: 3
 --- !u!1 &6675585052236589062
 GameObject:
   m_ObjectHideFlags: 0
