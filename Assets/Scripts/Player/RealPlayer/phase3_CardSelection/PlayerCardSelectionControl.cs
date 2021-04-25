@@ -60,8 +60,8 @@ public class PlayerCardSelectionControl : MonoBehaviour
                 player.SelectionSlot.SetAsSelectedCard(card);
 
                 //Peripheral
-                player.Hand.RefreshHandCardPositions();
                 player.Hand.HideHand();
+                player.Hand.RefreshHandCardPositions();
 
                 //Phase change
                 player.FinishedCardSelection();

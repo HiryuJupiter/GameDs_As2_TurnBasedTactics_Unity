@@ -95,10 +95,11 @@ public class GamePhaseManager : MonoBehaviour
     #region Phases
     IEnumerator Phase1_FillDeck()
     {
+        yield return new WaitForSeconds(0.2f);
         player1.FillDeck();
         player2.FillDeck();
 
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.9f);
         while (!IsDeckStill)
             yield return null;
 
@@ -124,10 +125,10 @@ public class GamePhaseManager : MonoBehaviour
     }
     #endregion
 
-    void OnGUI()
-    {
-        GUI.Label(new Rect(Screen.width - 200, 20, 200, 20), "State: " + Phase);
-    }
+    //void OnGUI()
+    //{
+    //    GUI.Label(new Rect(Screen.width - 200, 20, 200, 20), "State: " + Phase);
+    //}
 
     #region Minor expressions
     bool IsHandStill => player1.Hand.AreCardsStill() && player2.Hand.AreCardsStill();

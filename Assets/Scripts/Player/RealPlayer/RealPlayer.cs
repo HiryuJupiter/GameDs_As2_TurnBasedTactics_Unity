@@ -114,6 +114,7 @@ public class RealPlayer : Player
 
     void OnGUI()
     {
+        return;
         //GUI.Label(new Rect(20, 20, 200, 20), "ControlState: " + ControlState);
 
         GUI.Label(new Rect(100f, 0f, 200f, 20f), "=== Deck pile === ");

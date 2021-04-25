@@ -58,6 +58,8 @@ public abstract class Player : MonoBehaviour
     #region Public - Phase transitions
     public void EnterUnitControl() //Also invoked by UI button click
     {
+        Hand.HideHand();
+        Hand.RefreshHandCardPositions();
         phaseManager.ToP5_UnitControlMode();
     }
 
