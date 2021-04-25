@@ -61,4 +61,13 @@ public class UIManager : MonoBehaviour
     {
         Button_EnterUnitBattle.SetActive(false);
     }
+
+    private void Update()
+    {
+        //debug end screen
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+            GameOver();
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+            GameWon();
+    }
 }

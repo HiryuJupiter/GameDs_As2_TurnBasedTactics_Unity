@@ -465,11 +465,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
-        type: 3}
-      propertyPath: deckSpawnInterval
-      value: 0.05
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fa29adaaf086174f869fb27b714f303, type: 3}
 --- !u!1001 &1502182484
