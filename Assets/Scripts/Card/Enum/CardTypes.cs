@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 public enum CardTypes
 {
-    Dummy,
+    Godzilla,
     King,
     Queen,
     Jack,
+
     Knight,
     Swordsman,
     Archer,

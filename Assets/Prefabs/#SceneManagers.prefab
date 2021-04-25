@@ -136,37 +136,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 359473b8c73cb2c498861c4cb5a25368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DummyCard: {fileID: 5933028959957689982, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  GodzillaCard: {fileID: 4777807111874583219, guid: 73729fcf61773304080edd8ec092f9c9,
     type: 3}
-  KingCard: {fileID: 5933028959957689982, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  KingCard: {fileID: 4777807111874583219, guid: 2f1c3dc430fb8584daab89fa5f13be95,
     type: 3}
-  QueenCard: {fileID: 5933028959957689982, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  QueenCard: {fileID: 4777807111874583219, guid: 41d36c6b4df1e804a8076332c9a6b3b5,
     type: 3}
-  JackCard: {fileID: 5933028959957689982, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  JackCard: {fileID: 4777807111874583219, guid: fc118a0d06433444e834c52458271258,
     type: 3}
-  KnightCard: {fileID: 5933028959957689982, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  KnightCard: {fileID: 4777807111874583219, guid: 5fe36a70db35810488ed2390112bbcad,
     type: 3}
-  SwordsmanCard: {fileID: 5933028959957689982, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  SwordsmanCard: {fileID: 4777807111874583219, guid: 4cf5248242672ad479e1b014be3f9a04,
     type: 3}
-  ArcherCard: {fileID: 5933028959957689982, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  ArcherCard: {fileID: 4777807111874583219, guid: 26b0a72ea14d3a948b7ad8ab109c3892,
     type: 3}
-  SpearmanCard: {fileID: 5933028959957689982, guid: 2f1c3dc430fb8584daab89fa5f13be95,
+  SpearmanCard: {fileID: 4777807111874583219, guid: 3b2779e69eb04fc46beae411e07c9fcb,
     type: 3}
-  DummyPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  GodzillaPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
     type: 3}
-  KingPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  KingPiece: {fileID: 1724049237462094539, guid: 29bbd31618e9ba74a9133adba0a29130,
     type: 3}
-  QueenPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  QueenPiece: {fileID: 1724049237462094539, guid: 03b21e6c497e5904898f7829b0b57922,
     type: 3}
-  JackPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  JackPiece: {fileID: 1724049237462094539, guid: 4ea3215b9f35f274d855913b676bc8ac,
     type: 3}
-  KnightPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  KnightPiece: {fileID: 1724049237462094539, guid: abad14a9cf094724cab3175159385c75,
     type: 3}
-  SwordsmanPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  SwordsmanPiece: {fileID: 1724049237462094539, guid: b648fd4718f072143994316e0e278dce,
     type: 3}
-  ArcherPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  ArcherPiece: {fileID: 1724049237462094539, guid: 49825919cc1c2e14abad894c94e4a71c,
     type: 3}
-  SpearmanPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  SpearmanPiece: {fileID: 1724049237462094539, guid: 531270755b2ee1148abddec2e9454ec8,
     type: 3}
 --- !u!1 &1786045769800991364
 GameObject:
@@ -242,8 +242,8 @@ MonoBehaviour:
   deckSize: 15
   deckSpawnInterval: 0.025
   cardDrawInterval: 0.2
-  moveLerpSpeed: 2.5
-  rotLerpSpeed: 1.5
+  moveLerpSpeed: 2
+  rotLerpSpeed: 2
   scaleLerpSpeed: 2.5
   parabolicHeight: 0.5
   cardSpacing: 1

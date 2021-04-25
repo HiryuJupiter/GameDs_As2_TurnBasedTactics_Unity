@@ -5,6 +5,10 @@ using UnityEngine;
 public class Card : MonoBehaviour
 {
     #region Fields
+    [SerializeField] CardTypes cardType;
+    [SerializeField] Renderer bgSpriteRenderer;
+    [SerializeField] Texture player2BG;
+
     //Reference
     protected Player player;
     protected GamePhaseManager phaseManager;
@@ -14,8 +18,6 @@ public class Card : MonoBehaviour
     protected CardScaleManipulator scaler;
 
     //Cache
-    CardTypes cardType;
-
     public bool IsMainPlayer => player.IsMainPlayer;
     public bool IsHandcard { get; private set; }
     public bool InMovingAnimation => mover.InDirectMove || mover.InParabolicMove;
@@ -34,6 +36,9 @@ public class Card : MonoBehaviour
         mover = new CardPositionManipulator(player, this);
         rotator = new CardRotationManipulator(player, this);
         scaler = new CardScaleManipulator(player, this);
+
+        if (!player.IsMainPlayer)
+            bgSpriteRenderer.material.mainTexture = player2BG;
     }
     #endregion
 

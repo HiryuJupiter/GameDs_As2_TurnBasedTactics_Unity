@@ -15,7 +15,7 @@ public class UIButton_EnterUnitControl : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        phaseManager.Player1.EnterUnitControlMode();
+        phaseManager.Player1.EnterUnitControl();
     }
 
 }

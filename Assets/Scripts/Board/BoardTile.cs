@@ -12,14 +12,14 @@ public class BoardTile : MonoBehaviour
     public Vector2Int SetIndex { set { Index = value;} }
 
 
-    public void EnterHighlight()
+    public void ToggleAttackHighlight(bool isOn)
     {
-        material.color = Color.white;
+        material.color = isOn ? Color.red : defaultColor;
     }
 
-    public void ExitHighlight()
+    public void ToggleHoverHighlight(bool isOn)
     {
-        material.color = defaultColor;
+        material.color = isOn ? Color.white : defaultColor;
     }
 
     private void Awake()

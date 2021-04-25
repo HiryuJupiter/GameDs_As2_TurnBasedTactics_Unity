@@ -8,7 +8,8 @@ public class PrefabDirectory : MonoBehaviour
 {
     public static PrefabDirectory Instance;
 
-    [SerializeField] Card DummyCard;
+    [Header("Card")]
+    [SerializeField] Card GodzillaCard;
     [SerializeField] Card KingCard;
     [SerializeField] Card QueenCard;
     [SerializeField] Card JackCard;
@@ -17,7 +18,8 @@ public class PrefabDirectory : MonoBehaviour
     [SerializeField] Card ArcherCard;
     [SerializeField] Card SpearmanCard;
 
-    [SerializeField] UnitPiece DummyPiece;
+    [Header("Unit pieces")]
+    [SerializeField] UnitPiece GodzillaPiece;
     [SerializeField] UnitPiece KingPiece;
     [SerializeField] UnitPiece QueenPiece;
     [SerializeField] UnitPiece JackPiece;
@@ -52,7 +54,7 @@ public class PrefabDirectory : MonoBehaviour
         Instance = this;
         cardLookup = new Dictionary<CardTypes, Card>()
         {
-            {CardTypes.Dummy,       DummyCard },
+            {CardTypes.Godzilla,       GodzillaCard },
             {CardTypes.King,        KingCard },
             {CardTypes.Queen,       QueenCard },
             {CardTypes.Jack,        JackCard },
@@ -64,7 +66,7 @@ public class PrefabDirectory : MonoBehaviour
 
         pieceLookup = new Dictionary<CardTypes, UnitPiece>()
         {
-            {CardTypes.Dummy,       DummyPiece },
+            {CardTypes.Godzilla,       GodzillaPiece },
             {CardTypes.King,        KingPiece},
             {CardTypes.Queen,       QueenPiece},
             {CardTypes.Jack,        JackPiece},

@@ -20,6 +20,8 @@ public abstract class Player : MonoBehaviour
     public Deck PlayerDeck => deck;
     public DiscardPile DiscardPile => discardPile;
     public SelectionSlot SelectionSlot => selectionSlot;
+
+
     #endregion
 
     #region Mono
@@ -50,6 +52,38 @@ public abstract class Player : MonoBehaviour
     {
         Hand.RaiseHand();
         Hand.DrawHand();
+    }
+    #endregion
+
+    #region Public - Phase transitions
+    public void EnterUnitControl() //Also invoked by UI button click
+    {
+        phaseManager.ToP5_UnitControlMode();
+    }
+
+    public void CancelCardPlacement() //Also invoked by UI button click
+    {
+        //Return selection slot card to hand
+        if (SelectionSlot.TryRemoveCard(out Card card))
+        {
+            Hand.AddCard(card);
+        }
+
+        EnterCardSelection();
+    }
+
+    public void EnterCardSelection()
+    {
+        //Display hand
+        Hand.RaiseHand();
+        Hand.RefreshHandCardPositions();
+
+        phaseManager.ToP3_CardSelection();
+    }
+
+    public void FinishedCardSelection()
+    {
+        phaseManager.ToP4_CardPlacementPhase();
     }
     #endregion
 }
