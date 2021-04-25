@@ -110,11 +110,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
-    - target: {fileID: 7528940578227613303, guid: b224e459e8a58d54980572310094cd33,
+    - target: {fileID: 5814655928939199326, guid: b224e459e8a58d54980572310094cd33,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: d146f442d898e754da51bdb8f31000cc, type: 2}
+    - target: {fileID: 7528940578227613303, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3f9d0991d22c2d64586185197dcc7624, type: 2}
+    - target: {fileID: 7686650898895214435, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
+      propertyPath: cardType
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7686650898895214435, guid: b224e459e8a58d54980572310094cd33,
         type: 3}
       propertyPath: player2BG

@@ -117,6 +117,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: baddfde0e2e9abe43b1defc70f1d3a97, type: 2}
     - target: {fileID: 7686650898895214435, guid: b224e459e8a58d54980572310094cd33,
         type: 3}
+      propertyPath: cardType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7686650898895214435, guid: b224e459e8a58d54980572310094cd33,
+        type: 3}
       propertyPath: player2BG
       value: 
       objectReference: {fileID: 2800000, guid: c0952ba6f1af8124ca0f123a5a97a07c, type: 3}

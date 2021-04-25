@@ -154,19 +154,19 @@ MonoBehaviour:
     type: 3}
   GodzillaPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
     type: 3}
-  KingPiece: {fileID: 1724049237462094539, guid: 29bbd31618e9ba74a9133adba0a29130,
+  KingPiece: {fileID: 6696554422668665086, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
     type: 3}
-  QueenPiece: {fileID: 1724049237462094539, guid: 03b21e6c497e5904898f7829b0b57922,
+  QueenPiece: {fileID: 2478700155653533907, guid: 1be387cf8a3611040bee3de4dc9426cf,
     type: 3}
-  JackPiece: {fileID: 1724049237462094539, guid: 4ea3215b9f35f274d855913b676bc8ac,
+  JackPiece: {fileID: 6696554422668665086, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
     type: 3}
-  KnightPiece: {fileID: 1724049237462094539, guid: abad14a9cf094724cab3175159385c75,
+  KnightPiece: {fileID: 2478700155653533907, guid: 1be387cf8a3611040bee3de4dc9426cf,
     type: 3}
-  SwordsmanPiece: {fileID: 1724049237462094539, guid: b648fd4718f072143994316e0e278dce,
+  SwordsmanPiece: {fileID: 6696554422668665086, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
     type: 3}
-  ArcherPiece: {fileID: 1724049237462094539, guid: 49825919cc1c2e14abad894c94e4a71c,
+  ArcherPiece: {fileID: 2478700155653533907, guid: 1be387cf8a3611040bee3de4dc9426cf,
     type: 3}
-  SpearmanPiece: {fileID: 1724049237462094539, guid: 531270755b2ee1148abddec2e9454ec8,
+  SpearmanPiece: {fileID: 6696554422668665086, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
     type: 3}
 --- !u!1 &1786045769800991364
 GameObject:
