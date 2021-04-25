@@ -12,25 +12,37 @@ public class UIManager : MonoBehaviour
     public Text Phase;
     public GameObject Button_CancelCardPlacement;
     public GameObject Button_EnterUnitBattle;
+    public GameObject GameOverScreen;
+    public GameObject GameWonScreen;
 
     private void Awake()
     {
         Instance = this;
     }
 
-    public void SetP1HP (string amount)
+    public void SetP1HP (int amount)
     {
-        P1HP.text = amount;
+        P1HP.text = "P1HP = " + amount;
     }
 
-    public void SetP2HP(string amount)
+    public void SetP2HP(int amount)
     {
-        P2HP.text = amount;
+        P2HP.text = "P2HP = " + amount;
     }
 
     public void SetPhase(string phase)
     {
         Phase.text = phase;
+    }
+
+    public void GameOver ()
+    {
+        GameOverScreen.SetActive(true);
+    }
+
+    public void GameWon()
+    {
+        GameWonScreen.SetActive(true);
     }
 
     public void EnterCardSelection ()

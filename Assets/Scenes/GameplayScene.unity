@@ -261,6 +261,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02ad79205e38f0d438961bed7ca33bb8, type: 3}
+--- !u!114 &705402227 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 705402227, guid: 0fa29adaaf086174f869fb27b714f303,
+    type: 3}
+  m_PrefabInstance: {fileID: 1445496867}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ec243278d27a5a46a4c7d73c7240f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &791162341
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,13 +467,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
         type: 3}
-      propertyPath: deckSize
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5482636849642664356, guid: 0fa29adaaf086174f869fb27b714f303,
-        type: 3}
-      propertyPath: handSize
-      value: 5
+      propertyPath: deckSpawnInterval
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fa29adaaf086174f869fb27b714f303, type: 3}
@@ -699,6 +706,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1298449440, guid: b9cdf0eb75e28934f8dd1b041d6919a6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 705402227}
+    - target: {fileID: 1510873771, guid: b9cdf0eb75e28934f8dd1b041d6919a6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 705402227}
     - target: {fileID: 8792163884117038411, guid: b9cdf0eb75e28934f8dd1b041d6919a6,
         type: 3}
       propertyPath: m_Name

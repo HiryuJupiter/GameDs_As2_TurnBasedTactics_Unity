@@ -99,7 +99,7 @@ public class GamePhaseManager : MonoBehaviour
         player1.FillDeck();
         player2.FillDeck();
 
-        yield return new WaitForSeconds(0.9f);
+        yield return new WaitForSeconds(2f);
         while (!IsDeckStill)
             yield return null;
 

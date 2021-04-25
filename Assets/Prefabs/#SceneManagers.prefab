@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 1786045769800991367}
   - component: {fileID: 1576770855}
   - component: {fileID: 5482636849642664356}
+  - component: {fileID: 705402227}
   m_Layer: 0
   m_Name: '#SceneManagers'
   m_TagString: Untagged
@@ -238,9 +239,9 @@ MonoBehaviour:
   cardLayer:
     serializedVersion: 2
     m_Bits: 64
-  handSize: 4
-  deckSize: 15
-  deckSpawnInterval: 0.025
+  handSize: 5
+  deckSize: 30
+  deckSpawnInterval: 0.05
   cardDrawInterval: 0.2
   moveLerpSpeed: 2
   rotLerpSpeed: 2
@@ -254,3 +255,17 @@ MonoBehaviour:
   highlightOffsetX: 0.1
   highlightOffsetY: 1.2
   highlightScale: 0.1
+--- !u!114 &705402227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786045769800991364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ec243278d27a5a46a4c7d73c7240f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  p1Health: 100
+  p2Health: 100
