@@ -9,7 +9,7 @@ namespace Layout
     {
         [Header("Offsets")]
         public float laneDistX = 0f;
-        public float laneDistZ = 1.04f;
+        public float laneDistZ = 1.56f;
         public float offsetDist;
 
         [Header("Map Size")]
@@ -19,7 +19,10 @@ namespace Layout
         bool oddLane;
         int colour;
         int currentLaneSpawned;
-        
+        public float startoffsetX;
+        public float startoffsetY;
+        public float startoffsetZ;
+        Vector3 spawnStartOffset;
         public static GameObject[,] hexPoints;
 
 
@@ -31,7 +34,8 @@ namespace Layout
         // Start is called before the first frame update
         void Start()
         {
-            spawnStart.position = new Vector3(0, 0, 0);
+            spawnStartOffset = new Vector3(startoffsetX, startoffsetY, startoffsetZ);
+            spawnStart.position = spawnStartOffset;
             spawningBlue = true;
             oddLane = true;
             currentLaneSpawned = 0;
@@ -76,11 +80,11 @@ namespace Layout
                 currentLaneSpawned++;
                 if (oddLane)
                 {
-                    spawnStart.position = new Vector3(0.9f * currentLaneSpawned, 0, -0.52f);
+                    spawnStart.position = new Vector3(1.35f * currentLaneSpawned, 0, -0.78f) + spawnStartOffset;
                 }
                 else
                 {
-                    spawnStart.position = new Vector3(0.9f * currentLaneSpawned, 0, 0);
+                    spawnStart.position = new Vector3(1.35f * currentLaneSpawned, 0, 0) + spawnStartOffset;
                 }
                 // Change from odd lane to even
                 oddLane = !oddLane;

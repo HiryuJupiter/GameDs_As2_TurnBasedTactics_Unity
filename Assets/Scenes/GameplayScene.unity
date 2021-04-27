@@ -267,7 +267,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1445496867}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1445496868}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ec243278d27a5a46a4c7d73c7240f2c, type: 3}
@@ -467,6 +467,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0fa29adaaf086174f869fb27b714f303, type: 3}
+--- !u!1 &1445496868 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1786045769800991364, guid: 0fa29adaaf086174f869fb27b714f303,
+    type: 3}
+  m_PrefabInstance: {fileID: 1445496867}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1445496869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445496868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b12641dfccbd55a49855749e8dcfc76c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laneDistX: 0
+  laneDistZ: 1.56
+  offsetDist: 0
+  horiLanes: 6
+  vertLanes: 0400000004000000
+  startoffsetX: -2.6
+  startoffsetY: 0
+  startoffsetZ: -4.5
+  hex:
+  - {fileID: 3773573252680510749, guid: b545a7d9653795243b8086fa29e25527, type: 3}
+  - {fileID: 7485942351524742635, guid: 365b7fbfb48af824eb994c401195804f, type: 3}
+  spawnStart: {fileID: 1621862097}
 --- !u!1001 &1502182484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -556,6 +586,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a5dad6257623a444a410dc7469b9ed6, type: 3}
+--- !u!4 &1621862097 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 679487663188186954, guid: 02ad79205e38f0d438961bed7ca33bb8,
+    type: 3}
+  m_PrefabInstance: {fileID: 561730119}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1752558427
 GameObject:
   m_ObjectHideFlags: 0
