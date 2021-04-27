@@ -28,17 +28,11 @@ namespace Units
             StartCoroutine(SelectMode());
 #if UNITY_EDITOR
 
-            Hex enemyHex = LayoutManager.hexPoints[4, 4].GetComponent<Hex>();
-            Instantiate(dummyBot, enemyHex.attachPoint.position, enemyHex.attachPoint.rotation);
-            enemyHex.attachedObject = dummyBot;
-
-            BoardUnit dummyScript = dummyBot.GetComponent<BoardUnit>();
-            dummyScript.attachedHex = enemyHex;
-            dummyScript.dummy = true;
 
 #endif
         }
         #endregion
+        #region Spawn Mode
         IEnumerator SpawnMode(int unitIndex)
         {
             spawnMode = true;
@@ -95,6 +89,7 @@ namespace Units
 
 
         }
+        #endregion
         IEnumerator SelectMode()
         {
             selectMode = true;
@@ -108,53 +103,57 @@ namespace Units
                 if (Physics.Raycast(ray, out hit))
                 {
                     GameObject currentObj = hit.transform.gameObject;
-                    currentHex = currentObj.GetComponent<Hex>();
-
-                    currentHex.highlighted = true;
-
-                    if (Input.GetMouseButtonDown(0) && currentHex.attachedObject != null)
+                    if (currentObj.CompareTag("Hex"))
                     {
-                        
-                        
-                        selectedUnit = currentHex.gameObject;
-                        Debug.Log(selectedUnit);
-                        SelectUnit();
-                    }
-                    
-                    if(Input.GetMouseButtonDown(0) && selectedUnit != null)
-                    {
+                        currentHex = currentObj.GetComponent<Hex>();
 
-                        if (currentHex.movable)
+                        currentHex.highlighted = true;
+
+                        if (Input.GetMouseButtonDown(0) && currentHex.attachedObject != null)
                         {
-                            Hex newCurrentHex = selectedUnit.GetComponent<Hex>();
-                            BoardUnit unit = newCurrentHex.attachedObject.GetComponent<BoardUnit>();
-                            currentHex.attachedObject = unit.gameObject;
-                            unit.ChangeToMove(currentHex);
 
-                            DeselectUnit();
+
+                            selectedUnit = currentHex.gameObject;
+                            Debug.Log(selectedUnit);
+                            SelectUnit();
                         }
-                        if (currentHex.attachedRed)
+
+                        if (Input.GetMouseButtonDown(0) && selectedUnit != null)
                         {
-                            Hex newCurrentHex = selectedUnit.GetComponent<Hex>();
-                            BoardUnit yourUnit = newCurrentHex.attachedObject.GetComponent<BoardUnit>();
-                            BoardUnit enemyUnit = currentHex.attachedObject.GetComponent<BoardUnit>();
-                            enemyUnit.currentHealth -= yourUnit.unitDamage;
-                            Debug.Log(enemyUnit.currentHealth);
-                            yourUnit.ChangeToAttack();
 
-                            DeselectUnit();
+                            if (currentHex.movable)
+                            {
+                                Hex newCurrentHex = selectedUnit.GetComponent<Hex>();
+                                BoardUnit unit = newCurrentHex.attachedObject.GetComponent<BoardUnit>();
+                                currentHex.attachedObject = unit.gameObject;
+                                unit.ChangeToMove(currentHex);
+
+                                DeselectUnit();
+                            }
+                            if (currentHex.attachedRed)
+                            {
+                                Hex newCurrentHex = selectedUnit.GetComponent<Hex>();
+                                BoardUnit yourUnit = newCurrentHex.attachedObject.GetComponent<BoardUnit>();
+                                BoardUnit enemyUnit = currentHex.attachedObject.GetComponent<BoardUnit>();
+                                enemyUnit.currentHealth -= yourUnit.unitDamage;
+                                Debug.Log(enemyUnit.currentHealth);
+                                yourUnit.ChangeToAttack();
+
+                                DeselectUnit();
+                            }
+
                         }
-                       
+                        /* if (Input.GetMouseButtonDown(0) && selectedUnit != null)
+                         {
+                             Hex newCurrentHex = selectedUnit.GetComponent<Hex>();
+                             BoardUnit unit = newCurrentHex.attachedObject.GetComponent<BoardUnit>();
+                             currentHex.attachedObject = unit.gameObject;
+                             unit.ChangeToMove(currentHex);
+                             DeselectUnit();
+                         }
+                         */
                     }
-                   /* if (Input.GetMouseButtonDown(0) && selectedUnit != null)
-                    {
-                        Hex newCurrentHex = selectedUnit.GetComponent<Hex>();
-                        BoardUnit unit = newCurrentHex.attachedObject.GetComponent<BoardUnit>();
-                        currentHex.attachedObject = unit.gameObject;
-                        unit.ChangeToMove(currentHex);
-                        DeselectUnit();
-                    }
-                    */
+
                 }
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
@@ -199,16 +198,40 @@ namespace Units
              }
              */
 
+
+
             #region Dev Tools
 #if UNITY_EDITOR
 
-            if (Input.GetKeyDown(KeyCode.Alpha0))
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 selectMode = false;
                 StopCoroutine(SelectMode());
                 StartCoroutine(SpawnMode(0));
             }
-          
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                selectMode = false;
+                StopCoroutine(SelectMode());
+                StartCoroutine(SpawnMode(1));
+            }
+
+            if (Input.GetKeyDown(KeyCode.Semicolon))
+            {
+                if (dummyBot != null)
+                {
+                    Hex enemyHex = LayoutManager.hexPoints[4, 4].GetComponent<Hex>();
+                    Instantiate(dummyBot, enemyHex.attachPoint.position, enemyHex.attachPoint.rotation);
+                    enemyHex.attachedObject = dummyBot;
+
+                    BoardUnit dummyScript = dummyBot.GetComponent<BoardUnit>();
+                    dummyScript.attachedHex = enemyHex;
+                    dummyScript.dummy = true;
+                }
+
+            }
+
+
 #endif
             #endregion
         }

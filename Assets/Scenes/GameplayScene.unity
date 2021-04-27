@@ -273,6 +273,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec243278d27a5a46a4c7d73c7240f2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!20 &737679173 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 4897627579980321084, guid: ca44d99fba72f9d46a42045c8b769d99,
+    type: 3}
+  m_PrefabInstance: {fileID: 23682571}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &791162341
 GameObject:
   m_ObjectHideFlags: 0
@@ -497,6 +503,35 @@ MonoBehaviour:
   - {fileID: 3773573252680510749, guid: b545a7d9653795243b8086fa29e25527, type: 3}
   - {fileID: 7485942351524742635, guid: 365b7fbfb48af824eb994c401195804f, type: 3}
   spawnStart: {fileID: 1621862097}
+--- !u!114 &1445496870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445496868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1518a5ff227fb9c4898608b27201d70b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 737679173}
+  units:
+  - {fileID: 6250699674514000825, guid: 56560becfb6a53f46863153d200f64a2, type: 3}
+  - {fileID: 5866581835482792234, guid: 1be387cf8a3611040bee3de4dc9426cf, type: 3}
+  - {fileID: 5866581835482792234, guid: 1be387cf8a3611040bee3de4dc9426cf, type: 3}
+  - {fileID: 3450502182588485895, guid: 5fda0a9d1701cca4aa1585f2d9a5d052, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  dummyBot: {fileID: 0}
+  human: 0
+  highlight: {fileID: 0}
+  defaultTeam: {fileID: 0}
+  currentHex: {fileID: 0}
+  selectMode: 0
+  spawnMode: 0
+  selectedUnit: {fileID: 0}
 --- !u!1001 &1502182484
 PrefabInstance:
   m_ObjectHideFlags: 0

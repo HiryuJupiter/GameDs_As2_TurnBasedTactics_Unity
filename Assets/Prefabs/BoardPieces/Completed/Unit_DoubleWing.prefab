@@ -30,6 +30,7 @@ GameObject:
   - component: {fileID: 5735293839032944454}
   - component: {fileID: 7767865169589964539}
   - component: {fileID: 6696554422668665086}
+  - component: {fileID: -1420077434609705397}
   m_Layer: 8
   m_Name: Unit_DoubleWing
   m_TagString: Untagged
@@ -83,6 +84,31 @@ MonoBehaviour:
   allianceRing: {fileID: 6904378460934101717}
   selectionDot: {fileID: 4658590657286453449}
   animator: {fileID: 2508580866136061083}
+--- !u!114 &-1420077434609705397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3450502182588485895}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d812f444408202a4b80ed0dbcd082bf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: 3
+  unitName: 
+  maxHealth: 100
+  currentHealth: 100
+  unitDamage: 20
+  blue: 1
+  selected: 0
+  attachedHex: {fileID: 0}
+  dummy: 0
+  unitNameText: {fileID: 0}
+  currentHealthText: {fileID: 0}
+  unitDamageText: {fileID: 0}
+  state: 0
 --- !u!1 &4435267895813229848
 GameObject:
   m_ObjectHideFlags: 0

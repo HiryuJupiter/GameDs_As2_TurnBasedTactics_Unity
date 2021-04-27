@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Layout;
 
 public class BoardUnit : MonoBehaviour
 {
     #region Variables
+    [Header("Unit")]
     public int unitType;
     public string unitName;
     public int maxHealth;
@@ -18,6 +20,12 @@ public class BoardUnit : MonoBehaviour
     private float transferSpeed;
     private float transferSpeedMulti = 5;
     public bool dummy;
+
+    [Header("UI")]
+    public Text unitNameText;
+    public Text currentHealthText;
+    public Text unitDamageText;
+
 
 
     #endregion
@@ -66,7 +74,7 @@ public class BoardUnit : MonoBehaviour
 
                
         }
-        
+        RefreshStats();
 
         if (!dummy)
         {
@@ -257,6 +265,14 @@ public class BoardUnit : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-
+    public void RefreshStats()
+    {
+        if (unitNameText != null)
+        {
+            unitNameText.text = "Unit: " + unitName;
+            currentHealthText.text = "Health: " + currentHealth;
+            unitDamageText.text = "Damage: " + unitDamage;
+        }
+    }
 
 }

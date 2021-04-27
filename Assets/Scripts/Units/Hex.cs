@@ -5,6 +5,7 @@ using Units;
 
 public class Hex : MonoBehaviour
 {
+
     [SerializeField]
     public bool blue;
     [SerializeField]
@@ -14,10 +15,12 @@ public class Hex : MonoBehaviour
     public bool selected;
     public bool attachedRed;
     public bool oddLane;
+
     public Material highlight;
     public Material teamColour;
     public Material selectedColour;
     public Material attachedColour;
+
     public Transform attachPoint;
     public GameObject attachedObject;
     public int horiPoint;

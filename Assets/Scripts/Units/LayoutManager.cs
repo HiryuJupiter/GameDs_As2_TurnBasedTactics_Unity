@@ -7,6 +7,7 @@ namespace Layout
     
     public class LayoutManager : MonoBehaviour
     {
+        #region Variables
         [Header("Offsets")]
         public float laneDistX = 0f;
         public float laneDistZ = 1.56f;
@@ -28,9 +29,9 @@ namespace Layout
 
         public GameObject[] hex = new GameObject[2];
         public Transform spawnStart;
-        
-    
 
+        #endregion
+        #region Start
         // Start is called before the first frame update
         void Start()
         {
@@ -42,10 +43,11 @@ namespace Layout
             hexPoints = new GameObject[vertLanes[0] + vertLanes[1], horiLanes];
             SpawnColour();
         }
-      
+        #endregion
+        #region Hexagon Spawning
         public void SpawnColour()
         {
-            
+            //Check which colour is spawning. (Blue = 0, Red = 1)
             if(spawningBlue == true)
             {
                 colour = 0;
@@ -54,6 +56,7 @@ namespace Layout
             {
                 colour = 1;
             }
+            //For every one of the current colour being spawned in the vertical lane
             for (int i = 0; i < vertLanes[colour]; i++)
             {
 
@@ -65,6 +68,7 @@ namespace Layout
                 newHex.horiPoint = currentLaneSpawned;
                 newHex.oddLane = oddLane;
 
+                // Only allow the player to spawn on the first horizontal row
                 if (i == 0)
                 {
                    
@@ -74,10 +78,13 @@ namespace Layout
                 spawnStart.position = new Vector3(spawnStart.position.x, spawnStart.position.y, spawnStart.position.z + laneDistZ);
 
             }
-
+            //Dont offset lanes once blue is finished spawning
             if (!spawningBlue)
             {
+
                 currentLaneSpawned++;
+                
+                //Lane Position Offsetting
                 if (oddLane)
                 {
                     spawnStart.position = new Vector3(1.35f * currentLaneSpawned, 0, -0.78f) + spawnStartOffset;
@@ -98,10 +105,10 @@ namespace Layout
             {
                 SpawnColour();
             }
-            
+
 
         }
-       
+        #endregion
     }
 }
 
