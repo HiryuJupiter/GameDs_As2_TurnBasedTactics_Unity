@@ -83,10 +83,10 @@ public abstract class Player : MonoBehaviour
             Hand.AddCard(card);
         }
 
-        EnterCardSelection();
+        GoToCardSelection();
     }
 
-    public void EnterCardSelection()
+    public void GoToCardSelection()
     {
         //Display hand
         Hand.RaiseHand();
@@ -102,6 +102,7 @@ public abstract class Player : MonoBehaviour
     {
         phaseManager.ToP4_CardPlacementPhase();
     }
+
     #endregion
 
     public void CheckIfCanDisplayBuyCardButton ()

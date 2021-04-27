@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text Phase;
     [SerializeField] GameObject Button_CancelCardPlacement;
     [SerializeField] GameObject Button_BuyCard;
+    [SerializeField] GameObject Button_ToCombat;
     [SerializeField] GameObject GameOverScreen;
     [SerializeField] GameObject GameWonScreen;
 
@@ -53,12 +54,20 @@ public class UIManager : MonoBehaviour
 
     public void EnterCardSelection ()
     {
+        Button_ToCombat.SetActive(true);
         Button_CancelCardPlacement.SetActive(false);
     }
 
     public void EnterCardPlacement ()
     {
+        Button_ToCombat.SetActive(false);
         Button_CancelCardPlacement.SetActive(true);
+        ToggleBuyCardButton(false);
+    }
+
+    public void EnterUnitControl()
+    {
+        Button_ToCombat.SetActive(false);
         ToggleBuyCardButton(false);
     }
 

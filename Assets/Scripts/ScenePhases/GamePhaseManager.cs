@@ -44,14 +44,12 @@ public class GamePhaseManager : MonoBehaviour
     }
     public void ToP4_CardPlacementPhase()
     {
-        uiM.EnterCardPlacement();
         GoToPhase(GamePhases.phase4_Placement);
     }
-    //public void ToP5_UnitControlMode()
-    //{
-    //    uiM.EnterUnitControl();
-    //    GoToPhase(GamePhases.phase5_UnitControl);
-    //}
+    public void ToP5_UnitControlMode()
+    {
+        GoToPhase(GamePhases.phase5_UnitControl);
+    }
 
     public void ToP6_AISequence() => GoToPhase(GamePhases.phase6_AIControlPhase);
     public void To_Evaluation() => GoToPhase(GamePhases.TurnCompleteEvaluation);
@@ -75,8 +73,13 @@ public class GamePhaseManager : MonoBehaviour
                     StartCoroutine(Phase2_DrawHand());
                     break;
                 case GamePhases.phase3_CardSelection:
+                    uiM.EnterCardSelection();
+                    break;
+                case GamePhases.phase4_Placement:
+                    uiM.EnterCardPlacement();
                     break;
                 case GamePhases.phase5_UnitControl:
+                    uiM.EnterUnitControl();
                     break;
                 case GamePhases.phase6_AIControlPhase:
                     break;

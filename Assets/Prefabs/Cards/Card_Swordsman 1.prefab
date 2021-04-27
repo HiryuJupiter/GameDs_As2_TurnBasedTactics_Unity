@@ -103,7 +103,7 @@ PrefabInstance:
     - target: {fileID: 5487307445022182855, guid: b224e459e8a58d54980572310094cd33,
         type: 3}
       propertyPath: m_Name
-      value: Card_Swordsman
+      value: Card_Swordsman 1
       objectReference: {fileID: 0}
     - target: {fileID: 5487307445022182855, guid: b224e459e8a58d54980572310094cd33,
         type: 3}

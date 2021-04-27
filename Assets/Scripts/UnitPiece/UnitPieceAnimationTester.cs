@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class UnitPieceAnimationTester : MonoBehaviour
 {
-    PlayerUnit unit;
+    PlayerUnitOldSchool unit;
 
     void Start()
     {
-        unit = GetComponent<PlayerUnit>();
+        unit = GetComponent<PlayerUnitOldSchool>();
     }
 
     void Update()

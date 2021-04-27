@@ -1,26 +1,29 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerUnitMovingControl : MonoBehaviour
 {
-    PlayerUnit movingUnit;
-    PlayerUnit targetUnit;
+    BoardUnit movingUnit;
+    BoardUnit targetUnit;
     BoardTile targetTile;
 
-    enum Mode { SelectUnit, MoveUnit, AttackUnit}
+    public enum Mode { SelectUnit, MoveUnit, AttackUnit }
 
     //Ref
     RealPlayer player;
     GameSettings settings;
-    BoardManager board;
+    //BoardManager board;
 
-    Mode mode = Mode.SelectUnit;
+    public Mode mode { get; private set; } = Mode.SelectUnit;
+
+     
 
     public PlayerUnitMovingControl(RealPlayer player)
     {
         this.player = player;
         settings = GameSettings.Instance;
-        board = BoardManager.Instance;
+        //board = BoardManager.Instance;
     }
 
     public void TickUpdate()
@@ -30,15 +33,26 @@ public class PlayerUnitMovingControl : MonoBehaviour
         {
             case Mode.SelectUnit:
                 UnitSelectionCheck();
+                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
+                {
+                    mode = Mode.SelectUnit;
+                    player.GoToCardSelection();
+                }
                 break;
             case Mode.MoveUnit:
-                UnitMoveUpdate();
+                UnitMoveUpdate2();
+                if (movingUnit == null)
+                {
+                    mode = Mode.SelectUnit;
+                    //player.GoToCardSelection();
+                }
                 break;
             case Mode.AttackUnit:
                 break;
             default:
                 break;
         }
+
         
     }
 
@@ -68,8 +82,9 @@ public class PlayerUnitMovingControl : MonoBehaviour
                         movingUnit.ToggleSelectionHighlight(false);
 
                     movingUnit = player.CurrUnit;
+
                     player.CurrUnit.ToggleSelectionHighlight(true);
-                    //mode = Mode.MoveUnit;
+                    EnterMoveUpdate();
                 }
             }
             else
@@ -80,8 +95,128 @@ public class PlayerUnitMovingControl : MonoBehaviour
         }
     }
 
-    void UnitMoveUpdate ()
+    void UnitMoveUpdate2()
     {
+        if (player.MouseExitsAllTiles)
+        {
+            player.ExitHighlightOnPrevTile();
+        }
 
+        if (player.MouseEntersNewTile)
+        {
+            player.ExitHighlightOnPrevTile();
+            player.EnterHighlightOnNewTile();
+        }
+
+        if (player.OnTile && Input.GetMouseButtonDown(0))
+        {
+            movingUnit.MoveToPosition(player.CurrSpawnTile.attachPoint.position);
+            //movingUnit.MoveToPosition(player.CurrSpawnTile.transform.position);
+            player.CurrSpawnTile.ToggleHoverHighlight(false);
+            movingUnit.ToggleSelectionHighlight(false);
+
+            player.GoToCardSelection();
+        }
+    }
+
+    List<GameObject> movableHexes;
+    Hex attachedHex;
+    int currentX;
+    int currentY;
+
+    void EnterMoveUpdate ()
+    {
+        movableHexes = new List<GameObject>();
+        mode = Mode.MoveUnit;
+        attachedHex = movingUnit.attachedHex;
+        currentX = attachedHex.horiPoint;
+        currentY = attachedHex.vertPoint;
+    }
+
+    void UnitMoveUpdate()
+    {
+        if (attachedHex.oddLane == true)
+        {
+            if (currentY < 7)
+            {
+                movableHexes.Add(Layout.LayoutManager.hexPoints[currentY + 1, currentX]);
+                if (currentX < 5)
+                {
+                    movableHexes.Add(Layout.LayoutManager.hexPoints[currentY + 1, currentX + 1]);
+                }
+                if (currentX > 0)
+                {
+                    movableHexes.Add(Layout.LayoutManager.hexPoints[currentY + 1, currentX - 1]);
+                }
+            }
+
+            if (currentY > 0)
+            {
+                movableHexes.Add(Layout.LayoutManager.hexPoints[currentY - 1, currentX]);
+            }
+            if (currentX > 0)
+            {
+                movableHexes.Add(Layout.LayoutManager.hexPoints[currentY, currentX - 1]);
+            }
+            if (currentX < 5)
+            {
+                movableHexes.Add(Layout.LayoutManager.hexPoints[currentY, currentX + 1]);
+            }
+
+
+        }
+        else
+        {
+            if (currentY > 0)
+            {
+                movableHexes.Add(Layout.LayoutManager.hexPoints[currentY - 1, currentX]);
+
+
+                if (currentX > 0)
+                {
+                    movableHexes.Add(Layout.LayoutManager.hexPoints[currentY - 1, currentX - 1]);
+                }
+            }
+            if (currentX > 0)
+            {
+                movableHexes.Add(Layout.LayoutManager.hexPoints[currentY, currentX - 1]);
+            }
+
+            if (currentY < 7)
+            {
+                movableHexes.Add(Layout.LayoutManager.hexPoints[currentY + 1, currentX]);
+
+
+            }
+            if (currentX < 5)
+            {
+                movableHexes.Add(Layout.LayoutManager.hexPoints[currentY, currentX + 1]);
+                if (currentY > 0)
+                {
+                    movableHexes.Add(Layout.LayoutManager.hexPoints[currentY - 1, currentX + 1]);
+                }
+            }
+        }
+
+
+        foreach (GameObject highlighedHex in movableHexes)
+        {
+
+            Hex newHex = highlighedHex.GetComponent<Hex>();
+            if (newHex.attachedObject != null)
+            {
+                newHex.movable = false;
+
+                if (newHex.attachedObject.GetComponent<BoardUnit>().blue == false)
+                {
+                    newHex.movable = false;
+                    newHex.attachedRed = true;
+                }
+            }
+            else
+            {
+                newHex.movable = true;
+            }
+        }
     }
 }

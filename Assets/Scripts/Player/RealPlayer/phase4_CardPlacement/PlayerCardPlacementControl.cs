@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Units;
 
 public class PlayerCardPlacementControl : MonoBehaviour
 {
@@ -7,16 +8,18 @@ public class PlayerCardPlacementControl : MonoBehaviour
     //Ref
     RealPlayer player;
     GameSettings settings;
-    BoardManager board;
-    UnitPieceManager unitSpawner;
+    //BoardManager board;
+    //UnitPieceManager unitSpawner;
+    UnitManager unitManager;
 
     public PlayerCardPlacementControl(RealPlayer player)
     {
         //Ref
         this.player = player;
         settings = GameSettings.Instance;
-        board = BoardManager.Instance;
-        unitSpawner = UnitPieceManager.Instance;
+        unitManager = UnitManager.Instance;
+        //board = BoardManager.Instance;
+        //unitSpawner = UnitPieceManager.Instance;
     }
     #endregion
 
@@ -48,30 +51,35 @@ public class PlayerCardPlacementControl : MonoBehaviour
 
     void ClickUpdate ()
     {
-        if (player.OnTile && Input.GetMouseButton(0))
+        if (player.OnTile && Input.GetMouseButtonDown(0))
         {
             //Remove selection slot card
             if (player.SelectionSlot.TryRemoveCard(out Card card))
             {
-                //Clean up highlight
+                ////Clean up highlight
                 player.CurrSpawnTile.ToggleHoverHighlight(false);
-                player.Hand.HideHand();
-                player.Hand.RefreshHandCardPositions();
+                //player.Hand.HideHand();
+                //player.Hand.RefreshHandCardPositions();
 
-                //Spawn unit
-                PlayerUnit unit =  unitSpawner.SpawnUnit(card.CardType, player.CurrSpawnTile.Index, player);
+                ////Spawn unit
+                BoardUnit unit = unitManager.SpawnUnit(card.CardType, player.CurrSpawnTile, player);
+                //PlayerUnit unit = unitSpawner.SpawnUnit(card.CardType, player.CurrSpawnTile.Index, player);
 
-                //Set unit
-                player.CurrSpawnTile.SetUnitPiece(unit);
+                ////Set unit
+                //player.CurrSpawnTile.SetUnitPiece(unit);
 
                 //Phase transition
-                player.EnterCardSelection();
+                player.GoToCardSelection();
 
                 //Discard card
                 player.DiscardPile.AddToDiscardPile(card);
             }
             else
-                Debug.LogError("Something wrong");
+            {
+                Debug.Log("Something wrong");
+                player.GoToCardSelection();
+            }
+                
         }
     }
 }

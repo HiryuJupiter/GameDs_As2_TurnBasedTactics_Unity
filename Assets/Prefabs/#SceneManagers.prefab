@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &332899998
 Transform:
   m_ObjectHideFlags: 0
@@ -146,27 +146,27 @@ MonoBehaviour:
     type: 3}
   KnightCard: {fileID: 4777807111874583219, guid: 5fe36a70db35810488ed2390112bbcad,
     type: 3}
-  SwordsmanCard: {fileID: 4777807111874583219, guid: 4cf5248242672ad479e1b014be3f9a04,
+  SwordsmanCard: {fileID: 4777807111874583219, guid: bcccc09388998964e8610e932d86f07b,
     type: 3}
   ArcherCard: {fileID: 4777807111874583219, guid: 26b0a72ea14d3a948b7ad8ab109c3892,
     type: 3}
   SpearmanCard: {fileID: 4777807111874583219, guid: 3b2779e69eb04fc46beae411e07c9fcb,
     type: 3}
-  GodzillaPiece: {fileID: 1724049237462094539, guid: 5a44a00b34bebc94b802cddf9828d29d,
+  GodzillaPiece: {fileID: 1081143072535638758, guid: 831d4e7c3bd21ec4a811824e41874863,
     type: 3}
-  KingPiece: {fileID: 6696554422668665086, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
+  KingPiece: {fileID: -1420077434609705397, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
     type: 3}
-  QueenPiece: {fileID: 2478700155653533907, guid: 1be387cf8a3611040bee3de4dc9426cf,
+  QueenPiece: {fileID: -1420077434609705397, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
     type: 3}
-  JackPiece: {fileID: 6696554422668665086, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
+  JackPiece: {fileID: 1081143072535638758, guid: 831d4e7c3bd21ec4a811824e41874863,
     type: 3}
-  KnightPiece: {fileID: 2478700155653533907, guid: 1be387cf8a3611040bee3de4dc9426cf,
+  KnightPiece: {fileID: 1081143072535638758, guid: 831d4e7c3bd21ec4a811824e41874863,
     type: 3}
-  SwordsmanPiece: {fileID: 6696554422668665086, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
+  SwordsmanPiece: {fileID: -1420077434609705397, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
     type: 3}
-  ArcherPiece: {fileID: 2478700155653533907, guid: 1be387cf8a3611040bee3de4dc9426cf,
+  ArcherPiece: {fileID: 1081143072535638758, guid: 831d4e7c3bd21ec4a811824e41874863,
     type: 3}
-  SpearmanPiece: {fileID: 6696554422668665086, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
+  SpearmanPiece: {fileID: -1420077434609705397, guid: 5fda0a9d1701cca4aa1585f2d9a5d052,
     type: 3}
 --- !u!1 &1786045769800991364
 GameObject:
@@ -180,6 +180,8 @@ GameObject:
   - component: {fileID: 1576770855}
   - component: {fileID: 5482636849642664356}
   - component: {fileID: 705402227}
+  - component: {fileID: 1445496869}
+  - component: {fileID: 1445496870}
   m_Layer: 0
   m_Name: '#SceneManagers'
   m_TagString: Untagged
@@ -217,7 +219,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player1: {fileID: 0}
-  player2: {fileID: 0}
 --- !u!114 &5482636849642664356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,7 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d494c5ea6559dcb47a477c8669c6c422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitPieceLayer:
+  playerUnitLayer:
     serializedVersion: 2
     m_Bits: 256
   tileLayer:
@@ -239,6 +240,12 @@ MonoBehaviour:
   cardLayer:
     serializedVersion: 2
     m_Bits: 64
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  playerBulletLayer:
+    serializedVersion: 2
+    m_Bits: 0
   handSize: 5
   deckSize: 30
   deckSpawnInterval: 0.05
@@ -267,5 +274,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec243278d27a5a46a4c7d73c7240f2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  p1Health: 100
-  p2Health: 100
+--- !u!114 &1445496869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786045769800991364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b12641dfccbd55a49855749e8dcfc76c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  laneDistX: 0
+  laneDistZ: 1.56
+  offsetDist: 0
+  horiLanes: 6
+  vertLanes: 0400000004000000
+  startoffsetX: -2.6
+  startoffsetY: 0
+  startoffsetZ: -4.5
+  hex:
+  - {fileID: 3773573252680510749, guid: b545a7d9653795243b8086fa29e25527, type: 3}
+  - {fileID: 7485942351524742635, guid: 365b7fbfb48af824eb994c401195804f, type: 3}
+  spawnStart: {fileID: 0}
+--- !u!114 &1445496870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786045769800991364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1518a5ff227fb9c4898608b27201d70b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
+  units:
+  - {fileID: 6250699674514000825, guid: 56560becfb6a53f46863153d200f64a2, type: 3}
+  - {fileID: 5866581835482792234, guid: 1be387cf8a3611040bee3de4dc9426cf, type: 3}
+  - {fileID: 5866581835482792234, guid: 1be387cf8a3611040bee3de4dc9426cf, type: 3}
+  - {fileID: 3450502182588485895, guid: 5fda0a9d1701cca4aa1585f2d9a5d052, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  dummyBot: {fileID: 0}
+  Zilla: {fileID: 0}
+  human: 0
+  highlight: {fileID: 0}
+  defaultTeam: {fileID: 0}
+  currentHex: {fileID: 0}
+  selectMode: 0
+  spawnMode: 0
+  blueTurn: 0
+  selectedUnit: {fileID: 0}

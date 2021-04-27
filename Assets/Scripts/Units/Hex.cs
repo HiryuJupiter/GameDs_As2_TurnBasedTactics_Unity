@@ -5,7 +5,6 @@ using Units;
 
 public class Hex : MonoBehaviour
 {
-
     [SerializeField]
     public bool blue;
     [SerializeField]
@@ -25,39 +24,60 @@ public class Hex : MonoBehaviour
     public GameObject attachedObject;
     public int horiPoint;
     public int vertPoint;
-    
+
+    public Material material;
 
 
-    private void Update()
+    public PlayerUnitOldSchool Unit { get; private set; }
+    public Vector2Int Index { get; private set; }
+    public bool IsMainPlayer => blue;
+    public bool IsOccupied => Unit != null;
+    public Vector2Int SetIndex { set { Index = value; } }
+
+
+    private void Awake()
     {
-        if (highlighted || movable)
-        {
-            this.GetComponent<Renderer>().material = highlight;
-        }
-        else if (selected)
-        {
-            this.GetComponent<Renderer>().material = selectedColour;
-        }
-        else if (attachedRed)
-        {
-            this.GetComponent<Renderer>().material = attachedColour;
-        }
-        else
-        {
-            this.GetComponent<Renderer>().material = teamColour;
-        }
-        
-    }
-    private void OnMouseExit()
-    {
-        highlighted = false;
-
-        
+        //material = GetComponent<Renderer>().material;
     }
 
-   
+    //private void Update()
+    //{
+    //    if (highlighted || movable)
+    //    {
+    //        material = highlight;
+    //    }
+    //    else if (selected)
+    //    {
+    //        material = selectedColour;
+    //    }
+    //    else if (attachedRed)
+    //    {
+    //        material = attachedColour;
+    //    }
+    //    else
+    //    {
+    //        material = teamColour;
+    //    }
+    //}
+
+    public void SetUnitPiece(PlayerUnitOldSchool unit)
+    {
+        Unit = unit;
+    }
+
+    //public void ToggleAttackHighlight(bool isOn)
+    //{
+    //    material.color = isOn ? Color.red : defaultColor;
+    //}
+
+    public void ToggleHoverHighlight(bool isOn)
+    {
+        GetComponent<Renderer>().material = isOn ? highlight : teamColour;
+    }
 
 
-
-
+    //private void OnMouseExit()
+    //{
+    //    highlighted = false;
+    //}
 }

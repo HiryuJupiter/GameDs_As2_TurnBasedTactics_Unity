@@ -37,7 +37,7 @@ public class BasicEnemy : MonoBehaviour
         }
         else if (HitsPlayerUnit(collision))
         {
-            collision.gameObject.GetComponent<PlayerUnit>().KilledByEnemy();
+            collision.gameObject.GetComponent<PlayerUnitOldSchool>().KilledByEnemy();
             Destroy(collision.gameObject);
             Destroy(gameObject);
         }

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8102877995822907254}
   - component: {fileID: 8028935440552844546}
   - component: {fileID: 5481987409694840712}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Blue Hex
   m_TagString: Hex
   m_Icon: {fileID: 0}
@@ -1389,7 +1389,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5016754567063950316}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Attach point
   m_TagString: Untagged
   m_Icon: {fileID: 0}

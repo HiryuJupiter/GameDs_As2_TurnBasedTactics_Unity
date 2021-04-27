@@ -22,13 +22,14 @@ public class PlayerCardSelectionControl : MonoBehaviour
         //Ref
         this.player = player;
         settings = GameSettings.Instance;
+        unitManager = UnitManager.Instance;
     }
     #endregion
 
     public void TickUpdate ()
     {
         HighlightUpdate();
-       
+        SelectionUpdate();
     }
 
     #region Card highlight
@@ -56,16 +57,13 @@ public class PlayerCardSelectionControl : MonoBehaviour
 
             if (player.Hand.TryRemoveCardFromHand(card))
             {
-
-                
                 //Where ive been trying to link - Ryan
-                unitManager.EnterSpawnMode(card);
+                //unitManager.EnterSpawnMode(card);
 
                 //Exit highlight before card swap
                 player.ExitHighlightOnAllCards();
 
                 //Card swap
-                //player.ReturnSelectionSlotCardToHand();
                 player.SelectionSlot.SetAsSelectedCard(card);
 
                 //Peripheral

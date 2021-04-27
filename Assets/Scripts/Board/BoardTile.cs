@@ -7,13 +7,13 @@ public class BoardTile : MonoBehaviour
 
     Material material;
     Color defaultColor;
-    public PlayerUnit Unit { get; private set; }
+    public PlayerUnitOldSchool Unit { get; private set; }
     public Vector2Int Index { get; private set; }
     public bool IsMainPlayer => isPlayer1Tile;
     public bool IsOccupied => Unit != null;
     public Vector2Int SetIndex { set { Index = value;} }
 
-    public void SetUnitPiece (PlayerUnit unit)
+    public void SetUnitPiece (PlayerUnitOldSchool unit)
     {
         Unit = unit;
     }

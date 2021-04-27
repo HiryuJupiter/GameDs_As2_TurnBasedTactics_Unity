@@ -9,17 +9,17 @@ public class RealPlayer : Player
 
     #region Raycast Targets
     //Currently raycast hit unit piece
-    public PlayerUnit CurrUnit { get; protected set; }
-    public PlayerUnit PrevUnit { get; protected set; }
+    public BoardUnit CurrUnit { get; protected set; }
+    public BoardUnit PrevUnit { get; protected set; }
     //Currently raycast hit hand-card
     public Card CurrCard { get; protected set; }
     public Card PrevCard { get; protected set; }
     //Currently raycast hit tile of player 1 (for spawning pieces)
-    public BoardTile CurrSpawnTile { get; protected set; }
-    public BoardTile PrevSpawnTile { get; protected set; }
+    public Hex CurrSpawnTile { get; protected set; }
+    public Hex PrevSpawnTile { get; protected set; }
     //Tile of any player
-    public BoardTile CurrAnyTile { get; protected set; }
-    public BoardTile PrevAnyTile { get; protected set; }
+    public Hex CurrAnyTile { get; protected set; }
+    public Hex PrevAnyTile { get; protected set; }
     #endregion
 
     #region Card selection 
@@ -49,7 +49,10 @@ public class RealPlayer : Player
     {
         if (CurrUnit != null)
         {
-            CurrUnit.TogglehoverHighlight(true);
+            CurrUnit.ToggleHoverHighlight(true);
+        }
+        else
+        {
         }
     }
 
@@ -57,7 +60,7 @@ public class RealPlayer : Player
     {
         if (PrevOnUnit)
         {
-            PrevUnit.TogglehoverHighlight(false);
+            PrevUnit.ToggleHoverHighlight(false);
         }
     }
     #endregion
@@ -110,33 +113,35 @@ public class RealPlayer : Player
         }
     }
 
+
+
     void OnGUI()
     {
         return;
         //GUI.Label(new Rect(20, 20, 200, 20), "ControlState: " + ControlState);
 
-        GUI.Label(new Rect(100f, 0f, 200f, 20f), "=== Deck pile === ");
+        GUI.Label(new Rect(100f, 0f, 250f, 20f), "=== Deck pile === ");
         for (int i = 0; i < PlayerDeck.Cards.Count; i++)
         {
-            GUI.Label(new Rect(100f, 20 + 20f * i, 200f, 20f),
+            GUI.Label(new Rect(100f, 20 + 20f * i, 250f, 20f),
                     i + ": " + PlayerDeck.Cards[i]);
         }
 
-        GUI.Label(new Rect(250f, 0f, 200f, 20f), "=== Hand cards === ");
+        GUI.Label(new Rect(250f, 0f, 250f, 20f), "=== Hand cards === ");
         for (int i = 0; i < Hand.Cards.Count; i++)
         {
-            GUI.Label(new Rect(250f, 20 + 20f * i, 200f, 20f),
+            GUI.Label(new Rect(250f, 20 + 20f * i, 250f, 20f),
                     i + ": " + Hand.Cards[i]);
         }
 
-        GUI.Label(new Rect(400f, 0f, 200f, 20f), "=== Selection slot === ");
-        GUI.Label(new Rect(400f, 20, 200f, 20f),
+        GUI.Label(new Rect(400f, 0f, 250f, 20f), "=== Selection slot === ");
+        GUI.Label(new Rect(400f, 20, 250f, 20f),
                     "Selected: " + SelectionSlot.Card);
 
-        GUI.Label(new Rect(550f, 0f, 200f, 20f), "=== Discard pile === ");
+        GUI.Label(new Rect(550f, 0f, 250f, 20f), "=== Discard pile === ");
         for (int i = 0; i < DiscardPile.Cards.Count; i++)
         {
-            GUI.Label(new Rect(550f, 20 + 20f * i, 200f, 20f),
+            GUI.Label(new Rect(550f, 20 + 20f * i, 250f, 20f),
                     i + ": " + DiscardPile.Cards[i]);
         }
 
@@ -147,7 +152,18 @@ public class RealPlayer : Player
         GUI.Label(new Rect(700f, 80f, 200f, 20f), "CurrCard: " + CurrCard);
         GUI.Label(new Rect(700f, 100f, 200f, 20f), "CurrTile: " + CurrSpawnTile);
 
+        GUI.Label(new Rect(800, 800, 200, 20), "mode: " + unitMoveControl.mode);
     }
+
+    #region Public
+    public void GoToUnitControl()
+    {
+        Debug.Log("sup");
+        Hand.HideHand();
+        Hand.RefreshHandCardPositions();
+        phaseManager.ToP5_UnitControlMode();
+    }
+    #endregion
 
     #region Raycast hit
     Ray ray => Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -177,7 +193,8 @@ public class RealPlayer : Player
 
         if (Physics.Raycast(ray, out RaycastHit hitTile, 100f, settings.TileLayer)) //Tile
         {
-            BoardTile t = hitTile.collider.GetComponent<BoardTile>();
+            Hex t = hitTile.collider.GetComponent<Hex>();
+            //BoardTile t = hitTile.collider.GetComponent<BoardTile>();
             if (t != null)
             {
                 CurrAnyTile = t;
@@ -189,7 +206,7 @@ public class RealPlayer : Player
         }
         if (Physics.Raycast(ray, out RaycastHit hitUnit, 100f, settings.UnitPieceLayer)) //Unit piece
         {
-            PlayerUnit unit = hitUnit.collider.GetComponent<PlayerUnit>();
+            BoardUnit unit = hitUnit.collider.GetComponent<BoardUnit>();
             if (unit != null && unit.IsMainPlayer)
             {
                 CurrUnit = unit;

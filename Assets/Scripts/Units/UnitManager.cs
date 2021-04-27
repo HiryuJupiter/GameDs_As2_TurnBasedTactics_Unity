@@ -5,9 +5,12 @@ using Layout;
 
 namespace Units
 {
+    [DefaultExecutionOrder(-10)]
     public class UnitManager : MonoBehaviour
     {
         #region Variables
+        public static UnitManager Instance;
+
         public Camera cam;
         public GameObject[] units = new GameObject[7];
         public GameObject dummyBot;
@@ -23,16 +26,40 @@ namespace Units
         private GameObject selectedUnit;
         private Hex selectedHex;
 
+        PrefabDirectory dir;
         #endregion
+
         #region Start
+        private void Awake()
+        {
+            Instance = this;
+        dir = PrefabDirectory.Instance;
+        }
+
         void Start()
         {
             blueTurn = true;
             spawnMode = true;
-            StartCoroutine(SelectMode());
-
         }
         #endregion
+
+        public BoardUnit SpawnUnit(CardTypes type, Hex hex, Player player)
+        {
+                
+            BoardUnit unit = Instantiate(dir.GetUnitPiece(type), hex.attachPoint.position, hex.attachPoint.rotation) as BoardUnit;
+
+           
+            currentHex = hex;
+            currentHex.attachedObject = unit.gameObject;
+            unit.attachedHex = currentHex;
+            unit.Initialize(player, type);
+            //Vector3 pos = board.GetTileWorldPos(index.x, index.y);
+            //Quaternion rot = player.IsMainPlayer ? P1Facing : P2Facing;
+            //unit.SpawnInitialization(player, index);
+            //AddUnitToList(unit, player.IsMainPlayer);
+            return unit;
+        }
+
         #region Spawn Mode
         //Where ive been trying to link - Ryan
         public void EnterSpawnMode(Card card)
@@ -45,61 +72,50 @@ namespace Units
 
             while (spawnMode)
             {
-
                 RaycastHit hit;
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out hit))
-                {
-                    GameObject currentObj = hit.transform.gameObject;
-                    currentHex = currentObj.GetComponent<Hex>();
+                //if (Physics.Raycast(ray, out hit))
+                //{
+                //    GameObject currentObj = hit.transform.gameObject;
+                //    currentHex = currentObj.GetComponent<Hex>();
 
-                    if (currentHex.blue && currentHex.spawnable && currentHex.attachedObject == null) 
-                    {
-                        currentHex.highlighted = true;
+                //    if (currentHex.blue && currentHex.spawnable && currentHex.attachedObject == null)
+                //    {
+                //        currentHex.highlighted = true;
 
-                        if (Input.GetMouseButtonDown(0))
-                        {
-                            //Where ive been trying to link - Ryan
-                            GameObject newUnit = Instantiate(card.CardType, currentHex.attachPoint.position, currentHex.attachPoint.rotation);
+                //        if (Input.GetMouseButtonDown(0))
+                //        {
+                //            //Where ive been trying to link - Ryan
+                //            GameObject newUnit = Instantiate(card.CardType, currentHex.attachPoint.position, currentHex.attachPoint.rotation);
 
-                            currentHex.attachedObject = newUnit;
-                            BoardUnit unitFunctions = newUnit.GetComponent<BoardUnit>();
-                            unitFunctions.attachedHex = currentHex;
+                //            currentHex.attachedObject = newUnit;
+                //            BoardUnit unitFunctions = newUnit.GetComponent<BoardUnit>();
+                //            unitFunctions.attachedHex = currentHex;
 
-                            spawnMode = false;
-                            StartCoroutine(SelectMode());
-                            selectMode = true;
-                            yield return null;
+                //            spawnMode = false;
+                //            StartCoroutine(SelectMode());
+                //            selectMode = true;
+                //            yield return null;
+                //        }
+                //    }
+                //}
 
-                           
-                        }
-                        
-                    }
-
-
-
-                }
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     spawnMode = false;
                     StartCoroutine(SelectMode());
                     selectMode = true;
                     yield return null;
-
-
                 }
-
                 yield return null;
             }
-
-
         }
         #endregion
+
         IEnumerator SelectMode()
         {
             selectMode = true;
-
             while (selectMode)
             {
                 //Shoot Ray
@@ -117,8 +133,6 @@ namespace Units
 
                         if (Input.GetMouseButtonDown(0) && currentHex.attachedObject != null)
                         {
-
-
                             selectedUnit = currentHex.gameObject;
                             Debug.Log(selectedUnit);
                             SelectUnit();
@@ -159,16 +173,12 @@ namespace Units
                          }
                          */
                     }
-
                 }
                 if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     DeselectUnit();
                     yield return null;
-
-
                 }
-
                 yield return null;
             }
         }
@@ -178,7 +188,6 @@ namespace Units
             
             currentHex.selected = true;
             selectedHex = currentHex;
-
         }
         public void DeselectUnit()
         {
@@ -190,14 +199,10 @@ namespace Units
         {
             if (!blueTurn)
             {
-               
-
-
-                Hex enemyHex = LayoutManager.hexPoints[7, Random.Range(0,5)].GetComponent<Hex>();
-                Instantiate(Zilla, enemyHex.attachPoint.position, enemyHex.attachPoint.rotation);
-                enemyHex.attachedObject = Zilla;
+                //Hex enemyHex = LayoutManager.hexPoints[7, Random.Range(0,5)].GetComponent<Hex>();
+                //Instantiate(Zilla, enemyHex.attachPoint.position, enemyHex.attachPoint.rotation);
+                //enemyHex.attachedObject = Zilla;
             }
-
 
             /* if (currentHex != null && currentHex.attachedObject != null)
              {
@@ -214,8 +219,6 @@ namespace Units
 
              }
              */
-
-
 
             #region Dev Tools
 #if UNITY_EDITOR
@@ -252,8 +255,5 @@ namespace Units
 #endif
             #endregion
         }
-
-
     }
 }
-

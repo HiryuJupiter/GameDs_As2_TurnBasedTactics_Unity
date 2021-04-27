@@ -20,18 +20,17 @@ public class PrefabDirectory : MonoBehaviour
     [SerializeField] Card SpearmanCard;
 
     [Header("Unit pieces")]
-    [SerializeField] PlayerUnit GodzillaPiece;
-    [SerializeField] PlayerUnit KingPiece;
-    [SerializeField] PlayerUnit QueenPiece;
-    [SerializeField] PlayerUnit JackPiece;
-    [SerializeField] PlayerUnit KnightPiece;
-    [SerializeField] PlayerUnit SwordsmanPiece;
-    [SerializeField] PlayerUnit ArcherPiece;
-    [SerializeField] PlayerUnit SpearmanPiece;
+    [SerializeField] BoardUnit GodzillaPiece;
+    [SerializeField] BoardUnit KingPiece;
+    [SerializeField] BoardUnit QueenPiece;
+    [SerializeField] BoardUnit JackPiece;
+    [SerializeField] BoardUnit KnightPiece;
+    [SerializeField] BoardUnit SwordsmanPiece;
+    [SerializeField] BoardUnit ArcherPiece;
+    [SerializeField] BoardUnit SpearmanPiece;
 
     private Dictionary<CardTypes, Card> cardLookup;
-    private Dictionary<CardTypes, PlayerUnit> pieceLookup;
-    public UnitManager unit;
+    private Dictionary<CardTypes, BoardUnit> pieceLookup;
 
     public Card DrawCard(CardTypes cardType, Vector3 pos, Quaternion rotation)
     {
@@ -46,7 +45,7 @@ public class PrefabDirectory : MonoBehaviour
         return card;
     }
 
-    public PlayerUnit GetUnitPiece (CardTypes types)
+    public BoardUnit GetUnitPiece (CardTypes types)
     {
        return pieceLookup[types];
     }
@@ -67,7 +66,7 @@ public class PrefabDirectory : MonoBehaviour
             {CardTypes.Spearman,    SpearmanCard },
         };
 
-        pieceLookup = new Dictionary<CardTypes, PlayerUnit>()
+        pieceLookup = new Dictionary<CardTypes, BoardUnit>()
         {
             {CardTypes.Godzilla,    GodzillaPiece },
             {CardTypes.King,        KingPiece},

@@ -13,7 +13,7 @@ public class BoardUnit : MonoBehaviour
     public int maxHealth;
     public int currentHealth;
     public int unitDamage;
-    public bool blue;
+    public bool blue = true;
     public bool selected;
     public Hex attachedHex;
     private List<GameObject> movableHexes = new List<GameObject>();
@@ -26,8 +26,10 @@ public class BoardUnit : MonoBehaviour
     public Text currentHealthText;
     public Text unitDamageText;
 
+    PlayerUnitOldSchool unitOld;
+    public bool IsMainPlayer => true;
 
-
+    GameSettings settigns;
     #endregion
     #region Enum
     public enum unitState
@@ -42,7 +44,7 @@ public class BoardUnit : MonoBehaviour
     #endregion
     #region Start
     //Where ive been trying to link - Ryan
-    public void Initialize(CardTypes card)
+    public void Initialize(Player player, CardTypes card)
     {
         switch (card)
         {
@@ -74,19 +76,25 @@ public class BoardUnit : MonoBehaviour
 
 
         }
+
+        settigns = GameSettings.Instance;
+
+        transferSpeed = transferSpeedMulti * Time.deltaTime;
+        unitOld = GetComponent<PlayerUnitOldSchool>();
+        RefreshStats();
+
+        unitOld.SpawnInitialization(player);
     }
     void Start()
     {
-        transferSpeed = transferSpeedMulti * Time.deltaTime;
-      
-        RefreshStats();
+        
+        
+        //if (!dummy)
+        //{
+        //    StartCoroutine(Idle());
+        //}
 
-        if (!dummy)
-        {
-            StartCoroutine(Idle());
-        }
-        
-        
+
     }
     #endregion
     #region Update
@@ -104,7 +112,6 @@ public class BoardUnit : MonoBehaviour
         #region Idle
         while (state == unitState.Idle)
         {
-            Debug.Log("Idle " + unitName);
             if (attachedHex.selected == true)
             {
                 Debug.Log("Selecting Position " + unitName);
@@ -252,6 +259,24 @@ public class BoardUnit : MonoBehaviour
         #endregion
     }
     #endregion
+ 
+    public void MoveToPosition (Vector3 tgt)
+    {
+        StartCoroutine(DoMove(tgt));
+    }
+
+    IEnumerator DoMove (Vector3 tgt)
+    {
+        float t = 0;
+        Vector3 start = transform.position;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * 5f;
+            transform.position = Vector3.Lerp(start, tgt, t);
+            yield return null;
+        }
+    }
+
     public void ChangeToMove(Hex newHex)
     {
        attachedHex.attachedObject = null;
@@ -261,8 +286,6 @@ public class BoardUnit : MonoBehaviour
     }
     public void ChangeToAttack()
     {
-        
-
         state = unitState.Attacking;
     }
     public void Death()
@@ -272,6 +295,7 @@ public class BoardUnit : MonoBehaviour
 
     public void RefreshStats()
     {
+        currentHealth = maxHealth;
         if (unitNameText != null)
         {
             unitNameText.text = "Unit: " + unitName;
@@ -280,4 +304,27 @@ public class BoardUnit : MonoBehaviour
         }
     }
 
+    public void ToggleHoverHighlight(bool isOn)
+    {
+        unitOld.TogglehoverHighlight(isOn);
+    }
+
+    public void ToggleSelectionHighlight (bool isOn)
+    {
+        unitOld.ToggleSelectionHighlight(isOn);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (settigns.IsOnEnemyLayer(other))
+        {
+            GameState.Instance.EarnGold(150);
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("other " + other.gameObject.name);
+        }
+    }
 }

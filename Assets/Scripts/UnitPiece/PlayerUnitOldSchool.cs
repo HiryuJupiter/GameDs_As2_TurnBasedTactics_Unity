@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerUnit : MonoBehaviour
+public class PlayerUnitOldSchool : MonoBehaviour
 {
     #region Fields
     [SerializeField] Renderer renderer;
@@ -25,23 +25,23 @@ public class PlayerUnit : MonoBehaviour
     public bool isMoving { get; private set; }
     public bool IsMainPlayer { get; private set; }
     public Player player { get; private set; }
-    public Vector2Int TileIndex { get; private set; }
+    //public Vector2Int TileIndex { get; private set; }
     #endregion
 
     #region Spawn initialization
-    public void SpawnInitialization(Player player, Vector2Int tileIndex)
+    public void SpawnInitialization(Player player)
     {
         //Ref
         material = renderer.material;
         defaultColor = material.color;
-        board = BoardManager.Instance;
+        //board = BoardManager.Instance;
 
         //Cache
         this.player = player;
         IsMainPlayer = player.IsMainPlayer;
 
         //Status
-        TileIndex = tileIndex;
+        //TileIndex = tileIndex;
 
         //Intiailize
         allianceRing.color = IsMainPlayer ? Color.green : Color.red;
@@ -81,7 +81,7 @@ public class PlayerUnit : MonoBehaviour
 
     public void TogglehoverHighlight (bool isOn)
     {
-        material.color = isOn ? Color.white : defaultColor;
+        material.color = isOn ? Color.yellow : defaultColor;
     }
     #endregion
 
@@ -117,13 +117,12 @@ public class PlayerUnit : MonoBehaviour
 
     public void KilledByEnemy ()
     {
-        if (board.TryGetTile(TileIndex.x, TileIndex.y, out BoardTile tile))
-        {
-            tile.SetUnitPiece(null);
-        }
-        else
-            Debug.LogError("no tile");
-
+        //if (board.TryGetTile(TileIndex.x, TileIndex.y, out BoardTile tile))
+        //{
+        //    tile.SetUnitPiece(null);
+        //}
+        //else
+        //    Debug.LogError("no tile");
 
         Destroy(gameObject);
     }

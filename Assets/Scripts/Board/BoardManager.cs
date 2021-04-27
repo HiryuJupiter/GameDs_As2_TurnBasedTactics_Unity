@@ -6,7 +6,7 @@ using UnityEngine;
 public class BoardManager : MonoBehaviour
 {
     #region Field and mono
-    public static BoardManager Instance;
+    //public static BoardManager Instance;
 
     [SerializeField] BoardTile playerTile;
     [SerializeField] BoardTile enemyTile;
@@ -21,7 +21,7 @@ public class BoardManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        //Instance = this;
         tiles = new BoardTile[xCount, zCount];
     }
 

@@ -36,9 +36,11 @@ public class SelectionSlot : MonoBehaviour
         {
             card = this.card;
             this.card = null;
+            //Debug.Log("removed card from selection slot");
             return true;
         }
         card = null;
+            //Debug.Log("failed to remove card from selection slot");
         return false;
     }
 }
