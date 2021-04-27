@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Units;
 
 [DefaultExecutionOrder(-1000)]
 public class PrefabDirectory : MonoBehaviour
@@ -30,6 +31,7 @@ public class PrefabDirectory : MonoBehaviour
 
     private Dictionary<CardTypes, Card> cardLookup;
     private Dictionary<CardTypes, PlayerUnit> pieceLookup;
+    public UnitManager unit;
 
     public Card DrawCard(CardTypes cardType, Vector3 pos, Quaternion rotation)
     {
@@ -46,8 +48,9 @@ public class PrefabDirectory : MonoBehaviour
 
     public PlayerUnit GetUnitPiece (CardTypes types)
     {
-        return pieceLookup[types];
+       return pieceLookup[types];
     }
+    
 
     void Awake()
     {
@@ -66,7 +69,7 @@ public class PrefabDirectory : MonoBehaviour
 
         pieceLookup = new Dictionary<CardTypes, PlayerUnit>()
         {
-            {CardTypes.Godzilla,       GodzillaPiece },
+            {CardTypes.Godzilla,    GodzillaPiece },
             {CardTypes.King,        KingPiece},
             {CardTypes.Queen,       QueenPiece},
             {CardTypes.Jack,        JackPiece},
@@ -75,6 +78,7 @@ public class PrefabDirectory : MonoBehaviour
             {CardTypes.Archer,      ArcherPiece},
             {CardTypes.Spearman,    SpearmanPiece},
         };
+
     }
 
     //Minor methods
@@ -83,4 +87,6 @@ public class PrefabDirectory : MonoBehaviour
         int index = Random.Range(0, cardLookup.Count);
         return cardLookup.ElementAt(index).Value;
     }
+
+    // New hex void
 }

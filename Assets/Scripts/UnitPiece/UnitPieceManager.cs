@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class UnitPieceManager : MonoBehaviour
 {
     public static UnitPieceManager Instance;
 
     BoardManager board;
     PrefabDirectory dir;
+    
 
     Quaternion P1Facing, P2Facing;
 
