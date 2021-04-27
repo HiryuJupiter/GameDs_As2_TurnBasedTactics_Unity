@@ -33,6 +33,11 @@ namespace Units
         }
         #endregion
         #region Spawn Mode
+        public void EnterSpawnMode ()
+        {
+            StartCoroutine(SelectMode());
+        }
+
         IEnumerator SpawnMode(int unitIndex)
         {
             spawnMode = true;
