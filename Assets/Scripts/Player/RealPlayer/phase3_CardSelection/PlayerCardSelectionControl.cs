@@ -1,6 +1,8 @@
 ﻿
 using System.Collections;
 using UnityEngine;
+using Units;
+
 
 public class PlayerCardSelectionControl : MonoBehaviour
 {
@@ -12,7 +14,9 @@ public class PlayerCardSelectionControl : MonoBehaviour
     //Ref
     RealPlayer player;
     GameSettings settings;
-
+    UnitManager unitManager;
+    PrefabDirectory prefabDirectory;
+    
     public PlayerCardSelectionControl(RealPlayer player)
     {
         //Ref
@@ -24,7 +28,7 @@ public class PlayerCardSelectionControl : MonoBehaviour
     public void TickUpdate ()
     {
         HighlightUpdate();
-        SelectionUpdate();
+       
     }
 
     #region Card highlight
@@ -52,6 +56,11 @@ public class PlayerCardSelectionControl : MonoBehaviour
 
             if (player.Hand.TryRemoveCardFromHand(card))
             {
+
+                
+                //Where ive been trying to link - Ryan
+                unitManager.EnterSpawnMode(card);
+
                 //Exit highlight before card swap
                 player.ExitHighlightOnAllCards();
 

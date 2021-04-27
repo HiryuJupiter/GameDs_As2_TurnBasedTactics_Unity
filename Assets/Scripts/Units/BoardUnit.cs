@@ -41,27 +41,27 @@ public class BoardUnit : MonoBehaviour
     public unitState state;
     #endregion
     #region Start
-    void Start()
+    //Where ive been trying to link - Ryan
+    public void Initialize(CardTypes card)
     {
-        transferSpeed = transferSpeedMulti * Time.deltaTime;
-        switch (unitType)
+        switch (card)
         {
-            case 0:
+            case CardTypes.Godzilla:
                 unitName = "King";
                 maxHealth = 200;
                 unitDamage = 20;
                 break;
-            case 1:
+            case CardTypes.Jack:
                 unitName = "Jack";
                 maxHealth = 200;
                 unitDamage = 20;
                 break;
-            case 2:
+            case CardTypes.Swordsman:
                 unitName = "Swordsman";
                 maxHealth = 100;
                 unitDamage = 10;
                 break;
-            case 3:
+            case CardTypes.Spearman:
                 unitName = "Spearman";
                 maxHealth = 100;
                 unitDamage = 20;
@@ -72,8 +72,13 @@ public class BoardUnit : MonoBehaviour
                 unitDamage = 10;
                 break;
 
-               
+
         }
+    }
+    void Start()
+    {
+        transferSpeed = transferSpeedMulti * Time.deltaTime;
+      
         RefreshStats();
 
         if (!dummy)

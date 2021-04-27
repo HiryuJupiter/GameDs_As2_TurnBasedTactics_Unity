@@ -11,29 +11,35 @@ namespace Units
         public Camera cam;
         public GameObject[] units = new GameObject[7];
         public GameObject dummyBot;
+        public GameObject Zilla;
         public bool human;
         public Material highlight;
         public Material defaultTeam;
         public Hex currentHex;
         public bool selectMode;
         public bool spawnMode;
+        public bool blueTurn;
         [SerializeField]
         private GameObject selectedUnit;
         private Hex selectedHex;
+
         #endregion
         #region Start
         void Start()
         {
+            blueTurn = true;
             spawnMode = true;
             StartCoroutine(SelectMode());
-#if UNITY_EDITOR
 
-
-#endif
         }
         #endregion
         #region Spawn Mode
-        IEnumerator SpawnMode(int unitIndex)
+        //Where ive been trying to link - Ryan
+        public void EnterSpawnMode(Card card)
+        {
+            StartCoroutine(SpawnMode(card));
+        }
+        IEnumerator SpawnMode(Card card)
         {
             spawnMode = true;
 
@@ -54,8 +60,8 @@ namespace Units
 
                         if (Input.GetMouseButtonDown(0))
                         {
-
-                            GameObject newUnit = Instantiate(units[unitIndex], currentHex.attachPoint.position, currentHex.attachPoint.rotation);
+                            //Where ive been trying to link - Ryan
+                            GameObject newUnit = Instantiate(card.CardType, currentHex.attachPoint.position, currentHex.attachPoint.rotation);
 
                             currentHex.attachedObject = newUnit;
                             BoardUnit unitFunctions = newUnit.GetComponent<BoardUnit>();
@@ -182,6 +188,17 @@ namespace Units
         // Update is called once per frame
         void Update()
         {
+            if (!blueTurn)
+            {
+               
+
+
+                Hex enemyHex = LayoutManager.hexPoints[7, Random.Range(0,5)].GetComponent<Hex>();
+                Instantiate(Zilla, enemyHex.attachPoint.position, enemyHex.attachPoint.rotation);
+                enemyHex.attachedObject = Zilla;
+            }
+
+
             /* if (currentHex != null && currentHex.attachedObject != null)
              {
 
@@ -207,13 +224,13 @@ namespace Units
             {
                 selectMode = false;
                 StopCoroutine(SelectMode());
-                StartCoroutine(SpawnMode(0));
+                //(SpawnMode(0));
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 selectMode = false;
                 StopCoroutine(SelectMode());
-                StartCoroutine(SpawnMode(1));
+                //StartCoroutine(SpawnMode(1));
             }
 
             if (Input.GetKeyDown(KeyCode.Semicolon))
