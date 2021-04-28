@@ -1,8 +1,11 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
+    public static EnemySpawner Instance;
+
     [SerializeField] BasicEnemy enemy;
 
     [Header("Spawn zone")]
@@ -21,32 +24,63 @@ public class EnemySpawner : MonoBehaviour
 
     //Cache
     Quaternion rotation;
+    List<BasicEnemy> spawned = new List<BasicEnemy>();
 
-    IEnumerator Start()
+    public void MoveAll ()
     {
-        rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
 
-        timer = spawnIntervalMax;
-        yield return new WaitForSeconds(initialWait);
-        StartCoroutine(DoSpawn());
-    }
-
-    IEnumerator DoSpawn()
-    {
-        while (true)
+        for (int i = 0; i < Random.Range(1, 3); i++)
         {
-            if (timer > 0f)
-            {
-                timer -= Time.deltaTime;
-            }
-            else
-            {
-                SpawnEnemy();
-                RefreshTimer();
-            }
-            yield return null;
+            SpawnEnemy();
+        }
+
+        for (int i = spawned.Count - 1; i >= 0; i--)
+        {
+            StartCoroutine(spawned[i].DoMove());
         }
     }
+
+
+    public void RemoveEnemy (BasicEnemy enemy)
+    {
+        if (spawned.Contains(enemy))
+        {
+            spawned.Remove(enemy);
+            Destroy(enemy.gameObject);
+        }
+    }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+
+    void Start()
+    {
+        rotation = Quaternion.LookRotation(-Vector3.forward, Vector3.up);
+
+        //timer = spawnIntervalMax;
+        //yield return new WaitForSeconds(initialWait);
+        //StartCoroutine(DoSpawn());
+    }
+
+    //IEnumerator DoSpawn()
+    //{
+    //    while (true)
+    //    {
+    //        if (timer > 0f)
+    //        {
+    //            timer -= Time.deltaTime;
+    //        }
+    //        else
+    //        {
+    //            SpawnEnemy();
+    //            RefreshTimer();
+    //        }
+    //        yield return null;
+    //    }
+    //}
 
     void RefreshTimer()
     {
@@ -60,7 +94,9 @@ public class EnemySpawner : MonoBehaviour
 
     void SpawnEnemy()
     {
-        Instantiate(enemy, RandomSpawnPos, rotation);
+        BasicEnemy e = Instantiate(enemy, RandomSpawnPos, rotation);
+        spawned.Add(e);
+        e.Initialize(this);
     }
 
     void DecrementTimer() => timer = Mathf.Clamp(timer - Time.deltaTime, spawnIntervalMin, spawnIntervalMax);

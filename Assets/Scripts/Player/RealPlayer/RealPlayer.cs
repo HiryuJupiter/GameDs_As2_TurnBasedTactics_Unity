@@ -158,7 +158,6 @@ public class RealPlayer : Player
     #region Public
     public void GoToUnitControl()
     {
-        Debug.Log("sup");
         Hand.HideHand();
         Hand.RefreshHandCardPositions();
         phaseManager.ToP5_UnitControlMode();

@@ -110,12 +110,17 @@ public class PlayerUnitMovingControl : MonoBehaviour
 
         if (player.OnTile && Input.GetMouseButtonDown(0))
         {
+            
             movingUnit.MoveToPosition(player.CurrSpawnTile.attachPoint.position);
             //movingUnit.MoveToPosition(player.CurrSpawnTile.transform.position);
             player.CurrSpawnTile.ToggleHoverHighlight(false);
             movingUnit.ToggleSelectionHighlight(false);
 
+
             player.GoToCardSelection();
+
+            mode = Mode.SelectUnit;
+            movingUnit = null;
         }
     }
 

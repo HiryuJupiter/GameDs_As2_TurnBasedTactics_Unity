@@ -71,6 +71,8 @@ public class PlayerCardPlacementControl : MonoBehaviour
                 //Phase transition
                 player.GoToCardSelection();
 
+                EnemySpawner.Instance.MoveAll();
+
                 //Discard card
                 player.DiscardPile.AddToDiscardPile(card);
             }
